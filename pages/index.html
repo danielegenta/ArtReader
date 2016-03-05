@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>
+			Lista Opere
+		</title>
+		 <link href="CSS/stile.css" rel="stylesheet">
+		<!-- <link href="CSS/jquery-ui.css" rel="stylesheet">-->
+		<link href="CSS/jquery_stile.css" rel="stylesheet">
+		
+		
+		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
+		<script type="text/javascript" src="Utility/jquery-ui.js"></script>
+		<script type="text/javascript" src="script/script.js"></script>
+		<script type="text/javascript" src="script/jscript.js"></script>
+	</head>
+	<body>
+		<div>
+ 			<h1>Benvenuto</h1>
+		</div>
+		
+		<div id="dialogInsertArtwork" title="Inserisci nuova opera">
+			<p class="validateTips">Tutti i campi sono obbligatori.</p>
+			 <form>
+				<fieldset>
+				  <label for="title">Titolo</label>
+				  <input type="text" name="title" id="txtTitle" value="" class="text ui-widget-content ui-corner-all">
+				  <br>
+				  <label for="author">Autore</label>
+				  <input type="text" name="author" id="txtAuthor" value="" class="text ui-widget-content ui-corner-all">
+				  <br>
+				  <label for="pictureUrl">Immagine</label>
+				  <input type="text" name="pictureUrl" id="txtPictureUrl" value="" class="text ui-widget-content ui-corner-all">
+				  <br>
+				  <label for="abstract">Descrizione</label>
+				  <textarea name="abstract" id="txtAbstract" class="text ui-widget-content ui-corner-all"></textarea>
+			 
+				  <!-- Allow form submission with keyboard without duplicating the dialog button -->
+				  <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+				</fieldset>
+			</form>
+		</div>
+			
+		
+		<button id="btnInsertArtwork" onClick="">Inserisci nuova opera</button>
+			
+		<table id="listArtworks" class="ui-widget ui-widget-content">
+		
+		<thead class="ui-widget-header ">
+			<th>Titolo</th>
+			<th>Autore</th>
+			<th>Url Immagine</th>
+			<th>Descrizione</th>
+		</thead>
+		<tbody>
+		</tbody>
+		</table>
+	</body>
+</html>

@@ -1,0 +1,157 @@
+var dispatcher = require ('./Dispatcher.js');
+var crypto = require('crypto');
+var http = require('http');
+var fs = require('fs');
+var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
+sqlite.verbose();
+
+//http://lollyrock.com/articles/nodejs-encryption/
+var server = http.createServer(function(request, response) {
+	if(request.method.toLowerCase() == "post")
+		dispatcher.leggiPostParameters(request, response, function(request, response) {
+			dispatcher.dispatch(request, response);
+		});
+	else
+		dispatcher.dispatch(request, response);
+});
+
+
+var port = 8080;
+server.listen(port);
+console.log("Server avviato, in ascolto sulla porta " + port);
+
+//--------------------
+dispatcher.addListener ("post", "/access", function(req,res) {
+	var utente = req.parametriPost.txtUsername;
+	var cryptedPassword = crypto.createHash('sha256').update(req.parametriPost.txtPassword).digest('base64');
+	var logged = false;
+	
+	sqlite.verbose();
+	var db = new sqlite.Database("./Database/myDatabase.db");
+	var index = -1;
+	db.serialize(function(){
+		
+		if (utente != undefined && cryptedPassword != undefined)
+		{
+			var sql = "SELECT DISTINCT(Username) FROM Users WHERE Username='" + utente + "' AND Password = '" + cryptedPassword + "'";
+			
+			db.each(sql, function(err, row)
+			{
+				index = row.Id;
+			},
+			function(err, nRecord)
+			{
+				if (index != -1)
+				{
+					logged = true;
+					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+					dispatcher.aggiornaPagina("./pages/index.html", function(window){
+						res.writeHead(200,header);
+						res.end(window.document.documentElement.innerHTML);
+					});
+				}
+				else
+				{
+					console.log("dati errati");
+					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+					dispatcher.aggiornaPagina("./pages/login.html", function(window){
+						res.writeHead(200,header);
+						res.end(window.document.documentElement.innerHTML);
+					});
+				}
+			});	
+		}
+		else
+		{
+			//highlight dei campi in rosso (ajax?)
+			dispatcher.aggiornaPagina("./pages/login.html", function(window){
+			res.writeHead(200,header);
+			res.end(window.document.documentElement.innerHTML);
+			});
+		}
+	});
+	db.close();	
+});
+
+dispatcher.addListener ("get", "/welcome", function(req,res) {	
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	dispatcher.aggiornaPagina("./pages/login.html", function(window){
+		res.writeHead(200,header);
+		res.end(window.document.documentElement.innerHTML);
+	});
+});
+
+
+//API CRUD
+
+//add artwork
+dispatcher.addListener("get", "/addArtwork", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+		var db = new sqlite.Database("Data/dataBase.db");
+		console.log("DB: "+db);
+		db.serialize(function(){
+				var insert=db.prepare("insert into artworks (title,author,abstract,pictureUrl) values(?,?,?,?)");
+				insert.run('x','x','x','x');
+				insert.finalize();	
+				response.writeHead(200, header);
+				response.end("record aggiunto");								
+				db.close();	
+		}); 
+	});
+});
+
+//delete artwork
+dispatcher.addListener("get", "/delArtwork", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+		var db = new sqlite.Database("Data/dataBase.db");
+		console.log("DB: "+db);
+		db.serialize(function(){
+				var insert=db.prepare("delete FROM artworks where title='x'");
+				insert.run();
+				insert.finalize();	
+				response.writeHead(200, header);
+				response.end("record eliminato");								
+				db.close();	
+		}); 
+	});
+});
+
+//update artwork
+dispatcher.addListener("get", "/updArtwork", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+		var db = new sqlite.Database("Data/dataBase.db");
+		console.log("DB: "+db);
+		db.serialize(function(){
+				var insert=db.prepare("update artworks set title='y',author='y',abstract='y',pictureUrl='y' where title='x'");
+				insert.run();
+				insert.finalize();	
+				response.writeHead(200, header);
+				response.end("record aggiornato");								
+				db.close();	
+		}); 
+	});
+});
+
+/*
+admin:
+daniele.genta daniele
+davide.massimino davide
+
+new user:
+db.serialize(function(){
+						sql = "INSERT INTO Users VALUES (2, '" + utente + "', '" + cryptedPassword + "')";
+						db.run(sql, function(err)
+						{
+							if(err)
+								console.log("Error inserting data");
+							else	
+								console.log("Data inserted correctly");
+						});
+					});
+*/
