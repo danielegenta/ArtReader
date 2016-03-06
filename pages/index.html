@@ -17,10 +17,10 @@
 		<div>
  			<h1>Benvenuto</h1>
 		</div>
-		
+		<!---Dialog used to insert a new artwork-->
 		<div id="dialogInsertArtwork" title="Inserisci nuova opera">
 			<p class="validateTips">Tutti i campi sono obbligatori.</p>
-			 <form>
+			 <form name="formAddUpdateArtwork" method="get" action="/insertArtwork">
 				<fieldset>
 				  <label for="title">Titolo</label>
 				  <input type="text" name="title" id="txtTitle" value="" class="text ui-widget-content ui-corner-all">
@@ -32,7 +32,7 @@
 				  <input type="text" name="pictureUrl" id="txtPictureUrl" value="" class="text ui-widget-content ui-corner-all">
 				  <br>
 				  <label for="abstract">Descrizione</label>
-				  <textarea name="abstract" id="txtAbstract" class="text ui-widget-content ui-corner-all"></textarea>
+				  <textarea name="pictureAbstract" id="txtAbstract" class="text ui-widget-content ui-corner-all"></textarea>
 			 
 				  <!-- Allow form submission with keyboard without duplicating the dialog button -->
 				  <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
@@ -40,19 +40,22 @@
 			</form>
 		</div>
 			
+		<input type="text" name="search" id="txtSearch" value="Ricerca un opera d'arte" class="text ui-widget-content ui-corner-all">
 		
 		<button id="btnInsertArtwork" onClick="">Inserisci nuova opera</button>
-			
-		<table id="listArtworks" class="ui-widget ui-widget-content">
+		<button id="btnShowList" onClick="showArtworks()">Show</button>
 		
-		<thead class="ui-widget-header ">
-			<th>Titolo</th>
-			<th>Autore</th>
-			<th>Url Immagine</th>
-			<th>Descrizione</th>
-		</thead>
-		<tbody>
-		</tbody>
+		<!--table of all the artworks-->
+		<table id="listArtworks" class="ui-widget ui-widget-content">
+			<thead class="ui-widget-header ">
+				<th>Titolo</th>
+				<th>Autore</th>
+				<th>Url Immagine</th>
+				<th>Descrizione</th>
+				<th>Operazioni</th>
+			</thead>
+			<tbody>
+			</tbody>
 		</table>
 	</body>
 </html>

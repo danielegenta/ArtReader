@@ -85,15 +85,19 @@ dispatcher.addListener ("get", "/welcome", function(req,res) {
 //API CRUD
 
 //add artwork
-dispatcher.addListener("get", "/addArtwork", function(request, response){
+dispatcher.addListener("get", "/insertArtwork", function(request, response){
+	var title = request.parametriGet.title;
+	var author = request.parametriGet.author;
+	var pictureUrl = request.parametriGet.pictureUrl;
+	var pictureAbstract = request.parametriGet.pictureAbstract;
+	console.log("inserimento in corso...");
     dispatcher.aggiornaPagina("./pages/index.html", function(window){
 	var header = {"Content-Type":"text/html"};	
 	var $ = window.$;
-		var db = new sqlite.Database("Data/dataBase.db");
-		console.log("DB: "+db);
+		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-				var insert=db.prepare("insert into artworks (title,author,abstract,pictureUrl) values(?,?,?,?)");
-				insert.run('x','x','x','x');
+				var insert=db.prepare("INSERT INTO Artworks (Title,Author,Abstract,PictureUrl) values(?,?,?,?)");
+				insert.run(title, author, pictureAbstract, pictureUrl);
 				insert.finalize();	
 				response.writeHead(200, header);
 				response.end("record aggiunto");								
@@ -104,7 +108,9 @@ dispatcher.addListener("get", "/addArtwork", function(request, response){
 
 //delete artwork
 dispatcher.addListener("get", "/delArtwork", function(request, response){
-    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	//var title = req.parametriGet.title;
+	console.log("ok server");
+    /*dispatcher.aggiornaPagina("./pages/index.html", function(window){
 	var header = {"Content-Type":"text/html"};	
 	var $ = window.$;
 		var db = new sqlite.Database("Data/dataBase.db");
@@ -117,7 +123,7 @@ dispatcher.addListener("get", "/delArtwork", function(request, response){
 				response.end("record eliminato");								
 				db.close();	
 		}); 
-	});
+	});*/
 });
 
 //update artwork
@@ -133,6 +139,76 @@ dispatcher.addListener("get", "/updArtwork", function(request, response){
 				insert.finalize();	
 				response.writeHead(200, header);
 				response.end("record aggiornato");								
+				db.close();	
+		}); 
+	});
+});
+
+//only one artwork info
+dispatcher.addListener("get", "/oneArtwork", function(request, response){
+    dispatcher.aggiornaPagina("./pages/pagina21.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+		var db = new sqlite.Database("Data/dataBase.db");
+		console.log("DB: "+db);
+		db.serialize(function(){
+			var sql = "SELECT * FROM artworks where id="+2;
+            var json;
+
+            //
+            var artwork = {};
+			db.get(sql, 
+				function(err, row){		
+					if(row!=undefined)
+					{
+						artwork.id = row.id;
+						artwork.title = row.title;
+						artwork.author = row.author;
+						artwork.abstract = row.abstract;
+						artwork.pictureUrl = row.pictureUrl;
+
+						json = JSON.stringify(artwork);
+					
+						response.writeHead(200, header);
+						response.end(json);	
+					}							
+				});
+				db.close();	
+		}); 
+	});
+});
+
+//all artwork info
+dispatcher.addListener("get", "/allArtworks", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+			var sql = "SELECT * FROM Artworks";
+            var json;
+	
+			var listArtworks = [];
+			
+			db.each(sql, 
+				function(err, row){
+					var artwork = {};
+		
+					artwork.id = row.Id;
+					artwork.title = row.Title;
+					artwork.author = row.Author;
+					artwork.pictureAbstract = row.Abstract;
+					artwork.pictureUrl = row.PictureUrl;
+					listArtworks.push(artwork);
+				},
+				function(err, nRighe){
+			
+							json = JSON.stringify(listArtworks);
+							response.writeHead(200, header);
+							console.log(json);
+							response.end(json);								
+				});
 				db.close();	
 		}); 
 	});

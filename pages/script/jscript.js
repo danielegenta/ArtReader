@@ -1,9 +1,15 @@
+/************************************************
+*************Funzioni jQuery/jQuery-UI***********
+*************************************************/
+
+
 $(document).ready(function()
 {
 	//////////////////---lascia---
 	$.noConflict(true);
 	///////////////////
 	
+	//definizione campi e var per inserimento nuova opera
 	var dialog, form,
       title = $( "#txtTitle" ),
       author = $( "#txtAuthor" ),
@@ -12,15 +18,21 @@ $(document).ready(function()
       allFields = $( [] ).add( title ).add( author ).add( pictureAbstract ).add( pictureUrl),
 	  tips = $( ".validateTips" );
 	  
-	  
+	//dialog per inserimento nuova opera
 	dialog = $( "#dialogInsertArtwork" ).dialog({
 		 autoOpen: false,
 		  height: 500,
 		  width: 600,
 		  modal: true,
 		  buttons: {
-			"Inserisci": inserArtwork,
-			Cancel: function() {
+			"Inserisci": 
+			{
+				id: "btnInsert",
+				text: "Inserisci",
+				onClick: "addArtwork()"
+				
+			},			
+			"Chiudi": function() {
 			  dialog.dialog( "close" );
 			}
 		  },
@@ -30,15 +42,19 @@ $(document).ready(function()
 		  }
 	});
 
+	//Btn per apertura della dialog
 	$("#btnInsertArtwork").click(function() {
 		$("#dialogInsertArtwork").dialog('open');
+		
 	});
 	
-	 form = dialog.find( "form" ).on( "submit", function( event ) {
+	//Btn inserisci dentro la dialog
+	 form = dialog.find( "#formDeleteUpdate" ).on( "submit", function( event ) {
       event.preventDefault();
-      inserArtwork();
+      checkArtwork();
     });
 	
+	//Se sbaglio in inserimento
 	function updateTips( t ) {
       tips
         .text( t )
@@ -48,28 +64,33 @@ $(document).ready(function()
       }, 500 );
     }
 	
+	//Controlla lunghezza dei campi che sto aggiungendo
 	 function checkLength( o, n, min, max ) {
       if ( o.val().length > max || o.val().length < min ) {
         o.addClass( "ui-state-error" );
-        updateTips( "Length of " + n + " must be between " +
-          min + " and " + max + "." );
+        updateTips( "La lunghezza di: " + n + " deve essere compresa fra: " +
+          min + " e " + max + "." );
         return false;
-      } else {
+      } 
+	  else
+	  {
         return true;
       }
     }
 	
-	function inserArtwork()
+	
+	//Inserisce artworK (SOLO SU HTML-NON ANCORA SU DB!!!!!)
+	function checkArtwork()
 	{
-	  var valid = true;
-      allFields.removeClass( "ui-state-error" );
+		var valid = true;
+		allFields.removeClass( "ui-state-error" );
+
+		valid = valid && checkLength( title, "Titolo", 1, 40 );
+		valid = valid && checkLength( author, "Autore", 2, 40 );
+		valid = valid && checkLength( pictureAbstract, "Descrizione", 1, 150 );
+		valid = valid && checkLength( pictureUrl, "Url Immagine", 8, 100 );
  
-      valid = valid && checkLength( title, "Titolo", 1, 40 );
-      valid = valid && checkLength( author, "Autore", 2, 40 );
-      valid = valid && checkLength( pictureAbstract, "Descrizione", 1, 150 );
-	  valid = valid && checkLength( pictureUrl, "Url Immagine", 8, 100 );
- 
-	  //da modificare
+	  //da modificare REGEX INSERIMENTO NUOVA OPERA
 	  /*
       valid = valid && checkRegexp( title, /^[a-z]([0-9a-z_\s])+$/i, "Title may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
 	  
@@ -77,18 +98,39 @@ $(document).ready(function()
       valid = valid && checkRegexp( author, /^[a-z]([0-9a-z_\s])+$/i, "Autore may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
       valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );*/
  
-      if ( valid ) {
-        $( "#listArtworks tbody" ).append( "<tr>" +
-          "<td>" + title.val() + "</td>" +
-          "<td>" + author.val() + "</td>" +
-          "<td>" + pictureUrl.val() + "</td>" +
-		   "<td>" + pictureAbstract.val() + "</td>" +
-        "</tr>" );
-        dialog.dialog( "close" );
+		if ( valid )
+		{
+			var tmp = "'"+title.val()+"'"; 
+			$( "#listArtworks tbody" ).append( "<tr>" +
+			  "<td>" + title.val() + "</td>" +
+			  "<td>" + author.val() + "</td>" +
+			  "<td>" + pictureUrl.val() + "</td>" +
+			  "<td>" + pictureAbstract.val() + "</td>" +
+			
+			  "<td><form action='\delArtwork' method='get' name='formDeleteUpdate'><input type='button' value='cancella' onClick='deleteArtwork('"+tmp+"')'/>" +
+			  "<button type='button' name='updateArtwork' onClick='updateArtwork()'>Modifica</button> </form> </td>" +
+			"</tr>" );
+
+			dialog.dialog( "close" );
+		}
+		return valid;
 	}
-	return valid;
-	}
+	
+	
 });
+
+function showArtwork(response, i)
+	{
+		var tmp = "";
+		$( "#listArtworks tbody" ).append( "<tr>" +
+			  "<td>" + response[i].title + "</td>" +
+			  "<td>" + response[i].author + "</td>" +
+			  "<td>" + response[i].pictureUrl + "</td>" +
+			  "<td>" + response[i].pictureAbstract + "</td>" +
+			  "<td><form action='\delArtwork' method='get' name='formDeleteUpdate'><input type='button' value='cancella' onClick='deleteArtwork('"+tmp+"')'/>" +
+			  "<button type='button' name='updateArtwork' onClick='updateArtwork()'>Modifica</button> </form> </td>" +
+			"</tr>" );
+	}
 
 
 
