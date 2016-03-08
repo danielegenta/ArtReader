@@ -143,7 +143,7 @@ Dispatcher.prototype.leggiPostParameters = function(request, response, callback)
 //parametro 1 pagina html da caricare 
 //parametro 2 funzione da eseguire al termine del caricamento della pagina
 Dispatcher.prototype.aggiornaPagina = function(pageHtml, callback){
-	var jquery = "./Utility/jquery-2.1.4.js";
+	var jquery = "./pages/Utility/jquery-2.1.4.js";
 	var html = fs.readFileSync(pageHtml, "utf8");//leggo file html
 	//questa riga esegue la funzione di callback che ho ricevuto come parametro
 	//e gli passa come parametro l'oggetto window che è un puntatore alla finestra corrente

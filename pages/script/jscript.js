@@ -6,7 +6,7 @@
 $(document).ready(function()
 {
 	//////////////////---lascia---
-	$.noConflict(true);
+	//$.noConflict(true);
 	///////////////////
 	
 	//definizione campi e var per inserimento nuova opera
@@ -25,34 +25,55 @@ $(document).ready(function()
 		  width: 600,
 		  modal: true,
 		  buttons: {
+			  "Modifica": 
+			{
+				id: "btnModifica",
+				text: "Modifica",
+				click:function(){
+					
+					updateArtwork($("#txtTitle").val(),$("#txtAuthor").val(),$("#txtAbstract").val(),$("#txtPictureUrl").val());
+					dialog.dialog( "close" );
+					}		
+				
+			},			
 			"Inserisci": 
 			{
 				id: "btnInsert",
 				text: "Inserisci",
-				onClick: "addArtwork()"
+				click:function(){
+				checkArtwork();
+				}
 				
 			},			
 			"Chiudi": function() {
 			  dialog.dialog( "close" );
+			  
 			}
 		  },
 		  close: function() {
-			form[ 0 ].reset();
 			allFields.removeClass( "ui-state-error" );
+			jqShowArtworks();
 		  }
 	});
 
 	//Btn per apertura della dialog
 	$("#btnInsertArtwork").click(function() {
+		cleanDialogFields();
+		
+		
 		$("#dialogInsertArtwork").dialog('open');
+		$("#btnModifica").hide();
+		$("#btnInsert").show();
 		
 	});
 	
-	//Btn inserisci dentro la dialog
-	 form = dialog.find( "#formDeleteUpdate" ).on( "submit", function( event ) {
-      event.preventDefault();
-      checkArtwork();
-    });
+	function cleanDialogFields()
+	{
+		$("#txtTitle").val("");
+		$("#txtAuthor").val("")
+		$("#txtPictureUrl").val("")
+		$("#txtAbstract").val("");
+	}
 	
 	//Se sbaglio in inserimento
 	function updateTips( t ) {
@@ -79,9 +100,10 @@ $(document).ready(function()
     }
 	
 	
-	//Inserisce artworK (SOLO SU HTML-NON ANCORA SU DB!!!!!)
+	//Inserisce artworK 
 	function checkArtwork()
 	{
+		
 		var valid = true;
 		allFields.removeClass( "ui-state-error" );
 
@@ -100,37 +122,78 @@ $(document).ready(function()
  
 		if ( valid )
 		{
-			var tmp = "'"+title.val()+"'"; 
-			$( "#listArtworks tbody" ).append( "<tr>" +
-			  "<td>" + title.val() + "</td>" +
-			  "<td>" + author.val() + "</td>" +
-			  "<td>" + pictureUrl.val() + "</td>" +
-			  "<td>" + pictureAbstract.val() + "</td>" +
-			
-			  "<td><form action='\delArtwork' method='get' name='formDeleteUpdate'><input type='button' value='cancella' onClick='deleteArtwork('"+tmp+"')'/>" +
-			  "<button type='button' name='updateArtwork' onClick='updateArtwork()'>Modifica</button> </form> </td>" +
-			"</tr>" );
-
+			//rileggo il db
 			dialog.dialog( "close" );
+			addArtwork(title.val(), author.val(), pictureAbstract.val(), pictureUrl.val());	
 		}
 		return valid;
 	}
-	
-	
 });
 
 function showArtwork(response, i)
 	{
-		var tmp = "";
-		$( "#listArtworks tbody" ).append( "<tr>" +
-			  "<td>" + response[i].title + "</td>" +
-			  "<td>" + response[i].author + "</td>" +
-			  "<td>" + response[i].pictureUrl + "</td>" +
-			  "<td>" + response[i].pictureAbstract + "</td>" +
-			  "<td><form action='\delArtwork' method='get' name='formDeleteUpdate'><input type='button' value='cancella' onClick='deleteArtwork('"+tmp+"')'/>" +
-			  "<button type='button' name='updateArtwork' onClick='updateArtwork()'>Modifica</button> </form> </td>" +
-			"</tr>" );
-	}
+		var tabella=$("#tableArtworks");
+        var riga=$("<tr></tr>");
+                       
+        var id=$("<td></td>");
+        id.text(response[i].id);
+        riga.append(id);
+		
+		var title=$("<td></td>");
+        title.text(response[i].title);
+        riga.append(title);
+		 
+        var author=$("<td></td>");
+        author.text(response[i].author);
+        riga.append(author);
+					   
+        var pictureurl=$("<td></td>");
+        pictureurl.text(response[i].pictureUrl);
+        riga.append(pictureurl);
+					   
+        var pictureabstract=$("<td></td>");
+        pictureabstract.text(response[i].pictureAbstract);
+        riga.append(pictureabstract);
+                  
+		var tdbutt=$("<td></td>");
+		var butDel=document.createElement("button");
+		var t=document.createTextNode("delete");
+		butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
+		butDel.appendChild(t);
+		tdbutt.append(butDel);
+		
+		var butMod=document.createElement("button");
+		t=document.createTextNode("Update");
+		butMod.name="mod";
+		butMod.appendChild(t);
+		butMod.addEventListener('click',function()
+		{
+			$("#dialogInsertArtwork").dialog('open');
+			$("#btnModifica").show();
+			$("#btnInsert").hide();
+			
+			$("#txtTitle").val(response[i].title);
+			$("#txtAuthor").val(response[i].author);
+			$("#txtPictureUrl").val(response[i].pictureUrl);
+			$("#txtAbstract").val(response[i].pictureAbstract);		
 
+			jqShowArtworks();
+			
+		});
+		tdbutt.append(butMod);
+		
+		riga.append(tdbutt);				  
+        tabella.append(riga);
+	}
+	
+function cleanTable()
+{
+	$( "#mainTable").empty();
+}
+
+function jqShowArtworks()
+{
+	showArtworks();
+}
 
 

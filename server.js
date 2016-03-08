@@ -21,9 +21,9 @@ server.listen(port);
 console.log("Server avviato, in ascolto sulla porta " + port);
 
 //--------------------
-dispatcher.addListener ("post", "/access", function(req,res) {
-	var utente = req.parametriPost.txtUsername;
-	var cryptedPassword = crypto.createHash('sha256').update(req.parametriPost.txtPassword).digest('base64');
+dispatcher.addListener ("post", "/access", function(request,response) {
+	var utente = request.parametriPost.txtUsername;
+	var cryptedPassword = crypto.createHash('sha256').update(request.parametriPost.txtPassword).digest('base64');
 	var logged = false;
 	
 	sqlite.verbose();
@@ -46,8 +46,8 @@ dispatcher.addListener ("post", "/access", function(req,res) {
 					logged = true;
 					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 					dispatcher.aggiornaPagina("./pages/index.html", function(window){
-						res.writeHead(200,header);
-						res.end(window.document.documentElement.innerHTML);
+						response.writeHead(200,header);
+						response.end(window.document.documentElement.innerHTML);
 					});
 				}
 				else
@@ -55,8 +55,8 @@ dispatcher.addListener ("post", "/access", function(req,res) {
 					console.log("dati errati");
 					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 					dispatcher.aggiornaPagina("./pages/login.html", function(window){
-						res.writeHead(200,header);
-						res.end(window.document.documentElement.innerHTML);
+						response.writeHead(200,header);
+						response.end(window.document.documentElement.innerHTML);
 					});
 				}
 			});	
@@ -65,19 +65,19 @@ dispatcher.addListener ("post", "/access", function(req,res) {
 		{
 			//highlight dei campi in rosso (ajax?)
 			dispatcher.aggiornaPagina("./pages/login.html", function(window){
-			res.writeHead(200,header);
-			res.end(window.document.documentElement.innerHTML);
+			response.writeHead(200,header);
+			response.end(window.document.documentElement.innerHTML);
 			});
 		}
 	});
 	db.close();	
 });
 
-dispatcher.addListener ("get", "/welcome", function(req,res) {	
+dispatcher.addListener ("get", "/welcome", function(request,response) {	
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	dispatcher.aggiornaPagina("./pages/login.html", function(window){
-		res.writeHead(200,header);
-		res.end(window.document.documentElement.innerHTML);
+		response.writeHead(200,header);
+		response.end(window.document.documentElement.innerHTML);
 	});
 });
 
@@ -91,56 +91,49 @@ dispatcher.addListener("get", "/insertArtwork", function(request, response){
 	var pictureUrl = request.parametriGet.pictureUrl;
 	var pictureAbstract = request.parametriGet.pictureAbstract;
 	console.log("inserimento in corso...");
-    dispatcher.aggiornaPagina("./pages/index.html", function(window){
-	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
+	var header = {'Content-Type' : 'text/plain', 'Cache-Control':'no-cache, must-revalidate'};
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
 				var insert=db.prepare("INSERT INTO Artworks (Title,Author,Abstract,PictureUrl) values(?,?,?,?)");
 				insert.run(title, author, pictureAbstract, pictureUrl);
 				insert.finalize();	
-				response.writeHead(200, header);
-				response.end("record aggiunto");								
+				response.writeHead(200,header);
+				response.end("ok");								
 				db.close();	
-		}); 
 	});
 });
 
 //delete artwork
 dispatcher.addListener("get", "/delArtwork", function(request, response){
-	//var title = req.parametriGet.title;
-	console.log("ok server");
-    /*dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var id = request.parametriGet.id;
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
-		var db = new sqlite.Database("Data/dataBase.db");
-		console.log("DB: "+db);
+		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-				var insert=db.prepare("delete FROM artworks where title='x'");
+				var insert=db.prepare("delete FROM Artworks where Id="+id);
 				insert.run();
 				insert.finalize();	
 				response.writeHead(200, header);
 				response.end("record eliminato");								
 				db.close();	
-		}); 
-	});*/
+	});
 });
 
 //update artwork
 dispatcher.addListener("get", "/updArtwork", function(request, response){
-    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+	var title = request.parametriGet.title;
+	var author = request.parametriGet.author;
+	var abstract = request.parametriGet.pictureAbstract;
+	var pictureurl = request.parametriGet.pictureUrl;
+	console.log("ok server");
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
-		var db = new sqlite.Database("Data/dataBase.db");
-		console.log("DB: "+db);
+		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-				var insert=db.prepare("update artworks set title='y',author='y',abstract='y',pictureUrl='y' where title='x'");
+				var insert=db.prepare("update artworks set author='"+author+"',abstract='"+abstract+"',pictureUrl='"+pictureurl+"' where title='"+title+"'");
 				insert.run();
 				insert.finalize();	
 				response.writeHead(200, header);
 				response.end("record aggiornato");								
 				db.close();	
-		}); 
 	});
 });
 
@@ -194,7 +187,7 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 			db.each(sql, 
 				function(err, row){
 					var artwork = {};
-		
+				
 					artwork.id = row.Id;
 					artwork.title = row.Title;
 					artwork.author = row.Author;
@@ -204,10 +197,10 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 				},
 				function(err, nRighe){
 			
-							json = JSON.stringify(listArtworks);
-							response.writeHead(200, header);
-							console.log(json);
-							response.end(json);								
+					json = JSON.stringify(listArtworks);
+					response.writeHead(200, header);
+					console.log(json);
+					response.end(json);								
 				});
 				db.close();	
 		}); 
