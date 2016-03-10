@@ -12,6 +12,25 @@
 		<script type="text/javascript" src="Utility/jquery-ui.js"></script>
 		<script type="text/javascript" src="script/script.js"></script>
 		<script type="text/javascript" src="script/jscript.js"></script>
+		
+		<style>
+			.riga
+			{
+				font-size:16pt;
+				width:530px; 
+			}
+			
+			#txtSearch
+			{
+				color: #E0E0E0;
+			}
+			
+			#txtSearch:focus, #noTip
+			{
+				color: #000000;
+				font-weight: bold;
+			}
+		</style>
 	</head>
 	<body>
 		<div>
@@ -40,10 +59,20 @@
 			</form>
 		</div>
 			
-		<input type="text" name="search" id="txtSearch" value="Ricerca un opera d'arte" class="text ui-widget-content ui-corner-all">
+		<input type="text" name="search" id="txtSearch" value="Ricerca un opera d'arte..." class="text ui-widget-content ui-corner-all">
+		<select id="lstSuggerimenti" size="4" class="riga" style="display:none">
+		</select>
+		<br>  
 		
-		<button id="btnInsertArtwork" onClick="">Inserisci nuova opera</button>
-		<button id="btnShowList" onClick="showArtworks()">Show</button>
+		<div id="searchTips">
+			Ricerche correlate: 
+			<a href="javascript:void(0)" id="similarSearch1">tip1</a>
+			<a href="javascript:void(0)" id="similarSearch2">tip2</a>
+			<a href="javascript:void(0)" id="similarSearch3">tip3</a>
+		</div>
+		<div id="noTip"></div>
+		
+		<button id="btnInsertArtwork" onClick="">+</button>
 		
 		<!--table of all the artworks-->
 		<table id="tableArtworks" class="ui-widget ui-widget-content">

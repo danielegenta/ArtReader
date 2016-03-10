@@ -82,7 +82,9 @@ dispatcher.addListener ("get", "/welcome", function(request,response) {
 });
 
 
-//API CRUD
+/**********************
+*API CRUD
+***********************/
 
 //add artwork
 dispatcher.addListener("get", "/insertArtwork", function(request, response){
@@ -137,7 +139,7 @@ dispatcher.addListener("get", "/updArtwork", function(request, response){
 	});
 });
 
-//only one artwork info
+//one artwork info
 dispatcher.addListener("get", "/oneArtwork", function(request, response){
     dispatcher.aggiornaPagina("./pages/pagina21.html", function(window){
 	var header = {"Content-Type":"text/html"};	
@@ -207,10 +209,126 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 	});
 });
 
+/***********
+* Other API
+************/
+
+//search artwork 
+dispatcher.addListener("get", "/searchArtwork", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+		
+	var partialTitle = request.parametriGet.title;
+	var partialAuthor = request.parametriGet.author;
+	
+	
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+	//console.log(partialTitle + "-" + partialAuthor)
+		if (partialTitle != "" && partialAuthor != "")
+			var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + partialTitle + "%' OR Author LIKE '" + partialAuthor + "%'";
+		else
+			var sql = "SELECT * FROM Artworks";
+		//else if (partialAuthor != "")
+		//	var sql = "SELECT * FROM Artworks WHERE Author LIKE '" + partialAuthor + "%'";
+		console.log(sql);
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+				var artwork = {};
+			
+				artwork.id = row.Id;
+				artwork.title = row.Title;
+				artwork.author = row.Author;
+				artwork.pictureAbstract = row.Abstract;
+				artwork.pictureUrl = row.PictureUrl;
+				listArtworks.push(artwork);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);
+				response.writeHead(200, header);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	});
+});
+
+//similar artwork 
+dispatcher.addListener("get", "/similarArtworks", function(request, response){
+    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+		
+	var author = request.parametriGet.author;
+	var title = request.parametriGet.title;
+	
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+	var sql = "SELECT * FROM Artworks WHERE Author = '" + author + "' And Title != '" + title +"' ORDER BY Title DESC LIMIT 3";
+		console.log(sql);
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+				var artwork = {};
+				artwork.title = row.Title;
+				listArtworks.push(artwork);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);
+				response.writeHead(200, header);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	});
+});
+
+
+/////////////////////////////////////////SUGGERIMENTI SIMIL GOOGOLE
+dispatcher.addListener("get", "/completion", function(req, res) {	
+
+    var testo = req.parametriGet.parolaCercata;
+    var vectTrovate = [];
+    if(testo != "")
+    {
+        var parole = testo;
+        var db = new sqlite.Database("Database/myDatabase.db");
+            
+        db.serialize(function()
+        {
+            var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + parole + "%' OR AUTHOR LIKE '" + parole + "%'";
+            sql += " order by TITLE desc limit 4";
+            
+            db.each(sql,function(err,row)
+            {
+                var parola = {};
+				parola.voce = row.Title + " - " + row.Author;
+                vectTrovate.push(parola);
+            },function(err,nRighe)
+            {
+                res.writeHead(200,{'Content-type':'text/plain'});
+                res.end(JSON.stringify(vectTrovate));
+            });
+        });
+    }
+    else
+    {
+        res.writeHead(200,{'Content-type':'text/plain'});
+        res.end(JSON.stringify(vectTrovate));
+    }
+}); 
+
+
 /*
 admin:
-daniele.genta daniele
-davide.massimino davide
+daniele.genta 
+pw: daniele
+davide.massimino 
+pw: davide
 
 new user:
 db.serialize(function(){

@@ -4,11 +4,7 @@
 
 
 $(document).ready(function()
-{
-	//////////////////---lascia---
-	//$.noConflict(true);
-	///////////////////
-	
+{	
 	//definizione campi e var per inserimento nuova opera
 	var dialog, form,
       title = $( "#txtTitle" ),
@@ -18,6 +14,9 @@ $(document).ready(function()
       allFields = $( [] ).add( title ).add( author ).add( pictureAbstract ).add( pictureUrl),
 	  tips = $( ".validateTips" );
 	  
+	showArtworks();
+	$("#searchTips").hide();
+	
 	//dialog per inserimento nuova opera
 	dialog = $( "#dialogInsertArtwork" ).dialog({
 		 autoOpen: false,
@@ -65,6 +64,67 @@ $(document).ready(function()
 		$("#btnModifica").hide();
 		$("#btnInsert").show();
 		
+	});
+	
+	//ricerca
+	$("txtSearch").focus(function() { $(this).select(); } );
+	 $("input:text").click(function() { $(this).select(); } );
+	$( "#txtSearch" ).keyup(function() {
+		cleanTable();
+		var stringSearch = $("#txtSearch").val();
+		refreshTable(stringSearch);
+		
+		ricerca();
+	});
+	//ritorna allo stato originale
+	$("#txtSearch").focusout(function()
+	{
+		if ($(this).val() == "" )
+		{
+			$(this).val("Ricerca un'opera d'arte..."); 
+			$("#searchTips").hide();
+		}
+			
+		
+	});
+
+	$("#lstSuggerimenti").change(function(){
+		selVal = $( "#lstSuggerimenti option:selected" ).text();
+		
+		//aux = title
+		var aux = selVal.split(" - ");
+		$("#txtSearch").val(aux[0]);
+		$("#lstSuggerimenti").css("display", "none")
+		refreshTable(aux[0]);
+		
+		$("#searchTips").show();
+		
+		//aux = author
+		similarArtworks(aux[1], aux[0]); 
+	});
+	
+	$("#similarSearch1").click(function()
+	{
+		$("#searchTips").hide();
+		var auxText = $("#similarSearch1").text();
+		refreshTable(auxText);
+		$("#txtSearch").val(auxText);
+	});
+	
+	$("#similarSearch2").click(function()
+	{
+		$("#searchTips").hide();
+		var auxText = $("#similarSearch2").text();
+		refreshTable(auxText);
+		$("#txtSearch").val(auxText);
+	});
+	
+	$("#similarSearch3").click(function()
+	{
+		$("#searchTips").hide();
+		var auxText = $("#similarSearch3").text();
+		refreshTable(auxText);
+		$("#txtSearch").val(auxText);
 	});
 	
 	function cleanDialogFields()
@@ -131,7 +191,7 @@ $(document).ready(function()
 });
 
 function showArtwork(response, i)
-	{
+{
 		var tabella=$("#tableArtworks");
         var riga=$("<tr></tr>");
                        
@@ -184,7 +244,30 @@ function showArtwork(response, i)
 		
 		riga.append(tdbutt);				  
         tabella.append(riga);
+}
+
+function showSimilar(response, i)
+{
+	if (i!=-1)
+		var title = response[i].title;
+	cleanSimilar();
+	$("#noTip").html("");
+	switch (i)
+	{
+		case 0:
+			$("#similarSearch1").text(title);
+		break;
+		case 1:
+			$("#similarSearch2").text(title);
+		break;
+		case 2:
+			$("#similarSearch3").text(title);
+		break;
 	}
+	if (i == -1)
+		$("#noTip").text("Nessuna ricerca correlata al quadro ricercato");
+		
+}
 	
 function cleanTable()
 {
@@ -196,4 +279,15 @@ function jqShowArtworks()
 	showArtworks();
 }
 
+function refreshTable(partial)
+{
+	searchArtworks(partial);
+}
+
+function cleanSimilar()
+{
+	$("#similarSearch1").text("");
+	$("#similarSearch2").text("");
+	$("#similarSearch3").text("");
+}
 
