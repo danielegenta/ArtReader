@@ -32,7 +32,7 @@ $(document).ready(function()
 					
 					updateArtwork($("#txtTitle").val(),$("#txtAuthor").val(),$("#txtAbstract").val(),$("#txtPictureUrl").val());
 					dialog.dialog( "close" );
-					}		
+				}		
 				
 			},			
 			"Inserisci": 
@@ -44,7 +44,9 @@ $(document).ready(function()
 				}
 				
 			},			
-			"Chiudi": function() {
+			"Chiudi": 
+		
+			function() {
 			  dialog.dialog( "close" );
 			  
 			}
@@ -214,18 +216,34 @@ function showArtwork(response, i)
         var pictureabstract=$("<td></td>");
         pictureabstract.text(response[i].pictureAbstract);
         riga.append(pictureabstract);
-                  
+        
+
+		
 		var tdbutt=$("<td></td>");
+		
 		var butDel=document.createElement("button");
-		var t=document.createTextNode("delete");
+		//var t=document.createTextNode("delete");
 		butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
-		butDel.appendChild(t);
+		var att = document.createAttribute("class");       // Create a "class" attribute
+		att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
+		butDel.setAttributeNode(att);
+		att = document.createAttribute("style");   
+		att.value = "background-image:url('img/ico/delete.png'); background-repeat:no-repeat";   
+		butDel.setAttributeNode(att);
+		//butDel.appendChild(t);
 		tdbutt.append(butDel);
 		
+		
 		var butMod=document.createElement("button");
-		t=document.createTextNode("Update");
+		//t=document.createTextNode("Update");
 		butMod.name="mod";
-		butMod.appendChild(t);
+		//butMod.appendChild(t);
+		var att = document.createAttribute("class");       // Create a "class" attribute
+		att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
+		butMod.setAttributeNode(att);
+		att = document.createAttribute("style");   
+		att.value = "background-image:url('img/ico/edit.png'); background-repeat:no-repeat";   
+		butMod.setAttributeNode(att);
 		butMod.addEventListener('click',function()
 		{
 			$("#dialogInsertArtwork").dialog('open');

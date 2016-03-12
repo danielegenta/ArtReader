@@ -3,28 +3,133 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<title>
-			Prova login
+			Art Reader - Log-In
 		</title>
-		<script type="text/javascript" src="script/script.js"></script>
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		
+		<style>
+			h1
+			{
+			
+				font: 100px Helvetica, Sans-Serif;
+				letter-spacing: -5px;
+				color: rgba(0,0,255,0.5); 
+				text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
+			}
+			
+			h2 
+			{
+				font-size: 30px;
+			}
+			
+			h3 
+			{
+				text-align:center;
+				margin-top: 2em;
+				color: #636363;
+				font-weight: 300;
+			}
+			
+			#header 
+			{
+				text-align:center;
+				color: #636363;
+			}
+			
+			body
+			{
+				background: #eee;
+			}
+			
+			form 
+			{
+				width: 380px;
+				margin: 4em auto;
+				padding: 3em 2em 2em 2em;
+				background: #fafafa;
+				border: 1px solid #ebebeb;
+				box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+			}
+			
+			input 
+			{
+				font-size: 18px;
+				padding: 10px 10px 10px 5px;
+				-webkit-appearance: none;
+				display: block;
+				width: 100%;
+				background: #fafafa;
+				color: #636363;
+			}
+			
+			#btnAccess
+			{
+				 position: relative;
+				  display: inline-block;
+				  padding: 12px 24px;
+				  margin: .3em 0 1em 0;
+				  width: 100%;
+				  vertical-align: middle;
+				   color: #fff;
+				  font-size: 16px;
+				  line-height: 20px;
+				  -webkit-font-smoothing: antialiased;
+				  text-align: center;
+				  letter-spacing: 1px;
+				  border: 0;
+				  cursor: pointer;
+				  background: #4a89dc; 
+			}
+			
+			#lblLoginError
+			{
+				color: red;
+			}
+		</style>
 	</head>
 	<body>
-		<div>
- 			<h1>Login</h1>
+		<div id="header">
+			<img src="img/tmpLogo.png" height="100" width="130">
+			<br>
+ 			<h1>Art Reader</h1>
+			<h2>Learn Faster, Learn More</h2>
 		</div>
-		<form method="post" action="" name="formLogin">
+		<div>
+ 			<h3>Login</h3>
+		</div>
+		<form method="post" action="" name="formLogin" class="col s12">
+			<div class="row">
+				<label for="first_name">Nome</label>
+				<input placeholder="Inserisci il tuo nome" id="first_name" type="text" class="validate" name="txtUsername">
+			</div>
+			<div class="row">
+				<label for="password">Password</label>
+				<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword">
+			</div>
+			<p>
+			  <input type="checkbox" id="chkShowPassword" />
+			  <label for="chkShowPassword">Mostra Password</label>
+			</p>
 			
-			<h2>User</h2>
-			<input type="text" value="" name="txtUsername"/>
-		
-			<h2>Password</h2>
-			<input type="password" value="" name="txtPassword"/>
-			<input type="checkbox" name="chkShowPassword" value=""/> ShowPassword
-			
-			<input type="button" value="Entra" OnClick="access()"/>
-			<input type="button" value="Nuovo Utente" OnClick=""/>
-			
+			<div>
+			<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="access()">ENTRA
+				<i class="material-icons right">send</i>
+			</button>
+			<div name="lblError" id="lblLoginError">(errori login)</div>
+			</div>
 			
 		</form>
-		<div name="lblError" id="test">(errori login)</div>
+		<button class="btn waves-effect waves-light" type="button" name="action" onClick="">NUOVO UTENTE
+		</button>
+		
 	</body>
 </html>

@@ -1,17 +1,25 @@
 <html>
 	<head>
 		<title>
-			Lista Opere
+			Art Reader: Learn faster, Learn More
 		</title>
-		 <link href="CSS/stile.css" rel="stylesheet">
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link href="css/stile.css" rel="stylesheet">
 		<!-- <link href="CSS/jquery-ui.css" rel="stylesheet">-->
-		<link href="CSS/jquery_stile.css" rel="stylesheet">
+		<link href="css/jquery_stile.css" rel="stylesheet">
 		
 		
 		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="Utility/jquery-ui.js"></script>
-		<script type="text/javascript" src="script/script.js"></script>
-		<script type="text/javascript" src="script/jscript.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/jscript.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
 		
 		<style>
 			.riga
@@ -28,13 +36,36 @@
 			#txtSearch:focus, #noTip
 			{
 				color: #000000;
-				font-weight: bold;
 			}
+			
+			#header 
+			{
+				text-align:center;
+				color: #636363;
+			}
+			
+			h1
+			{
+			
+				font: 50px Helvetica, Sans-Serif;
+				letter-spacing: -5px;
+				color: rgba(0,0,255,0.5); 
+				text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
+			}
+			
+			h2 
+			{
+				font-size: 20px;
+			}
+			
 		</style>
 	</head>
 	<body>
-		<div>
- 			<h1>Benvenuto</h1>
+		<div id="header">
+			<img src="img/tmpLogo.png" height="80" width="100">
+			<br>
+ 			<h1>Art Reader</h1>
+			<h2>Learn Faster, Learn More</h2>
 		</div>
 		<!---Dialog used to insert a new artwork-->
 		<div id="dialogInsertArtwork" title="Inserisci nuova opera">
@@ -72,10 +103,10 @@
 		</div>
 		<div id="noTip"></div>
 		
-		<button id="btnInsertArtwork" onClick="">+</button>
+		 <a class="btn-floating btn-large waves-effect waves-light red" id="btnInsertArtwork"><i class="material-icons">add</i></a>
 		
 		<!--table of all the artworks-->
-		<table id="tableArtworks" class="ui-widget ui-widget-content">
+		<table id="tableArtworks" class="responsive highlight">
 			<thead class="ui-widget-header ">
 				<th>ID</th>
 				<th>Titolo</th>
