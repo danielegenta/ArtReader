@@ -14,7 +14,7 @@ $(document).ready(function()
       allFields = $( [] ).add( title ).add( author ).add( pictureAbstract ).add( pictureUrl),
 	  tips = $( ".validateTips" );
 	  
-	showArtworks();
+	jqShowArtworks();
 	$("#searchTips").hide();
 	
 	//dialog per inserimento nuova opera
@@ -129,13 +129,28 @@ $(document).ready(function()
 		$("#txtSearch").val(auxText);
 	});
 	
-	function cleanDialogFields()
-	{
-		$("#txtTitle").val("");
-		$("#txtAuthor").val("")
-		$("#txtPictureUrl").val("")
-		$("#txtAbstract").val("");
-	}
+	//showing single artwork info
+	$("#tableArtworks").delegate('tr td:nth-child(2)', 'click', function() {
+		//retrieve id
+        
+		
+		var id = $(this).closest('tr').find('td:first').text();
+		
+		event.preventDefault(); // Stops browser from navigating away from page
+        var data;
+        // build a json object or do something with the form, store in data
+        $.post('/artworkDetails', data, function(resp) {
+            $('body').html(resp);
+			//$("*").replaceWith(resp);
+            // do something when it was successful
+			showSingle(id);
+        });
+
+
+		
+    });
+	
+	
 	
 	//Se sbaglio in inserimento
 	function updateTips( t ) {
@@ -192,78 +207,75 @@ $(document).ready(function()
 	}
 });
 
+//creating a table row with dynamic buttons to delete or edit the artwork
 function showArtwork(response, i)
 {
-		var tabella=$("#tableArtworks");
-        var riga=$("<tr></tr>");
-                       
-        var id=$("<td></td>");
-        id.text(response[i].id);
-        riga.append(id);
+	var tabella=$("#tableArtworks");
+	var riga=$("<tr></tr>");
+				   
+	var id=$("<td></td>");
+	id.text(response[i].id);
+	riga.append(id);
+	
+	var title=$("<td class='cellTitle'></td>");
+	title.text(response[i].title);
+	riga.append(title);
+	 
+	var author=$("<td></td>");
+	author.text(response[i].author);
+	riga.append(author);
+				   
+	var pictureurl=$("<td></td>");
+	pictureurl.text(response[i].pictureUrl);
+	riga.append(pictureurl);
+				   
+	var pictureabstract=$("<td></td>");
+	pictureabstract.text(response[i].pictureAbstract);
+	riga.append(pictureabstract);
+	
+	var tdbutt=$("<td></td>");
+	var butDel=document.createElement("button");
+	//var t=document.createTextNode("delete");
+	butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
+	var att = document.createAttribute("class");       // Create a "class" attribute
+	att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
+	butDel.setAttributeNode(att);
+	att = document.createAttribute("style");   
+	att.value = "background-image:url('img/ico/delete.png'); background-repeat:no-repeat";   
+	butDel.setAttributeNode(att);
+	//butDel.appendChild(t);
+	tdbutt.append(butDel);
+	var butMod=document.createElement("button");
+	//t=document.createTextNode("Update");
+	butMod.name="mod";
+	//butMod.appendChild(t);
+	var att = document.createAttribute("class");       // Create a "class" attribute
+	att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
+	butMod.setAttributeNode(att);
+	att = document.createAttribute("style");   
+	att.value = "background-image:url('img/ico/edit.png'); background-repeat:no-repeat";   
+	butMod.setAttributeNode(att);
+	butMod.addEventListener('click',function()
+	{
+		$("#dialogInsertArtwork").dialog('open');
+		$("#btnModifica").show();
+		$("#btnInsert").hide();
 		
-		var title=$("<td></td>");
-        title.text(response[i].title);
-        riga.append(title);
-		 
-        var author=$("<td></td>");
-        author.text(response[i].author);
-        riga.append(author);
-					   
-        var pictureurl=$("<td></td>");
-        pictureurl.text(response[i].pictureUrl);
-        riga.append(pictureurl);
-					   
-        var pictureabstract=$("<td></td>");
-        pictureabstract.text(response[i].pictureAbstract);
-        riga.append(pictureabstract);
-        
+		$("#txtTitle").val(response[i].title);
+		$("#txtAuthor").val(response[i].author);
+		$("#txtPictureUrl").val(response[i].pictureUrl);
+		$("#txtAbstract").val(response[i].pictureAbstract);		
 
+		jqShowArtworks();
 		
-		var tdbutt=$("<td></td>");
-		
-		var butDel=document.createElement("button");
-		//var t=document.createTextNode("delete");
-		butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
-		var att = document.createAttribute("class");       // Create a "class" attribute
-		att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
-		butDel.setAttributeNode(att);
-		att = document.createAttribute("style");   
-		att.value = "background-image:url('img/ico/delete.png'); background-repeat:no-repeat";   
-		butDel.setAttributeNode(att);
-		//butDel.appendChild(t);
-		tdbutt.append(butDel);
-		
-		
-		var butMod=document.createElement("button");
-		//t=document.createTextNode("Update");
-		butMod.name="mod";
-		//butMod.appendChild(t);
-		var att = document.createAttribute("class");       // Create a "class" attribute
-		att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
-		butMod.setAttributeNode(att);
-		att = document.createAttribute("style");   
-		att.value = "background-image:url('img/ico/edit.png'); background-repeat:no-repeat";   
-		butMod.setAttributeNode(att);
-		butMod.addEventListener('click',function()
-		{
-			$("#dialogInsertArtwork").dialog('open');
-			$("#btnModifica").show();
-			$("#btnInsert").hide();
-			
-			$("#txtTitle").val(response[i].title);
-			$("#txtAuthor").val(response[i].author);
-			$("#txtPictureUrl").val(response[i].pictureUrl);
-			$("#txtAbstract").val(response[i].pictureAbstract);		
-
-			jqShowArtworks();
-			
-		});
-		tdbutt.append(butMod);
-		
-		riga.append(tdbutt);				  
-        tabella.append(riga);
+	});
+	tdbutt.append(butMod);
+	
+	riga.append(tdbutt);				  
+	tabella.append(riga);
 }
 
+//show similar search field (max 3) after a research
 function showSimilar(response, i)
 {
 	if (i!=-1)
@@ -286,26 +298,55 @@ function showSimilar(response, i)
 		$("#noTip").text("Nessuna ricerca correlata al quadro ricercato");
 		
 }
-	
+
+function printArtworkDetails(artwork)
+{
+	$("#lblTitle, #infoHeader").text(artwork.title);
+}
+
+/*******************************************************************
+* auxiliary functions to connect to the server and cleaning function
+*********************************************************************/
+
+//empty the artworks table
 function cleanTable()
 {
 	$( "#mainTable").empty();
 }
 
+//show all artworks
 function jqShowArtworks()
 {
 	showArtworks();
 }
 
+//refresh the table after a research - db reading operation
 function refreshTable(partial)
 {
 	searchArtworks(partial);
 }
 
+//show a single artwork in a new page
+function showSingle(id)
+{
+	showSingleArtworkInfo(id);
+}
+
+//clean the field of similar search
 function cleanSimilar()
 {
 	$("#similarSearch1").text("");
 	$("#similarSearch2").text("");
 	$("#similarSearch3").text("");
 }
+
+function cleanDialogFields()
+{
+		$("#txtTitle").val("");
+		$("#txtAuthor").val("")
+		$("#txtPictureUrl").val("")
+		$("#txtAbstract").val("");
+}
+
+/**************************END*********************/
 

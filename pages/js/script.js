@@ -6,7 +6,6 @@ var readReqeust, notQueryRequest;
 
 var richiestaSugg, similarRequest;
 
-//
 
 function access()
 {
@@ -14,7 +13,9 @@ function access()
     document.formLogin.submit();	
 }
 
-//modificato qui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/****************************************
+*			CRUD 
+******************************************/
 function deleteArtwork(id)
 {
 	notQueryRequest = new XMLHttpRequest();
@@ -53,29 +54,12 @@ function updateArtwork(tit,aut,abs,pic)
 	notQueryRequest.send(null);
 }
 
-function readUpdate()
-{
-	if (readReqeust.readyState == 4 && readReqeust.status == 200)
-	{
-		var response = JSON.parse(readReqeust.responseText);
-		var artworks = response;
-		var i = 0;
-		cleanTable();
-		for (var counter in artworks)
-		{
-			showArtwork(artworks, i);
-			i++;
-		}
-	}
-}
 
-function notQueryUpdate()
-{
-	if (notQueryRequest.readyState == 4 && notQueryRequest.status == 200)
-	{
-		var response = notQueryRequest.responseText;
-	}
-}
+/************************* END CRUD ******************************/
+
+/****************************
+*	RESEARCH AND READING API
+*****************************/
 
 function showArtworks()
 {
@@ -83,6 +67,16 @@ function showArtworks()
 	var url="/allArtworks";
 	readReqeust.open("GET", url, true);
 	readReqeust.onreadystatechange = readUpdate;
+	readReqeust.send(null);
+}
+
+function showSingleArtworkInfo(id)
+{
+	var idArtwork = id;
+	readReqeust = new XMLHttpRequest();
+	var url="/oneArtwork?id="+encodeURIComponent(idArtwork);
+	readReqeust.open("GET", url, true);
+	readReqeust.onreadystatechange = singleArtworkUpdate;
 	readReqeust.send(null);
 }
 
@@ -108,6 +102,44 @@ function similarArtworks(auth, tit)
 	similarRequest.send(null);
 }
 
+/**********************
+*	AFTER QUERY/NOT QUERY
+***********************/
+function readUpdate()
+{
+	if (readReqeust.readyState == 4 && readReqeust.status == 200)
+	{
+		var response = JSON.parse(readReqeust.responseText);
+		var artworks = response;
+		var i = 0;
+		cleanTable();
+		for (var counter in artworks)
+		{
+			showArtwork(artworks, i);
+			i++;
+		}
+	}
+}
+
+function singleArtworkUpdate()
+{
+	if (readReqeust.readyState == 4 && readReqeust.status == 200)
+	{
+		var response = JSON.parse(readReqeust.responseText);
+		var artwork = response;
+		
+		printArtworkDetails(artwork);
+	}
+}
+
+function notQueryUpdate()
+{
+	if (notQueryRequest.readyState == 4 && notQueryRequest.status == 200)
+	{
+		var response = notQueryRequest.responseText;
+	}
+}
+
 function similarArtworksUpdate()
 {
 	if (similarRequest.readyState == 4 && similarRequest.status == 200)
@@ -124,8 +156,9 @@ function similarArtworksUpdate()
 			showSimilar("", -1);
 	}
 }
+/*****************END AFTER Q/NQ ***********************/
 
-/////////////////////////////suggerimenti google
+/////////////////////////////suggerimenti google - da modificare (magari intefeare in similar artworks)
 function ricerca()
 {
     richiestaSugg = new XMLHttpRequest();
@@ -157,7 +190,6 @@ function aggiornaPag()
             }
             tab.style.display = "block";
         }
-        
     }
 }
 

@@ -73,6 +73,16 @@ dispatcher.addListener ("post", "/access", function(request,response) {
 	db.close();	
 });
 
+dispatcher.addListener ("post", "/artworkDetails", function(request,response)
+ {
+	console.log("ok");
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	dispatcher.aggiornaPagina("./pages/singleArtwork.html", function(window){
+		response.writeHead(200,header);
+		response.end(window.document.documentElement.innerHTML);
+	});
+});
+
 dispatcher.addListener ("get", "/welcome", function(request,response) {	
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	dispatcher.aggiornaPagina("./pages/login.html", function(window){
@@ -126,7 +136,6 @@ dispatcher.addListener("get", "/updArtwork", function(request, response){
 	var author = request.parametriGet.author;
 	var abstract = request.parametriGet.pictureAbstract;
 	var pictureurl = request.parametriGet.pictureUrl;
-	console.log("ok server");
 	var header = {"Content-Type":"text/html"};	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
@@ -141,36 +150,32 @@ dispatcher.addListener("get", "/updArtwork", function(request, response){
 
 //one artwork info
 dispatcher.addListener("get", "/oneArtwork", function(request, response){
-    dispatcher.aggiornaPagina("./pages/pagina21.html", function(window){
+	var id = request.parametriGet.id;
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
-		var db = new sqlite.Database("Data/dataBase.db");
-		console.log("DB: "+db);
+		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-			var sql = "SELECT * FROM artworks where id="+2;
+			var sql = "SELECT * FROM Artworks WHERE id="+id;
             var json;
-
-            //
             var artwork = {};
-			db.get(sql, 
-				function(err, row){		
+			db.get(sql, function(err, row)
+			{
 					if(row!=undefined)
 					{
-						artwork.id = row.id;
-						artwork.title = row.title;
-						artwork.author = row.author;
-						artwork.abstract = row.abstract;
-						artwork.pictureUrl = row.pictureUrl;
+						artwork.id = row.Id;
+						artwork.title = row.Title;
+						artwork.author = row.Author;
+						artwork.abstract = row.Abstract;
+						artwork.pictureUrl = row.PictureUrl;
 
 						json = JSON.stringify(artwork);
-					
+						
 						response.writeHead(200, header);
 						response.end(json);	
-					}							
+						
+					}	
 				});
-				db.close();	
-		}); 
-	});
+				
+		db.close();	});		
 });
 
 //all artwork info
