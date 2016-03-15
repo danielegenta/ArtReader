@@ -166,6 +166,13 @@ dispatcher.addListener("get", "/oneArtwork", function(request, response){
 						artwork.author = row.Author;
 						artwork.abstract = row.Abstract;
 						artwork.pictureUrl = row.PictureUrl;
+						artwork.tecnique = row.Tecnique;
+						artwork.year = row.Year;
+						artwork.artMovement = row.ArtMovement;
+						artwork.dimensionHeight = row.DimensionHeight;
+						artwork.dimensionWidth = row.DimensionWidth;
+						artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
+						artwork.location = row.Location
 
 						json = JSON.stringify(artwork);
 						
@@ -194,7 +201,6 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 			db.each(sql, 
 				function(err, row){
 					var artwork = {};
-				
 					artwork.id = row.Id;
 					artwork.title = row.Title;
 					artwork.author = row.Author;
@@ -203,11 +209,9 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
-			
 					json = JSON.stringify(listArtworks);
 					response.writeHead(200, header);
-					console.log(json);
-					response.end(json);								
+					response.end(json);				
 				});
 				db.close();	
 		}); 

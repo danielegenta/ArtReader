@@ -63,6 +63,7 @@ function updateArtwork(tit,aut,abs,pic)
 
 function showArtworks()
 {
+	console.log("k");
 	readReqeust = new XMLHttpRequest();
 	var url="/allArtworks";
 	readReqeust.open("GET", url, true);
@@ -107,6 +108,7 @@ function similarArtworks(auth, tit)
 ***********************/
 function readUpdate()
 {
+	console.log("xdlol");
 	if (readReqeust.readyState == 4 && readReqeust.status == 200)
 	{
 		var response = JSON.parse(readReqeust.responseText);

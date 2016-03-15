@@ -44,6 +44,7 @@
 			{
 				width: 50%;
 				max-height: 600px; 
+				max-width: 800px;
 				overflow: auto;
 			}
 			
@@ -61,6 +62,28 @@
 			{
 				font-weight: normal;
 			}
+			
+			#similarResearch
+			{
+				/*text-align:center;*/
+			}
+			
+			#headerSimilarResearch
+			{
+				font-size: 20pt;
+				/*font-weight: bold;*/
+			}
+			
+			.tmp
+			{
+				margin-left: 20px;
+			}
+			
+			#imgArtwork
+			{
+				max-height: 600px;
+				max width: 600px;
+			}
 		</style>
 		<script>
 		 $(document).ready(function(){
@@ -77,7 +100,7 @@
 		</div>
 		
 		 <div class="parallax-container">
-		<div class="parallax"><img src="img/parallax/parallaxGioconda.jpg"></div>
+		<div class="parallax"><img src="img/parallax/parallaxGioconda.jpg" id="parallaxTop"></div>
 	    </div>
 		<div class="section white">
 			<div class="row container">
@@ -87,28 +110,61 @@
 				<table>
 					<td id="txtInfo">
 						<div>
-							<div class="int">Titolo:<span id="lblTitle"></span></div>
-							<div class="int">Autore:<span>nomecognome (allego p. wiki), nazionalità</span></div>
-							<div class="int">Tecnica:<span></span></div>
-							<div class="int">Dimensioni (altezza x lunghezza):<span></span></div>
-							<div class="int">Per saperne di più (wiki):<span></span></div>
-							<div class="int">Locazione:<span>descrizione (allego wiki), città, nazionalità</span></div>
-							<div class="int">Anno:<span></span></div>
-							<div class="int">Corrente artistica:<span></span></div>
-							<div class="int">Descrizione:<div class="normal">[...]</div></div>
+							<div class="int">Titolo:
+								<span id="lblTitle"></span>
+							</div>
+							<div class="int">Autore:
+								<span id="lblAuthor">(allego p. wiki), nazionalità
+								</span>
+							</div>
+							<div class="int">Tecnica:
+								<span id="lblTecnique"></span>
+							</div>
+							<div class="int">Dimensioni (lunghezza x altezza):
+								<span id="lblDimensions">
+								</span>
+							</div>
+							<div class="int">Per saperne di più (wiki):
+								<span>
+									<a id="lblWikipediaPageArtwork" href="#">Più INFO
+									</a>
+								</span>
+							</div>
+							<div class="int">Locazione:
+								<span>descrizione (allego wiki), città, nazionalità</span>
+							</div>
+							<div class="int">Anno:
+								<span id="lblYear"></span>
+							</div>
+							<div class="int">Corrente artistica:
+								<span id="lblArtMovement"></span>
+							</div>
+							<div class="int">Descrizione:
+								<div class="normal" id="lblArtworkAbstract">
+								</div>
+							</div>
 							
 						</div>
 					</td>
 					<td id="imgInfo">
-						<img src=http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg>
+						<img src=http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg id="imgArtwork">
 					</td>
 				</table>
+			</div>
+			<br><br><br><br>
+			
+			<div id="similarResearch">
+				<div id="headerSimilarResearch">Ricerche correlate:</div>
+				<br>
+				<span id="tmp1" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
+				<span id="tmp2" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
+				<span id="tmp3" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
 			</div>
 			
 			</div>
 	  </div>
   <div class="parallax-container">
-    <div class="parallax"><img src="img/parallax/parallaxLouvre.jpg"></div>
+    <div class="parallax"><img src="img/parallax/parallaxLouvre.jpg" id="parallaxBottom"></div>
   </div>
 		
 	</body>

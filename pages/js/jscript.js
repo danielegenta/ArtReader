@@ -15,6 +15,7 @@ $(document).ready(function()
 	  tips = $( ".validateTips" );
 	  
 	jqShowArtworks();
+
 	$("#searchTips").hide();
 	
 	//dialog per inserimento nuova opera
@@ -299,9 +300,27 @@ function showSimilar(response, i)
 		
 }
 
+//mostro nella pagina della singola opera i dettagli di essa
 function printArtworkDetails(artwork)
 {
 	$("#lblTitle, #infoHeader").text(artwork.title);
+	$("#lblAuthor").text(artwork.author);
+	$("#lblTecnique").text(artwork.tecnique);
+	var tmp = artwork.dimensionWidth + "x" + artwork.dimensionHeight + " (cm)";
+	$("#lblDimensions").text(tmp);
+	$("#lblWikipediaPageArtwork").attr("href", artwork.wikipediaPageArtwork);
+	
+	//$("#lblLocation").text(tmp);
+	$("#lblYear").text(artwork.year);
+	$("#lblArtMovement").text(artwork.artMovement);
+	$("#lblArtworkAbstract").text(artwork.abstract);
+	
+	$("#imgArtwork").attr("src", artwork.pictureUrl);
+	
+	//parallax
+	$("#parallaxTop").attr("src", "img/parallax/artwork"+artwork.id+".jpg");
+	$("#parallaxBottom").attr("src", "img/parallax/location"+artwork.location+".jpg");
+	
 }
 
 /*******************************************************************
@@ -317,6 +336,7 @@ function cleanTable()
 //show all artworks
 function jqShowArtworks()
 {
+	console.log("ok");
 	showArtworks();
 }
 
