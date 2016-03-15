@@ -5,7 +5,7 @@ var fs = require('fs');
 var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
 sqlite.verbose();
 
-//http://lollyrock.com/articles/nodejs-encryption/
+//http://lollyrock.com/articles/nodejs-encryption/ x
 var server = http.createServer(function(request, response) {
 	if(request.method.toLowerCase() == "post")
 		dispatcher.leggiPostParameters(request, response, function(request, response) {
