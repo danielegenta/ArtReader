@@ -103,7 +103,7 @@ $(document).ready(function()
 		$("#searchTips").show();
 		
 		//aux = author
-		similarArtworks(aux[1], aux[0]); 
+		similarArtworks(aux[1], aux[0], aux[2]); 
 	});
 	
 	$("#similarSearch1").click(function()
@@ -231,7 +231,7 @@ function showArtwork(response, i)
 	riga.append(pictureurl);
 				   
 	var pictureabstract=$("<td></td>");
-	pictureabstract.text(response[i].pictureAbstract);
+	pictureabstract.text("placeholder"); //response[i].pictureAbstract);
 	riga.append(pictureabstract);
 	
 	var tdbutt=$("<td></td>");
@@ -281,8 +281,8 @@ function showSimilar(response, i)
 {
 	if (i!=-1)
 		var title = response[i].title;
-	cleanSimilar();
 	$("#noTip").html("");
+	alert(response[i].title);
 	switch (i)
 	{
 		case 0:
@@ -318,8 +318,8 @@ function printArtworkDetails(artwork)
 	$("#imgArtwork").attr("src", artwork.pictureUrl);
 	
 	//parallax
-	$("#parallaxTop").attr("src", "img/parallax/artwork"+artwork.id+".jpg");
-	$("#parallaxBottom").attr("src", "img/parallax/location"+artwork.location+".jpg");
+	$("#parallaxTop").attr("src", "img/parallax/"+artwork.pictureUrl2+".jpg");
+	$("#parallaxBottom").attr("src", "img/parallax/"+artwork.pictureUrl3+".jpg");
 	
 }
 

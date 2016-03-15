@@ -75,7 +75,6 @@ dispatcher.addListener ("post", "/access", function(request,response) {
 
 dispatcher.addListener ("post", "/artworkDetails", function(request,response)
  {
-	console.log("ok");
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	dispatcher.aggiornaPagina("./pages/singleArtwork.html", function(window){
 		response.writeHead(200,header);
@@ -154,35 +153,57 @@ dispatcher.addListener("get", "/oneArtwork", function(request, response){
 	var header = {"Content-Type":"text/html"};	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
+			var insert=db.prepare("UPDATE Artworks SET NViews = NViews + 1 WHERE Id="+id);
+			insert.run();
+			insert.finalize();
+			db.serialize(function(){
 			var sql = "SELECT * FROM Artworks WHERE id="+id;
+            var json;
             var json;
             var artwork = {};
 			db.get(sql, function(err, row)
 			{
-					if(row!=undefined)
-					{
-						artwork.id = row.Id;
-						artwork.title = row.Title;
-						artwork.author = row.Author;
-						artwork.abstract = row.Abstract;
-						artwork.pictureUrl = row.PictureUrl;
-						artwork.tecnique = row.Tecnique;
-						artwork.year = row.Year;
-						artwork.artMovement = row.ArtMovement;
-						artwork.dimensionHeight = row.DimensionHeight;
-						artwork.dimensionWidth = row.DimensionWidth;
-						artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
-						artwork.location = row.Location
+				if(row!=undefined)
+				{
 
-						json = JSON.stringify(artwork);
-						
-						response.writeHead(200, header);
-						response.end(json);	
-						
-					}	
-				});
+					artwork.id = row.Id;
+					artwork.title = row.Title;
+					artwork.author = row.Author;
+					artwork.abstract = row.Abstract;
+					artwork.pictureUrl = row.PictureUrl;
+					artwork.tecnique = row.Tecnique;
+					artwork.year = row.Year;
+					artwork.artMovement = row.ArtMovement;
+					artwork.dimensionHeight = row.DimensionHeight;
+					artwork.dimensionWidth = row.DimensionWidth;
+					artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
+					artwork.location = row.Location
+					artwork.pictureUrl2 = row.PictureUrl2;
+					artwork.pictureUrl3 = row.PictureUrl3;
+
+					json = JSON.stringify(artwork);
+					
+					response.writeHead(200, header);
+					response.end(json);	
+					
+					
+					
+				}							
+				}),
+				/*function(err, row)
+				{
+					
+					//db = new sqlite.Database("Database/myDatabase.db");
+					//console.log("....."+myId);
+					
+				}
+				);*/
 				
-		db.close();	});		
+		
+				
+		db.close();
+		});	
+		});		
 });
 
 //all artwork info
@@ -193,7 +214,7 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-			var sql = "SELECT * FROM Artworks";
+			var sql = "SELECT * FROM Artworks ORDER BY NViews DESC";
             var json;
 	
 			var listArtworks = [];
@@ -206,6 +227,7 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 					artwork.author = row.Author;
 					artwork.pictureAbstract = row.Abstract;
 					artwork.pictureUrl = row.PictureUrl;
+					artwork.nNews = row.NNews;
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
@@ -234,14 +256,10 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
 	var $ = window.$;
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	//console.log(partialTitle + "-" + partialAuthor)
 		if (partialTitle != "" && partialAuthor != "")
-			var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + partialTitle + "%' OR Author LIKE '" + partialAuthor + "%'";
+			var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + partialTitle + "%' OR Author LIKE '" + partialAuthor + "%' ORDER BY NViews DESC";
 		else
 			var sql = "SELECT * FROM Artworks";
-		//else if (partialAuthor != "")
-		//	var sql = "SELECT * FROM Artworks WHERE Author LIKE '" + partialAuthor + "%'";
-		console.log(sql);
 		var json;
 		var listArtworks = [];
 		db.each(sql, 
@@ -253,6 +271,7 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
 				artwork.author = row.Author;
 				artwork.pictureAbstract = row.Abstract;
 				artwork.pictureUrl = row.PictureUrl;
+				artwork.nNews = row.NNews;
 				listArtworks.push(artwork);
 			},
 			function(err, nRighe){
@@ -271,19 +290,21 @@ dispatcher.addListener("get", "/similarArtworks", function(request, response){
 		
 	var author = request.parametriGet.author;
 	var title = request.parametriGet.title;
+	var artMovement = request.parametriGet.artMovement;
+	
 	
 	var header = {"Content-Type":"text/html"};	
 	var $ = window.$;
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	var sql = "SELECT * FROM Artworks WHERE Author = '" + author + "' And Title != '" + title +"' ORDER BY Title DESC LIMIT 3";
-		console.log(sql);
+	var sql = "SELECT * FROM Artworks WHERE (Author = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NVews DESC LIMIT 3";
 		var json;
 		var listArtworks = [];
 		db.each(sql, 
 			function(err, row){
 				var artwork = {};
 				artwork.title = row.Title;
+				artwork.nNews = row.NNews;
 				listArtworks.push(artwork);
 			},
 			function(err, nRighe){
@@ -310,12 +331,12 @@ dispatcher.addListener("get", "/completion", function(req, res) {
         db.serialize(function()
         {
             var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + parole + "%' OR AUTHOR LIKE '" + parole + "%'";
-            sql += " order by TITLE desc limit 4";
+            sql += " order by NViews desc limit 4";
             
             db.each(sql,function(err,row)
             {
                 var parola = {};
-				parola.voce = row.Title + " - " + row.Author;
+				parola.voce = row.Title + " - " + row.Author + " - " + row.ArtMovement + " - "+row.Year;
                 vectTrovate.push(parola);
             },function(err,nRighe)
             {

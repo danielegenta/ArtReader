@@ -32,7 +32,6 @@ function addArtwork(tit,aut,abs,pic)
 	var title =tit ;
 	var author =aut ;
 	var pictureAbstract =abs;
-	console.log("!!!!! "+abs+" "+pictureAbstract);
 	var pictureurl=pic;
 	var url="insertArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&pictureAbstract="+encodeURIComponent(pictureAbstract)+"&pictureUrl="+encodeURIComponent(pictureurl);
 	notQueryRequest.open("GET", url, true);
@@ -92,12 +91,13 @@ function searchArtworks(partial)
 	readReqeust.send(null);
 }
 
-function similarArtworks(auth, tit)
+function similarArtworks(auth, tit, artM)
 {
 	similarRequest = new XMLHttpRequest();
 	var author = auth;
 	var title = tit;
-	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author);
+	var artMovement = artM;
+	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&artMovement="+encodeURIComponent(artMovement);
 	similarRequest.open("GET", url, true);
 	similarRequest.onreadystatechange = similarArtworksUpdate;
 	similarRequest.send(null);
@@ -149,6 +149,7 @@ function similarArtworksUpdate()
 		var response = JSON.parse(similarRequest.responseText);
 		var artworks = response;
 		var i = 0;
+		cleanSimilar();
 		for (var counter in artworks)
 		{
 			showSimilar(artworks, i);
