@@ -5,7 +5,7 @@ var fs = require('fs');
 var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
 sqlite.verbose();
 
-//http://lollyrock.com/articles/nodejs-encryption/ x
+//http://lollyrock.com/articles/nodejs-encryption/
 var server = http.createServer(function(request, response) {
 	if(request.method.toLowerCase() == "post")
 		dispatcher.leggiPostParameters(request, response, function(request, response) {
@@ -227,7 +227,7 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 					artwork.author = row.Author;
 					artwork.pictureAbstract = row.Abstract;
 					artwork.pictureUrl = row.PictureUrl;
-					artwork.nNews = row.NNews;
+					artwork.nViews = row.NViews;
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
@@ -271,7 +271,7 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
 				artwork.author = row.Author;
 				artwork.pictureAbstract = row.Abstract;
 				artwork.pictureUrl = row.PictureUrl;
-				artwork.nNews = row.NNews;
+				artwork.nViews = row.NViews;
 				listArtworks.push(artwork);
 			},
 			function(err, nRighe){
@@ -286,35 +286,40 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
 
 //similar artwork 
 dispatcher.addListener("get", "/similarArtworks", function(request, response){
-    dispatcher.aggiornaPagina("./pages/index.html", function(window){
+    //dispatcher.aggiornaPagina("./pages/index.html", function(window){
 		
 	var author = request.parametriGet.author;
 	var title = request.parametriGet.title;
 	var artMovement = request.parametriGet.artMovement;
-	
+	console.log("xxx"+artMovement+" "+author+"-"+title);
 	
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	var sql = "SELECT * FROM Artworks WHERE (Author = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NVews DESC LIMIT 3";
+	var sql = "SELECT * FROM Artworks WHERE (Author = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
 		var json;
 		var listArtworks = [];
 		db.each(sql, 
 			function(err, row){
 				var artwork = {};
+				artwork.id = row.Id;
 				artwork.title = row.Title;
-				artwork.nNews = row.NNews;
+				artwork.pictureUrl = row.PictureUrl;
+				artwork.nViews = row.NViews;
+				artwork.dimensionHeight = row.DimensionHeight;
+				artwork.dimensionWidth = row.DimensionWidth;
 				listArtworks.push(artwork);
+				
 			},
 			function(err, nRighe){
 				json = JSON.stringify(listArtworks);
+				
 				response.writeHead(200, header);
 				response.end(json);								
 			});
 			db.close();	
 	}); 
-	});
+	//});
 });
 
 

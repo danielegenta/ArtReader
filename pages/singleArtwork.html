@@ -8,90 +8,24 @@
 		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!--Import materialize.css-->
 		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-
+		<link href="css/htmlPagesStyle/singleArtwork_style.css" rel="stylesheet" type="text/css">
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
-		
 		<style>
-			h1
-			{
+		
 			
-				font: 50px Helvetica, Sans-Serif;
-				letter-spacing: -5px;
-				color: rgba(0,0,255,0.5); 
-				text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
-			}
-			
-			h2 
-			{
-				font-size: 20px;
-			}
-			
-			#header 
-			{
-				text-align:center;
-				color: #636363;
-			}
-			
-			table
-			{
-				width: 100%;
-			}
-			
-			#txtInfo, #imgInfo
-			{
-				width: 50%;
-				max-height: 600px; 
-				max-width: 800px;
-				overflow: auto;
-			}
-			
-			#bodyInfo
-			{
-				max-height: 800px;
-				overflow: auto;
-			}
-			.int
-			{
-				font-weight: bold;
-			}
-			
-			span, .normal
-			{
-				font-weight: normal;
-			}
-			
-			#similarResearch
-			{
-				/*text-align:center;*/
-			}
-			
-			#headerSimilarResearch
-			{
-				font-size: 20pt;
-				/*font-weight: bold;*/
-			}
-			
-			.tmp
-			{
-				margin-left: 20px;
-			}
-			
-			#imgArtwork
-			{
-				max-height: 600px;
-				max width: 600px;
-			}
 		</style>
 		<script>
+		//.parallax() use the libraty materialize.js to make the photo look like parallax effect
 		 $(document).ready(function(){
 			$('.parallax').parallax();
 		});
 		</script>
 	</head>
 	<body>
+		<!--TOP Header-->
 		<div id="header">
 			<img src="img/tmpLogo.png" height="80" width="100">
 			<br>
@@ -99,73 +33,93 @@
 			<h2>Learn Faster, Learn More</h2>
 		</div>
 		
-		 <div class="parallax-container">
-		<div class="parallax"><img src="img/parallax/parallaxGioconda.jpg" id="parallaxTop"></div>
+		<!--TOP IMAGE-->
+		<div class="parallax-container">
+			<div class="parallax"><img src="" id="parallaxTop"></div>
 	    </div>
 		<div class="section white">
 			<div class="row container">
-			<h2 id="infoHeader" class="header">QUADRONAME Info</h2>
-			
-			<div id="bodyInfo">
-				<table>
-					<td id="txtInfo">
-						<div>
-							<div class="int">Titolo:
-								<span id="lblTitle"></span>
-							</div>
-							<div class="int">Autore:
-								<span id="lblAuthor">(allego p. wiki), nazionalità
-								</span>
-							</div>
-							<div class="int">Tecnica:
-								<span id="lblTecnique"></span>
-							</div>
-							<div class="int">Dimensioni (lunghezza x altezza):
-								<span id="lblDimensions">
-								</span>
-							</div>
-							<div class="int">Per saperne di più (wiki):
-								<span>
-									<a id="lblWikipediaPageArtwork" href="#">Più INFO
-									</a>
-								</span>
-							</div>
-							<div class="int">Locazione:
-								<span>descrizione (allego wiki), città, nazionalità</span>
-							</div>
-							<div class="int">Anno:
-								<span id="lblYear"></span>
-							</div>
-							<div class="int">Corrente artistica:
-								<span id="lblArtMovement"></span>
-							</div>
-							<div class="int">Descrizione:
-								<div class="normal" id="lblArtworkAbstract">
+				<h2 id="infoHeader" class="header">QUADRONAME Info</h2>
+				
+				<!--Artwork INFO Space-->
+				<div id="bodyInfo">
+					<table>
+						<td id="txtInfo">
+							<div>
+								<div class="int">Titolo:
+									<span id="lblTitle"></span>
 								</div>
+								<div class="int">Autore:
+									<span id="lblAuthor">(allego p. wiki), nazionalità
+									</span>
+								</div>
+								<div class="int">Tecnica:
+									<span id="lblTecnique"></span>
+								</div>
+								<div class="int">Dimensioni (lunghezza x altezza):
+									<span id="lblDimensions">
+									</span>
+								</div>
+								<div class="int">Per saperne di più (wiki):
+									<span>
+										<a id="lblWikipediaPageArtwork" href="#">Più INFO
+										</a>
+									</span>
+								</div>
+								<div class="int">Locazione:
+									<span>descrizione (allego wiki), città, nazionalità</span>
+								</div>
+								<div class="int">Anno:
+									<span id="lblYear"></span>
+								</div>
+								<div class="int">Corrente artistica:
+									<span id="lblArtMovement"></span>
+								</div>
+								<div class="int">Descrizione:
+									<div class="normal" id="lblArtworkAbstract">
+									</div>
+								</div>
+								
 							</div>
-							
-						</div>
-					</td>
-					<td id="imgInfo">
-						<img src=http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg id="imgArtwork">
-					</td>
-				</table>
+						</td>
+						<!--Artwork main img space-->
+						<td id="imgInfo">
+							<img src=http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg id="imgArtwork">
+						</td>
+					</table>
+				</div>
+				
+				<br><br><br><br>
+				
+				<!--Related research-->
+				<div id="similarResearch">
+					<div id="headerSimilarResearch">Ricerche correlate:</div>
+					<br>
+					<span id="similarResearch1" class="similarResearch">
+					<figure>
+					<img src="" id="imgSimilarResearch1">
+					 <figcaption id="imgSimilarResearch1_caption" class="caption"></figcaption>
+					</figure></span>
+					
+					<span id="similarResearch2" class="similarResearch">
+					<figure>
+					<img src="" id="imgSimilarResearch2">
+					 <figcaption id="imgSimilarResearch2_caption" class="caption"></figcaption>
+					</figure>
+					</span>
+					<span id="similarResearch3" class="similarResearch">
+					<figure>
+					<img src="" id="imgSimilarResearch3">
+					 <figcaption id="imgSimilarResearch3_caption" class="caption"></figcaption>
+					</figure>
+					</span>
+				</div>
+				<!--END Related research-->
 			</div>
-			<br><br><br><br>
-			
-			<div id="similarResearch">
-				<div id="headerSimilarResearch">Ricerche correlate:</div>
-				<br>
-				<span id="tmp1" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
-				<span id="tmp2" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
-				<span id="tmp3" class="tmp"><img src="http://dummyimage.com/200x250/000/fff"></span>
-			</div>
-			
-			</div>
-	  </div>
-  <div class="parallax-container">
-    <div class="parallax"><img src="img/parallax/parallaxLouvre.jpg" id="parallaxBottom"></div>
-  </div>
-		
+		</div>
+		<!--BOTTOM IMAGE-->
+		<div class="parallax-container">
+		<div class="parallax"><img src="" id="parallaxBottom"></div>
+		</div>
 	</body>
 </html>

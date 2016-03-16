@@ -1,0 +1,61 @@
+/***************************************************
+****************************************************
+*****INDEX CSS SHEET******************
+****************************************************
+****************************************************/
+
+/*
+*	Header
+*/
+#header 
+{
+	text-align:center;
+	color: #636363;
+}
+
+h1
+{
+
+	font: 50px Helvetica, Sans-Serif;
+	letter-spacing: -5px;
+	color: rgba(0,0,255,0.5); 
+	text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
+}
+
+h2 
+{
+	font-size: 20px;
+}
+
+
+/*
+* simil-Google Istant tips
+*/
+.riga
+{
+	font-size:16pt;
+	width:5600px; 
+	margin-top: -20px;
+}
+
+/*
+*	Research field
+*/
+#txtSearch
+{
+	color: #E0E0E0;
+}
+
+#txtSearch:focus, #noTip
+{
+	color: #000000;
+}
+
+/*
+*	Highlight the title on mouseover	
+*/
+.cellTitle:hover
+{
+	cursor: pointer;
+	font-weight: bold;
+}

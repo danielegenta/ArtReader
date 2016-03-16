@@ -1,0 +1,95 @@
+/***************************************************
+****************************************************
+*****LOGIN CSS SHEET******************
+****************************************************
+****************************************************/
+
+/*******************
+*	Header 
+********************/
+h1
+{
+
+	font: 100px Helvetica, Sans-Serif;
+	letter-spacing: -5px;
+	color: rgba(0,0,255,0.5); 
+	text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
+}
+
+h2 
+{
+	font-size: 30px;
+}
+
+h3 
+{
+	text-align:center;
+	margin-top: 2em;
+	color: #636363;
+	font-weight: 300;
+}
+
+#header 
+{
+	text-align:center;
+	color: #636363;
+}
+
+/*******************
+*Body
+********************/
+body
+{
+	background: #eee;
+}
+
+/*
+*login form 
+*/
+form 
+{
+	width: 380px;
+	margin: 4em auto;
+	padding: 3em 2em 2em 2em;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+/*
+*	input field and buttons
+*/
+input 
+{
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	-webkit-appearance: none;
+	display: block;
+	width: 100%;
+	background: #fafafa;
+	color: #636363;
+}
+
+#btnAccess
+{
+	 position: relative;
+	  display: inline-block;
+	  padding: 12px 24px;
+	  margin: .3em 0 1em 0;
+	  width: 100%;
+	  vertical-align: middle;
+	   color: #fff;
+	  font-size: 16px;
+	  line-height: 20px;
+	  -webkit-font-smoothing: antialiased;
+	  text-align: center;
+	  letter-spacing: 1px;
+	  border: 0;
+	  cursor: pointer;
+	  background: #4a89dc; 
+}
+
+#lblLoginError
+{
+	color: red;
+}

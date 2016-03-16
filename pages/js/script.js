@@ -1,18 +1,18 @@
 /***********************
-* Script functions (interaction with the server)
+* Script functions (interaction with the server) - AJAX calls
 ************************/
 
-var readReqeust, notQueryRequest;
+var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork;
 
-var richiestaSugg, similarRequest;
-
-
+/**************************************************************LOGIN CALLS***************************************************************/
+//login to index page
 function access()
 {
     document.formLogin.action = "/access";  
     document.formLogin.submit();	
 }
 
+/**************************************************************INDEX CALLS***************************************************************/
 /****************************************
 *			CRUD 
 ******************************************/
@@ -63,32 +63,24 @@ function updateArtwork(tit,aut,abs,pic)
 function showArtworks()
 {
 	console.log("k");
-	readReqeust = new XMLHttpRequest();
+	readRequest = new XMLHttpRequest();
 	var url="/allArtworks";
-	readReqeust.open("GET", url, true);
-	readReqeust.onreadystatechange = readUpdate;
-	readReqeust.send(null);
+	readRequest.open("GET", url, true);
+	readRequest.onreadystatechange = readUpdate;
+	readRequest.send(null);
 }
 
-function showSingleArtworkInfo(id)
-{
-	var idArtwork = id;
-	readReqeust = new XMLHttpRequest();
-	var url="/oneArtwork?id="+encodeURIComponent(idArtwork);
-	readReqeust.open("GET", url, true);
-	readReqeust.onreadystatechange = singleArtworkUpdate;
-	readReqeust.send(null);
-}
+
 
 function searchArtworks(partial)
 {
-	readReqeust = new XMLHttpRequest();
+	readRequest = new XMLHttpRequest();
 	var title =partial;
 	var author = partial;
 	var url="/searchArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author);
-	readReqeust.open("GET", url, true);
-	readReqeust.onreadystatechange = readUpdate;
-	readReqeust.send(null);
+	readRequest.open("GET", url, true);
+	readRequest.onreadystatechange = readUpdate;
+	readRequest.send(null);
 }
 
 function similarArtworks(auth, tit, artM)
@@ -104,14 +96,14 @@ function similarArtworks(auth, tit, artM)
 }
 
 /**********************
-*	AFTER QUERY/NOT QUERY
+*	AFTER QUERY/NOT QUERY calls
 ***********************/
 function readUpdate()
 {
 	console.log("xdlol");
-	if (readReqeust.readyState == 4 && readReqeust.status == 200)
+	if (readRequest.readyState == 4 && readRequest.status == 200)
 	{
-		var response = JSON.parse(readReqeust.responseText);
+		var response = JSON.parse(readRequest.responseText);
 		var artworks = response;
 		var i = 0;
 		cleanTable();
@@ -123,16 +115,7 @@ function readUpdate()
 	}
 }
 
-function singleArtworkUpdate()
-{
-	if (readReqeust.readyState == 4 && readReqeust.status == 200)
-	{
-		var response = JSON.parse(readReqeust.responseText);
-		var artwork = response;
-		
-		printArtworkDetails(artwork);
-	}
-}
+
 
 function notQueryUpdate()
 {
@@ -148,6 +131,7 @@ function similarArtworksUpdate()
 	{
 		var response = JSON.parse(similarRequest.responseText);
 		var artworks = response;
+		console.log(response);
 		var i = 0;
 		cleanSimilar();
 		for (var counter in artworks)
@@ -161,6 +145,64 @@ function similarArtworksUpdate()
 }
 /*****************END AFTER Q/NQ ***********************/
 
+/*************************************************
+******************************************************************************Single PAGE ARTWORK calls*********************************
+***************************************************/
+function relatedArtworks_SinglePageArtwork(auth, tit, artM)
+{
+	similarRequestSinglePageArtwork = new XMLHttpRequest();
+	var author = auth;
+	var title = tit;
+	var artMovement = artM;
+	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&artMovement="+encodeURIComponent(artMovement);
+	similarRequestSinglePageArtwork.open("GET", url, true);
+	similarRequestSinglePageArtwork.onreadystatechange = relatedArtworksUpdate;
+	similarRequestSinglePageArtwork.send(null);
+}
+
+function relatedArtworksUpdate()
+{
+	if (similarRequestSinglePageArtwork.readyState == 4 && similarRequestSinglePageArtwork.status == 200)
+	{
+		var response = JSON.parse(similarRequestSinglePageArtwork.responseText);
+		var artworks = response;
+		var i = 0;
+		console.log(artworks)
+		for (var counter in artworks)
+		{
+			showRelated_SinglePageArtwork(artworks, i);
+			i++;
+		}
+	}
+}
+
+function showSingleArtworkInfo(id)
+{
+	var idArtwork = id;
+	readRequest = new XMLHttpRequest();
+	var url="/oneArtwork?id="+encodeURIComponent(idArtwork);
+	readRequest.open("GET", url, true);
+	readRequest.onreadystatechange = singleArtworkUpdate;
+	readRequest.send(null);
+}
+
+function singleArtworkUpdate()
+{
+	if (readRequest.readyState == 4 && readRequest.status == 200)
+	{
+		var response = JSON.parse(readRequest.responseText);
+		var artwork = response;
+		
+		printArtworkDetails(artwork);
+	}
+}
+/********************
+* 	end single page artwork calls
+*/
+
+
+
+//!! DA MODIFICARE!!!!!!!!!!!! - USARE JQUERY, SCRIVER IN INGLESE...
 /////////////////////////////suggerimenti google - da modificare (magari intefeare in similar artworks)
 function ricerca()
 {
@@ -176,7 +218,7 @@ function aggiornaPag()
 {
     if(richiestaSugg.readyState == 4 && richiestaSugg.status == 200)
     {
-        var risposta = JSON.parse(richiestaSugg.responseText); // readReqeust arrivata dal server
+        var risposta = JSON.parse(richiestaSugg.responseText); // readRequest arrivata dal server
         console.log(risposta);
         var tab = document.getElementById("lstSuggerimenti");
             tab.innerHTML = "";
