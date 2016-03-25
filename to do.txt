@@ -2,7 +2,12 @@ da fare:
 
 -registrazione utenti
 -contatti museo/mappa
--risolvere bug apostrofo 
+-risolvere bug apostrofo - fatto
 -sessioni
--modifacare campi tabella
--finire di mostrare informazioni sul luogo opera
+-modifacare campi tabella - fatto
+-finire di mostrare informazioni sul luogo opera - fatto
+-integrare con daxxino
+-express
+-integrare modifica e inserimento aggiornati
+
+——
