@@ -200,17 +200,17 @@ function showArtwork(response, i)
 	riga.append(title);
 	 
 	var author=$("<td></td>");
-	author.text(response[i].author);
+	author.text(response[i].name);
 	riga.append(author);
 				   
 	var pictureurl=$("<td></td>");
 	pictureurl.text(response[i].pictureUrl);
 	riga.append(pictureurl);
-				   
-	//descrizione troppo lunga, sostituire!
-	var pictureabstract=$("<td></td>");
-	pictureabstract.text("placeholder"); //response[i].pictureAbstract);
-	riga.append(pictureabstract);
+		
+	//alert(response[i].description);
+	var locationAbstract=$("<td></td>");
+	locationAbstract.text(response[i].description);
+	riga.append(locationAbstract);
 	
 	var tdbutt=$("<td></td>");
 	var butDel=document.createElement("button");
@@ -239,7 +239,7 @@ function showArtwork(response, i)
 		$("#btnInsert").hide();
 		
 		$("#txtTitle").val(response[i].title);
-		$("#txtAuthor").val(response[i].author);
+		$("#txtAuthor").val(response[i].name);
 		$("#txtPictureUrl").val(response[i].pictureUrl);
 		$("#txtAbstract").val(response[i].pictureAbstract);		
 
@@ -280,13 +280,19 @@ function showSimilar(response, i)
 function printArtworkDetails(artwork)
 {
 	$("#lblTitle, #infoHeader").text(artwork.title);
-	$("#lblAuthor").text(artwork.author);
+	
+	$("#lblAuthor-link").text(artwork.name +", "+artwork.nationalityAuthor);
+	$("#lblAuthor-link").attr("href", artwork.wikipediaPageAuthor);
+	
+	
 	$("#lblTecnique").text(artwork.tecnique);
 	var tmp = artwork.dimensionWidth + "x" + artwork.dimensionHeight + " (cm)";
 	$("#lblDimensions").text(tmp);
 	$("#lblWikipediaPageArtwork").attr("href", artwork.wikipediaPageArtwork);
 	
-	//$("#lblLocation").text(tmp);
+	$("#lblLocation-link").text(artwork.description + ", "+ artwork.city + ", "+artwork.nation);
+	$("#lblLocation-link").attr("href", artwork.wikipediaPageLocation);
+	
 	$("#lblYear").text(artwork.year);
 	$("#lblArtMovement").text(artwork.artMovement);
 	$("#lblArtworkAbstract").text(artwork.abstract);

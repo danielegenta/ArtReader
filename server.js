@@ -157,15 +157,15 @@ dispatcher.addListener("get", "/oneArtwork", function(request, response){
 			insert.run();
 			insert.finalize();
 			db.serialize(function(){
-			var sql = "SELECT * FROM Artworks WHERE id="+id;
-            var json;
+			var sql = "SELECT * FROM Artworks, LocationsArtworks, Authors WHERE id="+id+" AND Artworks.Location = LocationsArtworks.IdLocationsArtworks AND Artworks.Author = Authors.IdAuthors";
+            
+			var json;
             var json;
             var artwork = {};
 			db.get(sql, function(err, row)
 			{
 				if(row!=undefined)
 				{
-
 					artwork.id = row.Id;
 					artwork.title = row.Title;
 					artwork.author = row.Author;
@@ -180,7 +180,22 @@ dispatcher.addListener("get", "/oneArtwork", function(request, response){
 					artwork.location = row.Location
 					artwork.pictureUrl2 = row.PictureUrl2;
 					artwork.pictureUrl3 = row.PictureUrl3;
+					
+					//field table 'locationsArtworks'
+					artwork.idLocationsArtworks = row.IdLocationsArtworks;
+					artwork.description = row.Description;
+					artwork.city = row.City;
+					artwork.nation = row.Nation;
+					artwork.wikipediaPageLocation = row.WikipediaPageLocation;
+					
+					//field table 'authors'
+					artwork.idAuthor = row.IdAuthors;
+					artwork.name = row.Name;
+					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
+					artwork.nationalityAuthor = row.NationalityAuthor;
 
+					
+					
 					json = JSON.stringify(artwork);
 					
 					response.writeHead(200, header);
@@ -214,13 +229,14 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-			var sql = "SELECT * FROM Artworks ORDER BY NViews DESC";
+			var sql = "SELECT * FROM Artworks, Authors, LocationsArtworks WHERE Authors.IdAuthors = Artworks.Author AND Artworks.Location = LocationsArtworks.IdLocationsArtworks ORDER BY nViews DESC";
             var json;
 	
 			var listArtworks = [];
 			
 			db.each(sql, 
 				function(err, row){
+					
 					var artwork = {};
 					artwork.id = row.Id;
 					artwork.title = row.Title;
@@ -228,6 +244,9 @@ dispatcher.addListener("get", "/allArtworks", function(request, response){
 					artwork.pictureAbstract = row.Abstract;
 					artwork.pictureUrl = row.PictureUrl;
 					artwork.nViews = row.NViews;
+					//
+					artwork.name = row.Name;
+					artwork.description = row.Description;
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
@@ -249,6 +268,8 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
     dispatcher.aggiornaPagina("./pages/index.html", function(window){
 		
 	var partialTitle = request.parametriGet.title;
+	
+	
 	var partialAuthor = request.parametriGet.author;
 	
 	
@@ -257,15 +278,16 @@ dispatcher.addListener("get", "/searchArtwork", function(request, response){
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
 		if (partialTitle != "" && partialAuthor != "")
-			var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + partialTitle + "%' OR Author LIKE '" + partialAuthor + "%' ORDER BY NViews DESC";
+			var sql = "SELECT * FROM Artworks, Authors WHERE Authors.IdAuthors = Artworks.Author AND (Title LIKE '" + partialTitle + "%' OR Authors.Name LIKE '" + partialAuthor + "%') ORDER BY NViews DESC";
 		else
 			var sql = "SELECT * FROM Artworks";
 		var json;
+		
+		
 		var listArtworks = [];
 		db.each(sql, 
 			function(err, row){
 				var artwork = {};
-			
 				artwork.id = row.Id;
 				artwork.title = row.Title;
 				artwork.author = row.Author;
@@ -291,12 +313,11 @@ dispatcher.addListener("get", "/similarArtworks", function(request, response){
 	var author = request.parametriGet.author;
 	var title = request.parametriGet.title;
 	var artMovement = request.parametriGet.artMovement;
-	console.log("xxx"+artMovement+" "+author+"-"+title);
 	
 	var header = {"Content-Type":"text/html"};	
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	var sql = "SELECT * FROM Artworks WHERE (Author = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
+	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.Name = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
 		var json;
 		var listArtworks = [];
 		db.each(sql, 
@@ -335,13 +356,13 @@ dispatcher.addListener("get", "/completion", function(req, res) {
             
         db.serialize(function()
         {
-            var sql = "SELECT * FROM Artworks WHERE Title LIKE '" + parole + "%' OR AUTHOR LIKE '" + parole + "%'";
+            var sql = "SELECT * FROM Artworks, Authors WHERE Artworks.Author = Authors.idAuthors AND (Title LIKE '" + parole + "%' OR Authors.Name LIKE '" + parole + "%')";
             sql += " order by NViews desc limit 4";
             
             db.each(sql,function(err,row)
             {
                 var parola = {};
-				parola.voce = row.Title + " - " + row.Author + " - " + row.ArtMovement + " - "+row.Year;
+				parola.voce = row.Title + " - " + row.Name + " - " + row.ArtMovement + " - "+row.Year;
                 vectTrovate.push(parola);
             },function(err,nRighe)
             {

@@ -67,6 +67,20 @@ Dispatcher.prototype.dispatch = function (request, response) {
 		parametri = qs.parse(request.parametriPost);
 		request.parametriPost = parametri;
 	}
+	
+	for(par in request.parametriGet)
+	{
+		request.parametriGet[par] = request.parametriGet[par].replace("'","''");
+	}
+	
+	for(par in request.parametriPost)
+	{
+		request.parametriPost[par] = request.parametriPost[par].replace("'","''");
+	}
+	
+	
+	
+	
 	console.log(parametri);
 	// Ricerca di un Listener dinamico (resitutisce una risorsa dinamica. No file)
 	var trovato = false;

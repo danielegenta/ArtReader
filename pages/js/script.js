@@ -90,6 +90,7 @@ function similarArtworks(auth, tit, artM)
 	var title = tit;
 	var artMovement = artM;
 	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&artMovement="+encodeURIComponent(artMovement);
+	
 	similarRequest.open("GET", url, true);
 	similarRequest.onreadystatechange = similarArtworksUpdate;
 	similarRequest.send(null);

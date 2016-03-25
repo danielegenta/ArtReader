@@ -1,0 +1,8 @@
+da fare:
+
+-registrazione utenti
+-contatti museo/mappa
+-risolvere bug apostrofo 
+-sessioni
+-modifacare campi tabella
+-finire di mostrare informazioni sul luogo opera
