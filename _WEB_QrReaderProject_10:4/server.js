@@ -328,7 +328,7 @@ app.get("/searchArtwork", function(request, response,next){
 	var partialAuthor = request.query["author"];
 	
 	partialTitle = partialTitle.replace("'","''");
-	partialAuthor.partialAuthor.replace("'","''");
+	partialAuthor = partialAuthor.replace("'","''");
 	
 	
 	var header = {"Content-Type":"text/html"};	
@@ -336,7 +336,7 @@ app.get("/searchArtwork", function(request, response,next){
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
 		if (partialTitle != "" && partialAuthor != "")
-			var sql = "SELECT * FROM Artworks, Authors WHERE Authors.IdAuthors = Artworks.Author AND (Title LIKE '" + partialTitle + "%' OR Authors.Name LIKE '" + partialAuthor + "%') ORDER BY NViews DESC";
+			var sql = "SELECT * FROM Artworks, Authors, LocationsArtworks WHERE Artworks.Location = LocationsArtworks.IdLocationsArtworks AND Authors.IdAuthors = Artworks.Author AND (Title LIKE '" + partialTitle + "%' OR Authors.Name LIKE '" + partialAuthor + "%') ORDER BY NViews DESC";
 		else
 			var sql = "SELECT * FROM Artworks";
 		var json;
@@ -349,6 +349,8 @@ app.get("/searchArtwork", function(request, response,next){
 				artwork.id = row.Id;
 				artwork.title = row.Title;
 				artwork.author = row.Author;
+				artwork.name = row.Name;
+				artwork.description = row.Description;
 				artwork.pictureAbstract = row.Abstract;
 				artwork.pictureUrl = row.PictureUrl;
 				artwork.nViews = row.NViews;
