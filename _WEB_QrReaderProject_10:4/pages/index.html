@@ -21,112 +21,15 @@
 	
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script>
-		$(document).ready(function()
-		{
-			$("#viewPage2").click(function()
-			{
-				$("#page1").hide();
-				$("#page2").show();
-			});
-			$("#viewPage1").click(function()
-			{
-				$("#page2").hide();
-				$("#page1").show();
-			});
-			
-			 $('.slider').slider({full_width: true, indicators: false});
-			 
-			  $("#page1").bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta /120 > 0) {
-					//$(this).text('scrolling up !');
-				}
-				else{
-						$("#page1").hide();
-						$("#page2").show();
-				}
-			});
-			
-			 $("#page2").bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta /120 > 0) {
-					$("#page2").hide();
-				$("#page1").show();
-				}
-				else{
-				}
-			});
 		
-		});
 		</script>
 	</head>
 	<body>
 	
+
+	
+	
 	<div id="page1">
-		
-		<div class="slider">
-			<ul class="slides">
-			  <li>
-				<img src="img/index-bg/1.jpg"> <!-- random image -->
-				
-			  </li>
-			  <li>
-				<img src="img/index-bg/2.jpg"> <!-- random image -->
-			  </li>
-			  <li>
-				<img src="img/index-bg/3.jpg"> <!-- random image -->
-			  </li>
-			  <li>
-				<img src="img/index-bg/4.jpg"> <!-- random image -->
-			  </li>
-			  <li>
-				<img src="img/index-bg/5.jpg"> <!-- random image -->
-			  </li>
-			  <li>
-				<img src="img/index-bg/6.jpg"> <!-- random image -->
-			  </li>
-			  <li>
-				<img src="img/index-bg/7.jpg"> <!-- random image -->
-			  </li>
-			</ul>
-		</div>
-		<div class="header">
-			<h1>Art Reader</h1>
-			<h2>Learn faster, Learn more.</h2>
-		</div>
-		<br><br>
-		<div class="row">
-		<div class="col s4">
-		<img src="img/system/promo1.png" height="100" width="55"></img>
-        <!-- Promo Content 1 goes here -->
-		<h5>Anche in mobilità!</h5>
-		Scopri i vantaggi della nostra App, disponibile gratuitamente su Google Play.
-		Impara direttamente dal tuo cellulare tutto ciò che vi è da sapere sulle opere
-		d'arte più famose al mondo!
-      </div>
-      <div class="col s4">
-	  <img src="img/system/promo2.png" height="100" width="100"></img>
-        <!-- Promo Content 2 goes here -->
-		<h5>Scannerizza, impara.</h5>
-		Con una semplice scansione QR si aprirà ai tuoi occhi un catalogo infinito di informazioni.
-		Il sapere è alla portata di mano, anzi di un dito!
-      </div>
-      <div class="col s4">
-	   <img src="img/system/promo3.png" height="100" width="100"></img>
-        <!-- Promo Content 3 goes here -->
-		<h5>Contribuisci anche tu.</h5>
-		Puoi contribuire a far cresce questo progetto inserendo nuove opere d'arte,
-		lasciando feedback e facendoci sapere cosa migliorare, abbiamo bisogno di te!
-      </div>
-	  <br><br>
-	    </div>
-		<div class="footer">
-			<img src="img/system/gplay-badge.png" width="150" height="50"></img>
-			<br><br><br>
-			<img src="img/ico/down.png" id="viewPage2" height="35" width="35"><img>
-		</div>
-	</div>
-	
-	
-	<div id="page2" style="display:none">
 		<div class="header">
 			<img src="img/tmpLogo.png" height="80" width="100">
 			<br>
@@ -198,10 +101,7 @@
 			<tbody id="mainTable">
 			</tbody>
 		</table>
-		<div class="footer">
-
-			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35"></img>
-		</div>
+		
 	</div>
 	</body>
 </html>

@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<title>
-			Art Reader - Log-In
+			Welcome to Art Reader
 		</title>
 		<!--Import Google Icon Font-->
 		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -16,10 +16,160 @@
 		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/jscript-login.js"></script>
+		
+		<script src="http://maps.googleapis.com/maps/api/js"></script>	
+		<script>
+		$(document).ready(function()
+		{
+		
+			if(navigator.geolocation)
+				navigator.geolocation.getCurrentPosition(mia_posizione);
+			else
+				alert('Il browser non supporta la geolocalizzazione');
+			
+		    $('.carousel').carousel();
+			
+			$("#viewPage2").click(function()
+			{
+				$("#page1").hide();
+				$("#page2Bis").show();
+			});
+			
+			$("#navbar-login").click(function()
+			{
+				$("#page1").hide();
+				$("#page2").show();
+			});
+			
+			$("#viewPage1").click(function()
+			{
+				$("#page2Bis").hide();
+				$("#page1").show();
+			});
+			
+			 $('.slider').slider({full_width: true, indicators: false});
+			 
+			  $("#page1").bind('mousewheel', function(e){
+				if(e.originalEvent.wheelDelta /120 > 0) {
+					//$(this).text('scrolling up !');
+				}
+				else{
+						$("#page1").hide();
+						$("#page2Bis").show();
+				}
+			});
+			
+			 /*$("#page2").bind('mousewheel', function(e){
+				if(e.originalEvent.wheelDelta /120 > 0) {
+					$("#page2").hide();
+				$("#page1").show();
+				}
+				else{
+				}
+			});*/
+		
+		});
+		
+		function mia_posizione(position) 
+		{	
+			latlng = new google.maps.LatLng(44,7);
+			
+			var opzioni={
+			zoom:8,
+			center:latlng,
+			mapTypeControl:true,
+			mapTypeControlOption:{style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR},
+			navigationControl:true,
+			navigationControlOption:{Style:google.maps.NavigationControlStyle.SMALL},
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+			};
+			
+			var mapDiv=document.getElementById('museumMap');
+			map = new google.maps.Map(mapDiv,opzioni);
+		}
+		</script>
+		
 	</head>
 	<body>
+		
+		<div id="page1">
+		 <nav>
+			<div class="nav-wrapper">
+			  <a href="#" class="brand-logo">Art Reader</a>
+			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="#" id="navbar-login">Login</a></li>
+				<li><a href="#">Help</a></li>
+				<li><a href="#">Altra voce</a></li>
+			  </ul>
+			</div>
+		</nav>
+		<div class="slider">
+			<ul class="slides">
+			  <li>
+				<img src="img/index-bg/1.jpg"> <!-- random image -->
+				
+			  </li>
+			  <li>
+				<img src="img/index-bg/2.jpg"> <!-- random image -->
+			  </li>
+			  <li>
+				<img src="img/index-bg/3.jpg"> <!-- random image -->
+			  </li>
+			  <li>
+				<img src="img/index-bg/4.jpg"> <!-- random image -->
+			  </li>
+			  <li>
+				<img src="img/index-bg/5.jpg"> <!-- random image -->
+			  </li>
+			  <li>
+				<img src="img/index-bg/6.jpg"> <!-- random image -->
+			  </li>
+			  <li>
+				<img src="img/index-bg/7.jpg"> <!-- random image -->
+			  </li>
+			</ul>
+		</div>
+		<div class="header">
+			<h1>Art Reader</h1>
+			<h2>Learn faster, Learn more.</h2>
+			<br><br>
+			<img src="img/system/gplay-badge.png" width="150" height="50"></img>
+		</div>
+		<br><br>
+		<div class="row">
+		<div class="col s4">
+		<img src="img/system/promo1.png" height="100" width="55"></img>
+        <!-- Promo Content 1 goes here -->
+		<h5>Anche in mobilità!</h5>
+		Scopri i vantaggi della nostra App, disponibile gratuitamente su Google Play.
+		Impara direttamente dal tuo cellulare tutto ciò che vi è da sapere sulle opere
+		d'arte più famose al mondo!
+      </div>
+      <div class="col s4">
+	  <img src="img/system/promo2.png" height="100" width="100"></img>
+        <!-- Promo Content 2 goes here -->
+		<h5>Scannerizza, impara.</h5>
+		Con una semplice scansione QR si aprirà ai tuoi occhi un catalogo infinito di informazioni.
+		Il sapere è alla portata di mano, anzi di un dito!
+      </div>
+      <div class="col s4">
+	   <img src="img/system/promo3.png" height="100" width="100"></img>
+        <!-- Promo Content 3 goes here -->
+		<h5>Contribuisci anche tu.</h5>
+		Puoi contribuire a far cresce questo progetto inserendo nuove opere d'arte,
+		lasciando feedback e facendoci sapere cosa migliorare, abbiamo bisogno di te!
+      </div>
+	  <br><br>
+	    </div>
+		<div class="footer">
+
+			<img src="img/ico/down.png" id="viewPage2" height="35" width="35"><img>
+		</div>
+	</div>
+		
+	<div id="page2" style="display:none">
 		<!--HEADER SPACE-->
-		<div id="header">
+		<div class="header">
 			<img src="img/tmpLogo.png" height="100" width="130">
 			<br>
  			<h1>Art Reader</h1>
@@ -53,6 +203,100 @@
 		<!--NEW USER-->
 		<button class="btn waves-effect waves-light" type="button" name="action" onClick="">NUOVO UTENTE
 		</button>
-
+		
+		
+	</div>
+	<div id="page2Bis" style="display: none">
+		<div class="material-panel1" id="material-panel-header">
+		<div class="header">
+			<img src="img/tmpLogo.png" height="100" width="130">
+			<br>
+ 			<h1>Art Reader</h1>
+			<h2>Learn Faster, Learn More</h2>
+		</div>
+		</div>
+		<div class="material-panel" id="material-panel-map">
+		<br><br>
+			<h5>Musei in cui siamo attivi</h5>
+		<br><br>
+			<div id="museumMap">		
+			</div>
+		</div>
+		<div class="material-panel1" id="material-panel-carousel">
+		 <div class="carousel">
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/1"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/2"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/3"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/4"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/5"></a>
+		 </div>
+		 <div id="carousel-text">
+			<h5>Non si smette mai di imparare</h5>
+			Vieni a scoprire tutto ciò che vi è da sapere sulle ultime opere d'arte inserite! <br>
+			Cogli al volo l'opportunità per entrare nel mondo delle opere d'arte <br>
+		 </div>
+		</div>
+		<div class="material-panel" id="material-panel-reviews">
+		<br>
+		<h5>Cosa dicono di noi?</h5>
+		<br><br><br>
+		<table>
+		<tr>
+		
+		<td>
+		<div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                "Mi si è aperto un mondo con un semplice click! L'arte è alla portata di tutti." Andrea C.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  <td>
+	    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                "Ho riscoperto la mia passione per l'arte. facile, veloce, efficace. CONSIGLIATO!" Jessica R.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  <td>
+	    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+				"L'idea è semplice ma l'utilità è assicurata! Provare per credere, non ve ne pentirete" Marco M.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  </tr>
+	  </table>
+		</div>
+		<div class="footer">
+			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35"></img>
+		</div>
+	</div>
 	</body>
 </html>

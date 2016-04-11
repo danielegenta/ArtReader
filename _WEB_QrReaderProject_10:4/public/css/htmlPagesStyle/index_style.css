@@ -77,18 +77,4 @@ h2
 	font-weight: bold;
 }
 
-.row
-{
-	width: 100%;
-	text-align: center;
-	font-size: 15px;
-}
-/*
-*	Footer
-*/
-.footer {
-    position: fixed;
-    bottom: 20;
-    width: 100%;
-	text-align: center;
-}
+

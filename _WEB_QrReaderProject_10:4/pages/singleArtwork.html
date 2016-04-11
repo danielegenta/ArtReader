@@ -28,13 +28,9 @@
 		{
 			$('.parallax').parallax();
 		if(navigator.geolocation)
-		{		
 			navigator.geolocation.getCurrentPosition(mia_posizione);
-		}
 		else
-		{
 			alert('Il browser non supporta la geolocalizzazione');
-		}
 		});
 		
 		function mia_posizione(position) 
