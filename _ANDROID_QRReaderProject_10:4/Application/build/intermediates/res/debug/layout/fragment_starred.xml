@@ -16,7 +16,7 @@
         android:maxHeight="100dp"
         android:maxWidth="50dp"
         android:src="@drawable/starred_head"
-        android:layout_alignParentTop="true" />
+        android:layout_alignTop="@+id/section_label" />
 
     <TextView
         android:id="@+id/section_label"
@@ -32,10 +32,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lstStarred"
+        android:paddingTop="20dp"
         android:choiceMode="singleChoice"
         android:listSelector="#c7d1ea"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/section_label" />
 
-</RelativeLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/HorizontalPaging/Application/src/main/res/layout/fragment_starred.xml -->
+</RelativeLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/horizontalpaging/Application/src/main/res/layout/fragment_starred.xml -->

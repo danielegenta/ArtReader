@@ -16,15 +16,8 @@
 -->
 
 <resources>
-    <string name="app_name">HorizontalPaging</string>
+    <string name="app_name">Art Reader</string>
     <string name="intro_message">
-        <![CDATA[
-        
-            
-            This sample demonstrates how to implement horizontal paging between fragments in
-            applications that use ActionBar, using a ViewPager widget.
-            
-        
-        ]]>
+        Qr-Reader Project
     </string>
 </resources>

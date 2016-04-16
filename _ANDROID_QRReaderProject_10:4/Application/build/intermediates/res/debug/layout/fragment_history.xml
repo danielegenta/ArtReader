@@ -17,6 +17,7 @@
 
     <ListView
         android:layout_width="wrap_content"
+        android:paddingTop="20dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -37,4 +38,4 @@
         android:layout_marginStart="32dp"
         android:layout_alignParentTop="true" />
 
-</RelativeLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/HorizontalPaging/Application/src/main/res/layout/fragment_history.xml -->
+</RelativeLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/horizontalpaging/Application/src/main/res/layout/fragment_history.xml -->

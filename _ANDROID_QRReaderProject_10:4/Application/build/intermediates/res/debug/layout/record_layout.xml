@@ -27,4 +27,4 @@
             android:text="New Text"
             android:id="@+id/lbl_Author"/>
     </LinearLayout>
-</LinearLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/HorizontalPaging/Application/src/main/res/layout/record_layout.xml -->
+</LinearLayout><!-- From: file:/Users/Daniele/Desktop/progettoEsame/horizontalpaging/Application/src/main/res/layout/record_layout.xml -->

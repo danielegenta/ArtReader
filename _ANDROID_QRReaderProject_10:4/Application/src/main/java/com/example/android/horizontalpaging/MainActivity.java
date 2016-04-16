@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,13 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -46,6 +55,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     ViewPager mViewPager;
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
+
+    //strutture cronologia e preferiti
+    ArrayList<Artwork> listArtworksHistory = new ArrayList<Artwork>();
+    ArrayList<Artwork> listArtworksFavourites= new ArrayList<Artwork>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +89,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         // END_INCLUDE (add_tabs)
+
+        //popolo le due strutture logiche, lettura file di testo
+         popolaStructures();
+
     }
+
+
 
     /**
      * Update {@link ViewPager} after a tab has been selected in the ActionBar.
@@ -92,11 +111,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // When the given tab is selected, tell the ViewPager to switch to the corresponding page.
         mViewPager.setCurrentItem(tab.getPosition());
 
-        //
+        //popolo grafica con le strutture già pronte, non leggo da file di testo
         if (tab.getPosition() == 2)
         {
             setContentView(R.layout.fragment_starred);
-            popolaLst("starred");
+            popolaLst("favourites");
         }
         else if (tab.getPosition() == 0)
         {
@@ -109,6 +128,37 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
     // END_INCLUDE (on_tab_selected)
+
+
+
+    private void scriviModifiche()
+    {
+        for (Artwork a:listArtworksHistory)
+        {
+            writeToFile(a.getID() + "-" + a.getTitle() + "-"+a.getAuthor()+"-"+a.getImg_path(), "history1.txt");
+            //elimino
+            Context ctx = getApplicationContext();
+            File f = ctx.getFileStreamPath("history.txt");
+            f.delete();
+            //rinomino
+            File oldfile = ctx.getFileStreamPath("history1.txt");
+            File newfile = ctx.getFileStreamPath("history.txt");
+            oldfile.renameTo(newfile);
+
+        }
+        for (Artwork a:listArtworksFavourites)
+        {
+            Context ctx = getApplicationContext();
+            writeToFile(a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path(), "favourites1.txt");
+            File f = ctx.getFileStreamPath("favourites.txt");
+            f.delete();
+
+            File oldfile = ctx.getFileStreamPath("favourites1.txt");
+            File newfile = ctx.getFileStreamPath("favourites.txt");
+            oldfile.renameTo(newfile);
+        }
+    }
+
 
     /**
      * Unused. Required for {@link android.app.ActionBar.TabListener}.
@@ -238,6 +288,99 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
 
+    /******************
+     * GESTIONE PREFERITI
+     * @param v
+     ******************/
+    public void setFavourite(View v)
+    {
+        boolean red = setFavouriteSupport();
+
+        TextView id = (TextView) findViewById(R.id.lblIdArtwork);
+        TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
+        TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
+        ImageView img = (ImageView) findViewById(R.id.imgArtwork);
+        String tmpImg = "img1t";
+
+        Artwork artwork = new Artwork(Integer.parseInt(id.getText().toString()), title.getText().toString(), author.getText().toString(), tmpImg);
+
+        //aggiornare struttura
+        //aggiunta a preferiti
+        if (red)
+        {
+            //aggiunta elemento a lstPreferiti
+            listArtworksFavourites.add(artwork);
+        }
+        //rimozione da preferiti
+        else
+        {
+            int index = 0;
+            //eliminazione da struttura logica
+            for (Artwork a:listArtworksFavourites)
+            {
+                if (a.getID() == Integer.parseInt(id.getText().toString()))
+                    break;
+                index++;
+            }
+            listArtworksFavourites.remove(index);
+        }
+        scriviModifiche();
+    }
+
+    private boolean setFavouriteSupport()
+    {
+        ImageView imgFavourite = (ImageView)findViewById(R.id.imgFavourite);
+        String tag = (String)imgFavourite.getTag();
+        if (tag.compareTo("grey") == 0)
+        {
+            imgFavourite.setImageResource(R.drawable.favouritered);
+            imgFavourite.setTag("red");
+
+            return  true;
+        }
+        else
+        {
+            imgFavourite.setImageResource(R.drawable.favouritegrey);
+            imgFavourite.setTag("grey");
+
+            return false;
+        }
+    }
+     /***********FINE GESTIONE PREFERITI*******/
+
+
+    /****
+     * Gestione Cronologia
+     *
+     */
+
+    //ricerco se tale record vi è già in cronologia, se si lo riposiziono al primo posto se no lo aggiungo in testa
+    private void addHistoryRecord()
+    {
+        TextView id = (TextView) findViewById(R.id.lblIdArtwork);
+        TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
+        TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
+        ImageView img = (ImageView) findViewById(R.id.imgArtwork);
+        String tmpImg = "img1t";
+        Artwork artwork = new Artwork(Integer.parseInt(id.getText().toString()), title.getText().toString(), author.getText().toString(), tmpImg);
+        int index = 0;
+
+        //rimuovo eventuai occorrenze
+        for (Artwork a:listArtworksHistory)
+        {
+            if (a.getID() == Integer.parseInt(id.getText().toString()))
+            {
+                listArtworksHistory.remove(index);
+            }
+            index++;
+        }
+
+        //aggiungo in testa
+        listArtworksHistory.add(0, artwork);
+    }
+
+    /********FINE GESTIONE CRONOLOGIA*******/
+
     public void scanQR(View v) {
         try
         {
@@ -256,10 +399,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     }
 
-    private void testPopolaInfoArtwork()  {
+    private void testPopolaInfoArtwork()
+    {
         setContentView(R.layout.fragment_artwork);
 
         //una delle 3 immagini a caso
+        TextView mainTitle = (TextView)findViewById(R.id.lblMainTitle);
+        TextView id = (TextView)findViewById(R.id.lblIdArtwork);
         TextView title = (TextView)findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView)findViewById(R.id.lblAuthorArtwork);
         TextView tecnique = (TextView)findViewById(R.id.lblTecnique);
@@ -274,12 +420,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         ImageView img  = (ImageView)findViewById(R.id.imgArtwork);
 
         String strJson = "{\"id\":8,\"title\":\"La Gioconda\",\"author\":1,\"abstract\":\"placeholder\",\"pictureUrl\":\"http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg\",\"tecnique\":\"Olio su tavola\",\"year\":1506,\"artMovement\":\"Rinascimento\",\"dimensionHeight\":77,\"dimensionWidth\":53,\"wikipediaPageArtwork\":\"https://it.wikipedia.org/wiki/Gioconda\",\"location\":1,\"pictureUrl2\":\"Artwork8\",\"pictureUrl3\":\"Location1\",\"idLocationsArtworks\":1,\"description\":\"Louvre\",\"city\":\"Parigi\",\"nation\":\"France\",\"wikipediaPageLocation\":\"https://it.wikipedia.org/wiki/Museo_del_Louvre\",\"address\":\"Musée du Louvre, 75001 Paris, France\",\"idAuthor\":1,\"name\":\"Leonardo Da Vinci\n\",\"wikipediaPageAuthor\":\"https://it.wikipedia.org/wiki/Leonardo_da_Vinci\",\"nationalityAuthor\":\"Italia\"}";
-        try {
+        try
+        {
             JSONObject  jsonRootObject = new JSONObject(strJson);
 
-
             //popolo campi
+            //id.setText(jsonRootObject.optString("id"));
+            //messo a 1 per test!!!!!!!!!! decommentare riga sopra!!!!!!!
+            id.setText("1");
+
             title.setText(jsonRootObject.optString("title"));
+            mainTitle.setText(jsonRootObject.optString("title"));
             author.setText(Html.fromHtml("<a href=\"" + jsonRootObject.optString("wikipediaPageAuthor") + "\">" + (jsonRootObject.optString("name")) +"</a> "));
             description.setText(jsonRootObject.optString("abstract"));
             tecnique.setText(jsonRootObject.optString("tecnique"));
@@ -289,6 +440,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             info.setText(Html.fromHtml("<a href=\""+jsonRootObject.optString("wikipediaPageArtwork")+"\">Ulteriori Informazioni</a> "));
             location.setText(Html.fromHtml("<a href=\"" + jsonRootObject.optString("wikipediaPageLocation") + "\">" + (jsonRootObject.optString("description")) + "</a> "));
             address.setText(jsonRootObject.optString("address"));
+
+            //verifico se è gia nei preferiti, se sì, cambio colore icona
+            for (Artwork a:listArtworksFavourites)
+            {
+                if (a.getID() == Integer.parseInt(id.getText().toString()))
+                {
+                    setFavouriteSupport();
+                }
+            }
+            addHistoryRecord();
 
             //dimensioni img
 
@@ -324,7 +485,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0)
         {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK)
+            {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 
@@ -343,33 +505,115 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
+    /*************
+     * Popolo i due listview CRONOLOGIA e PREFERITI
+     * @param lstType
+     */
     private void popolaLst(String lstType)
     {
-
-        ArrayList<Artwork> listArtworks = new ArrayList<Artwork>();
         ListView lstArt;
-        //dati test
-        listArtworks.add(new Artwork(1,"La Gioconda", "Leonardo Da Vinci","img1t"));
-        listArtworks.add(new Artwork(2,"I Girasoli", "Vincent Van Gogh","img2t"));
-        listArtworks.add(new Artwork(3, "L'Ultima Cena", "Leonardo Da Vinci", "img3t"));
-
-        RecordAdapter adapter = new RecordAdapter(this,R.layout.record_layout, listArtworks);
-
-       // lstArt.setOnItemClickListener(listener);
-        //pagina cronlogia
-        if (lstType.compareTo("history") == 0)
+        if (lstType == "history")
         {
+            setContentView(R.layout.fragment_history);
+
+
+            RecordAdapter adapter = new RecordAdapter(this, R.layout.record_layout, listArtworksHistory);
             lstArt = (ListView) findViewById(R.id.lstviewHistory);
             lstArt.setAdapter(adapter);
-
-
         }
-        //pagina preferiti
-        else if (lstType.compareTo("starred") == 0)
-        {
+
+        else if (lstType == "favourites") {
+            setContentView(R.layout.fragment_starred);
+
+            RecordAdapter adapter = new RecordAdapter(this, R.layout.record_layout, listArtworksFavourites);
             lstArt = (ListView) findViewById(R.id.lstStarred);
             lstArt.setAdapter(adapter);
         }
+    }
+
+    //SOLO AL LANCIO leggo i file di testo, poi lavoro sulle struttutre!!!
+    private void popolaStructures()
+    {
+        //cronologia
+        String aux = readFromFile("history.txt");
+        if (aux != "")
+        {
+            String righe[] = aux.split(";");
+            String[] colonne;
+            for (int i = 0; i < righe.length; i++) {
+                colonne = righe[i].split("-");
+                listArtworksHistory.add(new Artwork(Integer.parseInt(colonne[0]), colonne[1], colonne[2], colonne[3]));
+            }
+        }
+
+        //preferiti
+        String aux1 = readFromFile("favourites.txt");
+        if (aux1 != "")
+        {
+            String righe1[] = aux1.split(";");
+            String[] colonne1;
+            for (int i = 0; i < righe1.length; i++) {
+                colonne1 = righe1[i].split("-");
+                listArtworksFavourites.add(new Artwork(Integer.parseInt(colonne1[0]), colonne1[1], colonne1[2], colonne1[3]));
+            }
+        }
+
+    }
+
+
+    /*****************
+    //  GESTIONE DEI FILE CRONOLOGIA E PREFERITI
+    /*****************/
+    private void writeToFile(String data, String filename)
+    {
+        try
+        {
+            Context context = getApplicationContext();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
+
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    private String readFromFile(String filename) {
+        String ret = "";
+        try
+        {
+            InputStream inputStream = openFileInput(filename);
+
+            if ( inputStream != null )
+            {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+            //CREO IL FILE
+            else
+            {
+                writeToFile("", filename);
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e)
+        {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
     }
 
 }
