@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="action_settings">Settings</string>
-    <string name="title_section1">Cronologia</string>
-    <string name="title_section2">Main</string>
-    <string name="title_section3">Preferiti</string>
-
-</resources>
