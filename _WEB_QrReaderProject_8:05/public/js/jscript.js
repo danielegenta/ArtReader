@@ -4,23 +4,169 @@
 
 $(document).ready(function()
 {	
+//upload
+$('#uploadForm').submit(function() {
+        console.log('uploading the file ...');
+        $(this).ajaxSubmit({
+            dataType: 'text',
+            error: function(xhr) {
+               console.log('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                try {
+                    response = $.parseJSON(response);
+                }
+                catch(e) {
+                   console.log('Bad response from server');
+                    return;
+                }
+                if(response.error) {
+                    console.log('Oops, something bad happened');
+                    return;
+                }
+            }
+        });
+        return false;
+    });
+	$('#uploadForm1').submit(function() {
+        console.log('uploading the file ...');
+        $(this).ajaxSubmit({
+            dataType: 'text',
+            error: function(xhr) {
+               console.log('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                try {
+                    response = $.parseJSON(response);
+                }
+                catch(e) {
+                   console.log('Bad response from server');
+                    return;
+                }
+                if(response.error) {
+                    console.log('Oops, something bad happened');
+                    return;
+                }
+            }
+        });
+        return false;
+    });
+	$('#uploadForm2').submit(function() {
+        console.log('uploading the file ...');
+        $(this).ajaxSubmit({
+            dataType: 'text',
+            error: function(xhr) {
+               console.log('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                try {
+                    response = $.parseJSON(response);
+                }
+                catch(e) {
+                   console.log('Bad response from server');
+                    return;
+                }
+                if(response.error) {
+                    console.log('Oops, something bad happened');
+                    return;
+                }
+            }
+        });
+        return false;
+    });
+
+
+	//IMAGE anteprima
+	$('input[name=userPhoto]').change(function(){
+        readURL(this);
+    });
+		function readURL(input) {
+		switch(input.id){
+			case "userPhotoInput":
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function (e) {
+					$('#showImg').attr('src', e.target.result);
+				}			
+				reader.readAsDataURL(input.files[0]);
+				console.log(input.files[0]);
+			}
+			break;
+			case "pictureUrl1":
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function (e) {
+					$('#showImg1').attr('src', e.target.result);
+				}			
+				reader.readAsDataURL(input.files[0]);
+				console.log(input.files[0]);
+			}
+			break;
+			case "pictureUrl2":
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function (e) {
+					$('#showImg2').attr('src', e.target.result);
+				}			
+				reader.readAsDataURL(input.files[0]);
+				console.log(input.files[0]);
+			}
+			break;
+		}       
+    }
+	//gestione combobox
+	$('select').material_select();
+	$('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrain_width: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: true, // Displays dropdown below the button
+      alignment: 'left' // Displays dropdown with edge aligned to the left of buttons
+    }
+  );
+        
+		
+	
+
+
+	
+
+	
 	//INSERT NEW ARTWORK var and fields
 	var dialog, form,
       title = $( "#txtTitle" ),
-      author = $( "#txtAuthor" ),
       pictureAbstract = $( "#txtAbstract" ),
-	  pictureUrl = $( "#txtPictureUrl" ),
-      allFields = $( [] ).add( title ).add( author ).add( pictureAbstract ).add( pictureUrl),
+	  img=$("#showImg"),
+	  imgPath=$("#userPhotoInput"),
+	  img1=$("#showImg1"),
+	  imgPath1=$("#pictureUrl1"),
+	  img2=$("#showImg2"),
+	  imgPath2=$("#pictureUrl2"),
+	  tecnique = $( "#txtTecnique" ),
+	  movimento = $( "#txtMovimento" ),
+	  wiki=$( "#txtWiki" ),
+	  anno=$( "#txtAnno" ),
+	  altezza=$( "#txtAltezza" ),
+	  larghezza=$( "#txtLarghezza" ),
+	  cbAuthor=$("#cbAuthor"),
+	  cbLocation=$("#cbLocation");
+      allFields = $( [] ).add( title ).add( cbAuthor ).add( pictureAbstract ).add(imgPath).add(imgPath1).add(imgPath2).add(tecnique).add(movimento).add(wiki).add(anno).add(altezza).add(larghezza).add(cbLocation),
 	  tips = $( ".validateTips" );
 	  
 	//first loading of the artworks table
 	jqShowArtworks();
+	
 	$("#searchTips").hide();
-	//INSERT NEW ARTWORK dialog
+	//ARTWORK dialog
 	dialog = $( "#dialogInsertArtwork" ).dialog({
 		 autoOpen: false,
-		  height: 500,
-		  width: 600,
+		  height: 900,
+		  width: 800,
 		  modal: true,
 		  buttons: {
 			  "Modifica": 
@@ -28,9 +174,8 @@ $(document).ready(function()
 				id: "btnModifica",
 				text: "Modifica",
 				click:function(){
-					
-					updateArtwork($("#txtTitle").val(),$("#txtAuthor").val(),$("#txtAbstract").val(),$("#txtPictureUrl").val());
-					dialog.dialog( "close" );
+					checkArtwork("mod");
+					console.log($("#userPhotoInput").val().split('\\').pop());
 				}		
 			},			
 			"Inserisci": 
@@ -38,7 +183,7 @@ $(document).ready(function()
 				id: "btnInsert",
 				text: "Inserisci",
 				click:function(){
-				checkArtwork();
+				checkArtwork("add");
 				}
 			},			
 			"Chiudi": 
@@ -49,6 +194,10 @@ $(document).ready(function()
 		  close: function() {
 			allFields.removeClass( "ui-state-error" );
 			jqShowArtworks();
+		  },
+		  open: function(){
+			allAuthors();  
+			allLocation();
 		  }
 	});
 
@@ -144,6 +293,7 @@ $(document).ready(function()
 	
 	//INSERT NEW ARTWORK DIALOG - check insert fields lenght...
 	 function checkLength( o, n, min, max ) {
+		 console.log(n);
       if ( o.val().length > max || o.val().length < min ) {
         o.addClass( "ui-state-error" );
         updateTips( "La lunghezza di: " + n + " deve essere compresa fra: " +
@@ -158,30 +308,42 @@ $(document).ready(function()
 	
 	
 	//INSERT NEW ARTWORK DIALOG - adding of the artwork
-	function checkArtwork()
+	function checkArtwork(tipo)
 	{
 		
 		var valid = true;
 		allFields.removeClass( "ui-state-error" );
-
+			
 		valid = valid && checkLength( title, "Titolo", 1, 40 );
-		valid = valid && checkLength( author, "Autore", 1, 40 );
+		valid = valid && (cbAuthor.attr('value')!=-1);
 		valid = valid && checkLength( pictureAbstract, "Descrizione", 1, 150 );
-		valid = valid && checkLength( pictureUrl, "Url Immagine", 8, 100 );
-	  //da modificare REGEX INSERIMENTO NUOVA OPERA
-	  /*
-      valid = valid && checkRegexp( title, /^[a-z]([0-9a-z_\s])+$/i, "Title may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-	  
-	  //ok
-      valid = valid && checkRegexp( author, /^[a-z]([0-9a-z_\s])+$/i, "Autore may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-      valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );*/
-		if ( valid )
-		{
-			//rileggo il db
-			dialog.dialog( "close" );
-			addArtwork(title.val(), author.val(), pictureAbstract.val(), pictureUrl.val());	
-			jqShowArtworks()
-		}
+		valid = valid && checkLength( tecnique, "tecnica artistica", 1, 100 );
+		valid = valid && checkLength( movimento, "movimento artistico", 1, 100 );
+		valid = valid && checkLength( wiki, "url wikipedia", 1, 100 );
+		valid = valid && checkLength( anno, "anno ", 1, 100 );
+		valid = valid && checkLength( altezza, "altezza", 1, 100 );
+		valid = valid && checkLength( larghezza, "larghezza", 1, 100 ); 
+		valid = valid && (cbLocation.attr('value')!=-1);
+
+	
+			if(tipo=="add"){
+				valid = valid && (imgPath.val().split('\\').pop()!="");
+				valid = valid && (imgPath1.val().split('\\').pop()!="");
+				valid = valid && (imgPath2.val().split('\\').pop()!="");
+				if(valid){
+				tryA();
+				addArtwork(title.val(), cbAuthor.attr('value'), pictureAbstract.val(), imgPath.val().split('\\').pop(),0,cbLocation.attr('value'),tecnique.val(),anno.val(),movimento.val(),altezza.val(),larghezza.val(),wiki.val(),imgPath1.val().split('\\').pop(),imgPath2.val().split('\\').pop());	
+				dialog.dialog( "close" );	
+				}
+			}
+			else{
+				if(valid){
+				tryA();
+				updateArtwork(title.val(), cbAuthor.attr('value'), pictureAbstract.val(), imgPath.val().split('\\').pop(),0,cbLocation.attr('value'),tecnique.val(),anno.val(),movimento.val(),altezza.val(),larghezza.val(),wiki.val(),imgPath1.val().split('\\').pop(),imgPath2.val().split('\\').pop());	
+				dialog.dialog( "close" );	
+				}
+			}
+					
 		return valid;
 	}
 });
@@ -205,12 +367,14 @@ function showArtwork(response, i)
 	riga.append(author);
 				   
 	var pictureurl=$("<td></td>");
-	pictureurl.text(response[i].pictureUrl);
+	var img = $('<img width="150" >'); 
+	img.attr('src', 'img/immagini/'+response[i].pictureUrl);
+	pictureurl.append(img);
 	riga.append(pictureurl);
 		
 	//alert(response[i].description);
 	var locationAbstract=$("<td></td>");
-	locationAbstract.text(response[i].description);
+	locationAbstract.text(response[i].city);
 	riga.append(locationAbstract);
 	
 	var tdbutt=$("<td></td>");
@@ -240,10 +404,20 @@ function showArtwork(response, i)
 		$("#btnInsert").hide();
 		
 		$("#txtTitle").val(response[i].title);
-		$("#txtAuthor").val(response[i].name);
-		$("#txtPictureUrl").val(response[i].pictureUrl);
-		$("#txtAbstract").val(response[i].pictureAbstract);		
-
+		$("#txtAbstract").val(response[i].abstract);		
+		$( "#txtTecnique" ).val(response[i].tecnique);
+		$( "#txtMovimento" ).val(response[i].artMovement);
+		$( "#txtWiki" ).val(response[i].wikipediaPageArtwork);
+		$( "#txtAnno" ).val(response[i].year);
+		$( "#txtAltezza" ).val(response[i].dimensionHeight);
+		$( "#txtLarghezza" ).val(response[i].dimensionWidth);
+		$("#showImg").attr('src','img/immagini/'+response[i].pictureUrl);		
+		$("#showImg1").attr('src','img/parallax/'+response[i].pictureUrl2);
+		$("#showImg2").attr('src','img/parallax/'+response[i].pictureUrl3);
+		$("#cbAuthor").attr('value',response[i].author);
+		$("#cbAuthor").text(response[i].name);
+		$("#cbLocation").attr('value',response[i].idLocationsArtworks);
+		$("#cbLocation").text(response[i].city);
 		jqShowArtworks();
 	});
 	tdbutt.append(butMod);
@@ -304,11 +478,11 @@ function printArtworkDetails(artwork)
 	$("#lblArtMovement").text(artwork.artMovement);
 	$("#lblArtworkAbstract").text(artwork.abstract);
 	
-	$("#imgArtwork").attr("src", artwork.pictureUrl);
+	$("#imgArtwork").attr("src", "img/immagini/"+artwork.pictureUrl);
 	
 	//parallax
-	$("#parallaxTop").attr("src", "img/parallax/"+artwork.pictureUrl2+".jpg");
-	$("#parallaxBottom").attr("src", "img/parallax/"+artwork.pictureUrl3+".jpg");
+	$("#parallaxTop").attr("src", "img/parallax/"+artwork.pictureUrl2);
+	$("#parallaxBottom").attr("src", "img/parallax/"+artwork.pictureUrl3);
 	
 
 	
@@ -323,7 +497,7 @@ function showRelated_SinglePageArtwork(response, i)
 {
 	var id = response[i].id;
 	var title = response[i].title;
-	var pic = response[i].pictureUrl;
+	var pic = 'img/immagini/'+response[i].pictureUrl;
 	var width = response[i].dimensionWidth;
 	var height = response[i].dimensionHeight;
 	switch (i)
@@ -389,6 +563,33 @@ function jqShowArtworks()
 	showArtworks();
 }
 
+//gestione combobox 
+function cbAuthors(authors){
+		$("#dropdown1").empty();
+		console.log("entrooooo");
+		var i=0;
+		for(i=0;i<authors.length;i++){
+			$("#dropdown1").append('<li><a id="hrefA'+i+'" href="#!" value="'+authors[i].id+'">'+authors[i].name+'</a></li>');
+			$( "#hrefA"+i ).click(function(event){
+				$("#cbAuthor").text( event.target.text );
+				console.log($(this).attr('value'));
+				$("#cbAuthor").attr('value',$(this).attr('value'));
+				});
+		}
+	}
+function cbLocations(locations){	
+		$("#dropdownLocation").empty();
+		var i=0;
+		for(i=0;i<locations.length;i++){
+			$("#dropdownLocation").append('<li><a id="hrefL'+i+'" href="#!" value="'+locations[i].id+'">'+locations[i].name+'</a></li>');
+			$( "#hrefL"+i ).click(function(event){
+				$("#cbLocation").text( event.target.text );
+				console.log($(this).attr('value'));
+				$("#cbLocation").attr('value',$(this).attr('value'));
+				});
+		}
+	}
+
 //refresh the table after a research - db reading operation
 function refreshTable(partial)
 {
@@ -411,10 +612,25 @@ function cleanSimilar()
 
 function cleanDialogFields()
 {
-		$("#txtTitle").val("");
-		$("#txtAuthor").val("")
-		$("#txtPictureUrl").val("")
-		$("#txtAbstract").val("");
+	$("#txtTitle").val("");
+	$("#txtAuthor").val("")
+	$("#txtAbstract").val("");	
+	$("#showImg").attr('src', "");
+	$("#userPhotoInput").val("");
+	$("#showImg1").attr('src', "");
+	$("#pictureUrl1").val("");
+	$("#showImg2").attr('src', "");
+	$("#pictureUrl2").val("");
+	$( "#txtTecnique" ).val("");
+	$( "#txtMovimento" ).val("");
+	$( "#txtWiki" ).val("");
+	$( "#txtAnno" ).val("");
+	$( "#txtAltezza" ).val("");
+	$( "#txtLarghezza" ).val("");
+	$("#cbAuthor").attr('value',-1);
+	$("#cbLocation").attr('value',-1);
+	$("#cbAuthor").text("Museo");
+	$("#cbLocation").text("Autore");
 }
 
 /**************************END*********************/

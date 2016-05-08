@@ -1,0 +1,183 @@
+<html>
+	<head>
+				
+		<title>
+			Art Reader: Learn faster, Learn More
+		</title>
+		<!--Import Google Icon Font-->
+		<meta charset="UTF-8">
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link href="css/stile.css" rel="stylesheet">
+		<link href="css/htmlPagesStyle/index_style.css" rel="stylesheet" type="text/css">
+		<!-- <link href="CSS/jquery-ui.css" rel="stylesheet">-->
+		<link href="css/jquery_stile.css" rel="stylesheet">
+		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
+		<script type="text/javascript" src="Utility/jquery-ui.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/jscript.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+
+		
+		
+			<script src="js/form-master/jquery.form.js"></script>
+			<script src="js/form-master/upload.js"></script>
+	
+	
+	
+	</head>
+	<body>
+	
+
+	
+	
+	<div id="page1">
+		<div class="header">
+			<img src="img/tmpLogo.png" height="80" width="100">
+			<br>
+ 			<h1>Art Reader</h1>
+			<h2>Learn Faster, Learn More</h2>
+		</div>
+		<!---Dialog used to insert a new artwork-->
+		<div id="dialogInsertArtwork" title="Inserisci nuova opera">
+			<p class="validateTips">Tutti i campi sono obbligatori.</p>
+			<table>
+				<tr>
+					<td>
+						<label for="title">Titolo</label>
+						<input type="text" name="title" id="txtTitle" value="" class="text ui-widget-content ui-corner-all">
+					</td>					
+					<td>
+						<label for="author">Autore</label>
+						<a id="cbAuthor" class='dropdown-button btn' value="-1" href='#' width="600" data-activates='dropdown1'>Autore</a>
+
+						<!-- Dropdown Structure -->
+						<ul id='dropdown1' class='dropdown-content'>
+						</ul>
+					</td>
+					<td>
+						<label>Location</label>				
+						<a id="cbLocation" class='dropdown-button btn' value="-1" href='#' width="600" data-activates='dropdownLocation'>Museo</a>
+
+						<!-- Dropdown Structure -->
+						<ul id='dropdownLocation' class='dropdown-content'>
+						</ul>
+					</td>				
+				</tr>
+			</table>		
+			<br>								  
+			<label for="abstract">Descrizione</label>
+			<textarea name="pictureAbstract" id="txtAbstract" class="text ui-widget-content ui-corner-all"></textarea>
+			<br>
+			 
+
+			 <!--<label for="pictureurl">Immagine</label>
+			<form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post" >
+				<img id="showImg" height="200" width="400" class="text ui-widget-content ui-corner-all"><br>
+				<input  id="pictureUrl" type="file" name="userPhoto"  />
+				<button onCLick="try()">prova</button>
+			</form>-->
+			 
+			 
+			<label for="pictureurl">Immagine</label>
+			<form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post" >
+				<img id="showImg" height="200" width="400" class="text ui-widget-content ui-corner-all"><br>
+				<input  id="userPhotoInput" type="file" name="userPhoto"  />
+				
+			</form>
+			<button onCLick="tryA()">prova</button>
+			
+				
+				
+				
+				
+				
+				
+			<br>
+			
+				
+				
+				<table>
+					<tr>
+						<td>
+							<label for="tecnique">Tecnica artistica</label>
+							<input type="text" name="tecnique" id="txtTecnique" value="" class="text ui-widget-content ui-corner-all">
+						</td>
+						<td>
+							<label for="movimentoartistico">Movimento Artistico</label>
+							<input type="text" name="movimentoartistico" id="txtMovimento" value="" class="text ui-widget-content ui-corner-all">
+						</td>
+					</tr>				
+				</table>				
+				<br>
+							
+				<label for="wiki">URL ulteriori informazioni</label>
+				<input type="text" name="wiki" id="txtWiki" value="" class="text ui-widget-content ui-corner-all">
+				<br>
+			
+				<table>
+				<tr>
+					<td>
+						<label for="anno">Anno</label>
+						<input type="text" name="anno" id="txtAnno" value="" class="text ui-widget-content ui-corner-all">		
+					</td>
+					<td>
+						<label for="altezza">Altezza</label>
+						<input type="text" name="altezza" id="txtAltezza" value="" class="text ui-widget-content ui-corner-all">
+					</td>
+					<td>
+						<label for="larghezza">Larghezza</label>
+						<input type="text" name="larghezza" id="txtLarghezza" value="" class="text ui-widget-content ui-corner-all">
+					</td>
+				</tr>							
+				</table>				
+				<br>	
+				
+				<label for="pictureurl1">Sfondo Descrizione</label>
+				<form id="uploadForm1" enctype="multipart/form-data" method="post" action="/api/parallax" >
+					<img id="showImg1" height="200" width="400" class="text ui-widget-content ui-corner-all"><br>
+					<input  id="pictureUrl1" type="file" name="userPhoto"  />
+				</form>
+				
+				<label for="pictureurl2">Sfondo Museo</label>
+				<form id="uploadForm2" enctype="multipart/form-data" method="post" action="/api/parallax" >
+					<img id="showImg2" height="200" width="400" class="text ui-widget-content ui-corner-all"><br>
+					<input  id="pictureUrl2" type="file" name="userPhoto"  />
+				</form>
+		</div>
+		<!--Research space-->	
+		<input type="text" name="search" id="txtSearch" value="Ricerca un opera d'arte..." class="text ui-widget-content ui-corner-all">
+		<!--similg google istant tips-->
+		<select id="lstSuggerimenti" size="4" class="riga" style="display:none">
+		</select>
+		<br>  
+		<!--Related research-->
+		<div id="searchTips">
+			Ricerche correlate: 
+			<a href="javascript:void(0)" id="similarSearch1">tip1</a>
+			<a href="javascript:void(0)" id="similarSearch2">tip2</a>
+			<a href="javascript:void(0)" id="similarSearch3">tip3</a>
+		</div>
+		<div id="noTip"></div>
+		<!--Insert new artwork-->
+		<a class="btn-floating btn-large waves-effect waves-light" id="btnInsertArtwork"><i class="material-icons">add</i></a>
+		<!--Artworks main table-->
+		<table id="tableArtworks" class="responsive highlight">
+			<thead class="ui-widget-header ">
+				<th>ID</th>
+				<th>Titolo</th>
+				<th>Autore</th>
+				<th>Url Immagine</th>
+				<th>Locazione</th>
+				<th>Operazioni</th>
+			</thead>
+			<tbody id="mainTable">
+			</tbody>
+		</table>
+		
+	</div>
+	</body>
+</html>

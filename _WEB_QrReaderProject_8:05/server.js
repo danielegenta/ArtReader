@@ -1,25 +1,47 @@
 var express = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/express")
-, router = express.Router()
-, multer = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/multer")
-var uploading = multer({
-  dest: __dirname + './img',
-});
-
 var session = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/express-session");
 var bodyParser = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/body-parser");
+var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
+var multer  =   require("C:/Users/danyg/AppData/Roaming/npm/node_modules/multer");
 var utility=require("./Utility.js");
 var crypto = require('crypto');
-var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
+
+var multipart = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/connect-multiparty');
+var multipartMiddleware = multipart();
+
+var fs=require('fs');
 var port = 8080;
 var app = express();
 
-app.use(express.static("public"));
 
+
+//file uploading
+/*var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './public/img/immagini');
+  },
+  filename: function (req, file, callback) {
+	  console.log("---"+file.originalname);
+    callback(null,file.originalname);
+  }
+});*/
+//var upload = multer({ storage : storage}).single('userPhoto');
+/*var iframeFileUpload = require('iframe-file-upload-middleware');
+iframeFileUpload.addRedirectResponder(app);
+app.post(/^.*\/upload$/, iframeFileUpload.middleware());*/
+
+
+
+
+app.use(express.static("public"));
+app.use(bodyParser()); 
 app.listen(port, function () {
     //var port = this.address().port recupera la porta del server
     console.log("server avviato sulla porta : " + port);
 
 });
+
+
 
 
 //midleware per il parsing dei parametri post
@@ -34,13 +56,13 @@ app.use(function (request, response, next) {
     var d = new Date();
     //visualizza la data, il metodo e la risorsa richiesta
     console.log(d.toLocaleTimeString() + " >>> " + request.method + " : " + request.originalUrl);
-    for (key in request.query)
+    for (key in request.query)//get
         console.log("\t" + key + " : " + request.query[key]);
 
-    for (key in request.params)
+    for (key in request.params)//get passati come parametro
         console.log("\t" + key + " : " + request.params[key]);
 
-    for (key in request.body)
+    for (key in request.body)//post
         console.log("\t" + key + " : " + request.body[key]);
     next();
 });
@@ -72,9 +94,10 @@ app.use(session({
 //-------- INIZIO AREA CLIENT ---------
 app.post("/access", function (request, response, next) {
     var utente = request.body["txtUsername"];
-
-	var cryptedPassword = crypto.createHash('sha256').update( request.body["txtPassword"]).digest('base64');
+	var cryptedPassword = crypto.createHash('sha256').update(request.body["txtPassword"]).digest('base64');
 	var logged = false;
+	
+	
 	
 	sqlite.verbose();
 	var db = new sqlite.Database("./Database/myDatabase.db");
@@ -146,32 +169,135 @@ app.get( "/welcome", function(request,response,next) {
 *API CRUD
 ***********************/
 //upload
-/*router.post('/upload', uploading, function(req, res) {
-
-})*/
+app.post('/api/photo',multipartMiddleware,function(request,response){
+	var serverPath = '/public/img/immagini/' + request.files.userPhoto.name;
+	require('fs').rename(
+		request.files.userPhoto.path,
+		'C:/Users/Hp Notebook/Desktop/QrReaderProject1104'+serverPath,
+		function(error){
+			if(error){
+				response.send({
+					error: 'Ah crap! Something bad happened'
+				});
+				return;
+			}
+			response.send({
+				path: serverPath
+			});
+		}
+    );
+});
+app.post('/api/parallax',multipartMiddleware,function(request,response){
+	console.log(request.files.userPhoto.name);
+	var serverPath = '/public/img/parallax/' + request.files.userPhoto.name;
+	require('fs').rename(
+		request.files.userPhoto.path,
+		'C:/Users/Hp Notebook/Desktop/QrReaderProject1104'+serverPath,
+		function(error){
+			if(error){
+				response.send({
+					error: 'Ah crap! Something bad happened'
+				});
+				return;
+			}
+			response.send({
+				path: serverPath
+			});
+		}
+    );
+});
 
 //add artwork
 app.get( "/insertArtwork", function(request, response,next){
+	//load data 
 	var title = request.query["title"];
-	var author = request.query["author"];
-	
+	var author = request.query["author"];	
 	title = title.replace("'","''");
-	author=author.replace("'","''");
-	
+	author=author.replace("'","''");	
 	var pictureUrl = request.query["pictureUrl"];
 	var pictureAbstract = request.query["pictureAbstract"];
-	console.log("inserimento in corso...");
+	var NViews=0;
+	var idlocation=request.query["location"];
+	var tecnique=request.query["tecnique"];
+	var year=request.query["year"];
+	var artmovment=request.query["artmovment"];
+	var altezza=request.query["altezza"];
+	var larghezza=request.query["larghezza"];
+	var wiki=request.query["wiki"];
+	var parallaxDettaglio=request.query["parallaxdettaglio"];
+	var parallaxMuseo=request.query["parallaxmuseo"];
+	
+	//sql
 	var header = {'Content-Type' : 'text/plain', 'Cache-Control':'no-cache, must-revalidate'};
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-				var insert=db.prepare("INSERT INTO Artworks (Title,Author,Abstract,PictureUrl) values(?,?,?,?)");
-				insert.run(title, author, pictureAbstract, pictureUrl);
+				var insert=db.prepare("INSERT INTO Artworks (Title,Author,Abstract,PictureUrl,NViews,Location,Tecnique,Year,ArtMovement,DimensionHeight,DimensionWidth,WikipediaPageArtwork,PictureUrl2,PictureUrl3) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+				insert.run(title, author, pictureAbstract, pictureUrl,NViews,idlocation,tecnique,year,artmovment,altezza,larghezza,wiki,parallaxDettaglio,parallaxMuseo);
 				insert.finalize();	
-				response.writeHead(200,header);
-				response.end("ok");								
+				response.writeHead(200,header);								
 				db.close();	
 	});
 });
+
+//update artwork
+app.get( "/updArtwork", function(request, response,next){
+	
+	//load data 
+	var title = request.query["title"];
+	var author = request.query["author"];	
+	title = title.replace("'","''");
+	author=author.replace("'","''");	
+	var pictureUrl = request.query["pictureUrl"];
+	var pictureAbstract = request.query["pictureAbstract"];
+	var NViews=0;
+	var idlocation=request.query["location"];
+	var tecnique=request.query["tecnique"];
+	var year=request.query["year"];
+	var artmovment=request.query["artmovment"];
+	var altezza=request.query["altezza"];
+	var larghezza=request.query["larghezza"];
+	var wiki=request.query["wiki"];
+	var parallaxDettaglio=request.query["parallaxdettaglio"];
+	var parallaxMuseo=request.query["parallaxmuseo"];
+	
+	//sql
+	var header = {'Content-Type' : 'text/plain', 'Cache-Control':'no-cache, must-revalidate'};
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+			if(pictureUrl!='' && parallaxDettaglio!='' && parallaxMuseo!=''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',PictureUrl='"+pictureUrl+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl2='"+parallaxDettaglio+"',PictureUrl3='"+parallaxMuseo+"' where Title='"+title+"'");								
+			}
+			else if(pictureUrl=='' && parallaxDettaglio!='' && parallaxMuseo!=''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl2='"+parallaxDettaglio+"',PictureUrl3='"+parallaxMuseo+"' where Title='"+title+"'");										
+			}		
+			else if(pictureUrl!='' && parallaxDettaglio=='' && parallaxMuseo!=''){
+						var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',PictureUrl='"+pictureUrl+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl3='"+parallaxMuseo+"' where Title='"+title+"'");								
+			}			
+			else if(pictureUrl!='' && parallaxDettaglio!='' && parallaxMuseo==''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',PictureUrl='"+pictureUrl+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl2='"+parallaxDettaglio+"' where Title='"+title+"'");										
+			}		
+			else if(pictureUrl=='' && parallaxDettaglio=='' && parallaxMuseo!=''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl3='"+parallaxMuseo+"' where Title='"+title+"'");										
+			}		
+			else if(pictureUrl!='' && parallaxDettaglio=='' && parallaxMuseo==''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',PictureUrl='"+pictureUrl+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"' where Title='"+title+"'");										
+			}			
+			else if(pictureUrl=='' && parallaxDettaglio!='' && parallaxMuseo==''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"',PictureUrl2='"+parallaxDettaglio+"' where Title='"+title+"'");										
+			}			
+			else if(pictureUrl=='' && parallaxDettaglio=='' && parallaxMuseo==''){
+				var insert=db.prepare("update artworks set Author="+author+",Abstract='"+pictureAbstract+"',NViews=0,Location="+idlocation+",Tecnique='"+tecnique+"',Year='"+year+"',ArtMovement='"+artmovment+"',DimensionHeight='"+altezza+"',DimensionWidth='"+larghezza+"',WikipediaPageArtwork='"+wiki+"' where Title='"+title+"'");										
+			}		
+			
+		insert.run();
+		insert.finalize();	
+		response.writeHead(200, header);
+		response.end("record aggiornato");								
+		db.close();		
+		});
+		
+	});
+
 
 //delete artwork
 app.get("/delArtwork", function(request, response,next){
@@ -184,28 +310,6 @@ app.get("/delArtwork", function(request, response,next){
 				insert.finalize();	
 				response.writeHead(200, header);
 				response.end("record eliminato");								
-				db.close();	
-	});
-});
-
-//update artwork
-app.get( "/updArtwork", function(request, response,next){
-	var title = request.query["title"];
-	var author = request.query["author"];
-	
-	title = title.replace("'","''");
-	author =author.replace("'","''");
-	
-	var abstract = request.query["pictureAbstract"];
-	var pictureurl = request.query["pictureUrl"];
-	var header = {"Content-Type":"text/html"};	
-		var db = new sqlite.Database("Database/myDatabase.db");
-		db.serialize(function(){
-				var insert=db.prepare("update artworks set author='"+author+"',abstract='"+abstract+"',pictureUrl='"+pictureurl+"' where title='"+title+"'");
-				insert.run();
-				insert.finalize();	
-				response.writeHead(200, header);
-				response.end("record aggiornato");								
 				db.close();	
 	});
 });
@@ -295,16 +399,36 @@ app.get("/allArtworks", function(request, response,next){
 			db.each(sql, 
 				function(err, row){
 					
+					
 					var artwork = {};
 					artwork.id = row.Id;
 					artwork.title = row.Title;
 					artwork.author = row.Author;
-					artwork.pictureAbstract = row.Abstract;
+					artwork.abstract = row.Abstract;
 					artwork.pictureUrl = row.PictureUrl;
-					artwork.nViews = row.NViews;
-					//
-					artwork.name = row.Name;
+					artwork.tecnique = row.Tecnique;
+					artwork.year = row.Year;
+					artwork.artMovement = row.ArtMovement;
+					artwork.dimensionHeight = row.DimensionHeight;
+					artwork.dimensionWidth = row.DimensionWidth;
+					artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
+					artwork.location = row.Location
+					artwork.pictureUrl2 = row.PictureUrl2;
+					artwork.pictureUrl3 = row.PictureUrl3;
+					
+					//field table 'locationsArtworks'
+					artwork.idLocationsArtworks = row.IdLocationsArtworks;
 					artwork.description = row.Description;
+					artwork.city = row.City;
+					artwork.nation = row.Nation;
+					artwork.wikipediaPageLocation = row.WikipediaPageLocation;
+					artwork.address = row.Address;
+					
+					//field table 'authors'
+					artwork.idAuthor = row.IdAuthors;
+					artwork.name = row.Name;
+					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
+					artwork.nationalityAuthor = row.NationalityAuthor;
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
@@ -381,7 +505,8 @@ app.get("/similarArtworks", function(request, response,next){
 	var header = {"Content-Type":"text/html"};	
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.Name = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
+	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.idAuthors = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
+	console.log(sql);
 		var json;
 		var listArtworks = [];
 		db.each(sql, 
@@ -400,6 +525,7 @@ app.get("/similarArtworks", function(request, response,next){
 				json = JSON.stringify(listArtworks);
 				
 				response.writeHead(200, header);
+				console.log(json);
 				response.end(json);								
 			});
 			db.close();	
@@ -408,7 +534,7 @@ app.get("/similarArtworks", function(request, response,next){
 });
 
 
-/////////////////////////////////////////SUGGERIMENTI SIMIL GOOGOLE
+//SUGGERIMENTI SIMIL GOOGOLE
 app.get("/completion", function(req, res,next) {	
 
     var testo = req.query["parolaCercata"];
@@ -442,6 +568,69 @@ app.get("/completion", function(req, res,next) {
         res.end(JSON.stringify(vectTrovate));
     }
 }); 
+
+//get authors
+app.get("/getAuthors", function(request, response,next) {
+	utility.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+		var sql = "SELECT IdAuthors,Name from Authors";
+        var json;
+		var listArtworks = [];			
+			db.each(sql, 
+				function(err, row){					
+					var artwork = {};
+					artwork.id = row.IdAuthors;
+					artwork.name = row.Name;			
+					listArtworks.push(artwork);
+				},
+				function(err, nRighe){
+					json = JSON.stringify(listArtworks);
+					response.writeHead(200, header);
+					console.log(json);
+					response.end(json);				
+				});
+				
+				db.close();	
+		}); 
+	});
+		
+});
+
+//get LocationsArtworks//get authors
+app.get("/getLocations", function(request, response,next) {
+	utility.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+		var sql = "SELECT IdLocationsArtworks,Description from LocationsArtworks";
+        var json;
+		var listArtworks = [];			
+			db.each(sql, 
+				function(err, row){					
+					var artwork = {};
+					artwork.id = row.IdLocationsArtworks;
+					artwork.name = row.Description;			
+					listArtworks.push(artwork);
+				},
+				function(err, nRighe){
+					json = JSON.stringify(listArtworks);
+					response.writeHead(200, header);
+					console.log(json);
+					response.end(json);				
+				});
+				
+				db.close();	
+		}); 
+	});
+		
+});
+
 
 
 /*

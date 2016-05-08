@@ -94,7 +94,8 @@ input
 /*
 *	Footer
 */
-.footer {
+.footer 
+{
     position: fixed;
     bottom: 20;
     width: 100%;
@@ -135,4 +136,33 @@ input
 {
 	width: 100%;
 	height: 300px;
+}
+
+/*
+* HELP & FEEDBACK SECTIONS
+*/
+
+#help-header, #feedback-header
+{
+	width: 100%;
+	height: 300px;
+	background-color: #EE6E73;
+	text-align:center;
+	color: black;
+}
+
+#feedback-content
+{
+}
+
+#form-feedback
+{
+	width: 600px;
+}
+
+#navbar-help1
+{
+    position: fixed;
+	right:0;
+	top:300px;
 }

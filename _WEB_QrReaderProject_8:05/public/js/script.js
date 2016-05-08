@@ -2,7 +2,7 @@
 * Script functions (interaction with the server) - AJAX calls
 ************************/
 
-var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork;
+var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation;
 
 /**************************************************************LOGIN CALLS***************************************************************/
 //login to index page
@@ -16,6 +16,25 @@ function access()
 /****************************************
 *			CRUD 
 ******************************************/
+function tryA(){
+	console.log($("#userPhotoInput").val().split('\\').pop());
+	console.log($("#pictureUrl1").val().split('\\').pop());
+	console.log($("#pictureUrl2").val().split('\\').pop());
+	if($("#userPhotoInput").val().split('\\').pop()!="")
+	$('#uploadForm').submit();
+	if($("#pictureUrl1").val().split('\\').pop()!="")
+	$('#uploadForm1').submit();
+	if($("#pictureUrl2").val().split('\\').pop()!="")
+	$('#uploadForm2').submit();	
+}
+  
+function upImg(){	
+	notQueryRequest = new XMLHttpRequest();
+	var url="/api/photo";
+	notQueryRequest.open("POST", url, true);
+	notQueryRequest.onreadystatechange = notQueryUpdate;
+	notQueryRequest.send(null);
+}
 function deleteArtwork(id)
 {
 	notQueryRequest = new XMLHttpRequest();
@@ -26,31 +45,59 @@ function deleteArtwork(id)
 	notQueryRequest.send(null);
 }
 
-function addArtwork(tit,aut,abs,pic)
+function addArtwork(tit,aut,abs,pic,nv,idloc,tec,y,artm,height,width,wiki,parallaxdesc,parallaxmus)
 {
 	notQueryRequest = new XMLHttpRequest();
+	
+	//set data
 	var title =tit ;
 	var author =aut ;
 	var pictureAbstract =abs;
 	var pictureurl=pic;
-	var url="insertArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&pictureAbstract="+encodeURIComponent(pictureAbstract)+"&pictureUrl="+encodeURIComponent(pictureurl);
+	var nview=nv;
+	var idlocation=idloc;
+	var tecnique=tec;
+	var year=y;
+	var artmovement=artm;
+	var altezza=height;
+	var larghezza=width;
+	var wikipedia=wiki;
+	var parallaxdescrizione=parallaxdesc;
+	var parallaxmuseo=parallaxmus;
+	
+	//call insert api
+	var url="insertArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&pictureAbstract="+encodeURIComponent(pictureAbstract)+"&pictureUrl="+encodeURIComponent(pictureurl)+"&location="+encodeURIComponent(idlocation)+"&tecnique="+encodeURIComponent(tecnique)+"&year="+encodeURIComponent(year)+"&artmovment="+encodeURIComponent(artmovement)+"&altezza="+encodeURIComponent(altezza)+"&larghezza="+encodeURIComponent(larghezza)+"&wiki="+encodeURIComponent(wiki)+"&parallaxdettaglio="+encodeURIComponent(parallaxdescrizione)+"&parallaxmuseo="+encodeURIComponent(parallaxmuseo);
 	notQueryRequest.open("GET", url, true);
 	notQueryRequest.onreadystatechange = notQueryUpdate;
 	notQueryRequest.send(null);
 	
 }
 
-function updateArtwork(tit,aut,abs,pic)
+function updateArtwork(tit,aut,abs,pic,nv,idloc,tec,y,artm,height,width,wiki,parallaxdesc,parallaxmus)
 {
 	notQueryRequest = new XMLHttpRequest();
-	var title =tit;
-	var author =aut;
-	var picAbstract =abs;
+	
+	//set data
+	var title =tit ;
+	var author =aut ;
+	var pictureAbstract =abs;
 	var pictureurl=pic;
-	var url="updArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&pictureAbstract="+encodeURIComponent(picAbstract)+"&pictureUrl="+encodeURIComponent(pictureurl);
+	var nview=nv;
+	var idlocation=idloc;
+	var tecnique=tec;
+	var year=y;
+	var artmovement=artm;
+	var altezza=height;
+	var larghezza=width;
+	var wikipedia=wiki;
+	var parallaxdescrizione=parallaxdesc;
+	var parallaxmuseo=parallaxmus;
+	
+	//call insert api
+	var url="updArtwork?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&pictureAbstract="+encodeURIComponent(pictureAbstract)+"&pictureUrl="+encodeURIComponent(pictureurl)+"&location="+encodeURIComponent(idlocation)+"&tecnique="+encodeURIComponent(tecnique)+"&year="+encodeURIComponent(year)+"&artmovment="+encodeURIComponent(artmovement)+"&altezza="+encodeURIComponent(altezza)+"&larghezza="+encodeURIComponent(larghezza)+"&wiki="+encodeURIComponent(wiki)+"&parallaxdettaglio="+encodeURIComponent(parallaxdescrizione)+"&parallaxmuseo="+encodeURIComponent(parallaxmuseo);
 	notQueryRequest.open("GET", url, true);
 	notQueryRequest.onreadystatechange = notQueryUpdate;
-	notQueryRequest.send(null);
+	notQueryRequest.send();
 }
 
 
@@ -96,12 +143,42 @@ function similarArtworks(auth, tit, artM)
 	similarRequest.send(null);
 }
 
+function allAuthors(){
+	console.log("wala2");
+	reqCbAuthor = new XMLHttpRequest();
+	var url="/getAuthors";
+	reqCbAuthor.open("GET", url, true);
+	reqCbAuthor.onreadystatechange = caricacomboAuthors;
+	reqCbAuthor.send(null);
+}
+function allLocation(){
+	reqCbLocation = new XMLHttpRequest();
+	var url="/getLocations";
+	reqCbLocation.open("GET", url, true);
+	reqCbLocation.onreadystatechange = caricacomboLocation;
+	reqCbLocation.send(null);
+}
 /**********************
 *	AFTER QUERY/NOT QUERY calls
 ***********************/
+function caricacomboAuthors(){
+	if (reqCbAuthor.readyState == 4 && reqCbAuthor.status == 200)
+	{
+		var response = JSON.parse(reqCbAuthor.responseText);
+		var artworks = response;
+		cbAuthors(artworks);		
+	}
+}
+function caricacomboLocation(){
+	if (reqCbLocation.readyState == 4 && reqCbLocation.status == 200)
+	{
+		var response = JSON.parse(reqCbLocation.responseText);
+		var artworks = response;
+		cbLocations(artworks);		
+	}
+}
 function readUpdate()
 {
-	console.log("xdlol");
 	if (readRequest.readyState == 4 && readRequest.status == 200)
 	{
 		var response = JSON.parse(readRequest.responseText);
