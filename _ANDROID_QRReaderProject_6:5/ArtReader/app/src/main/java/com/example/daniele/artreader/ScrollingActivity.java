@@ -4,22 +4,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +21,6 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +33,7 @@ public class ScrollingActivity extends AppCompatActivity {
     ArrayList<Artwork> listFavourites = new ArrayList<Artwork>();
     MediaPlayer mp;
     boolean isAudioPlaying = false;
+    boolean privateSession = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +58,8 @@ public class ScrollingActivity extends AppCompatActivity {
         String strHistory  =  b.getString("jsonHistory");
         String strFavourites  =  b.getString("jsonFavourites");
         String strJson  =  b.getString("jsonArtwork");
+
+        privateSession = b.getBoolean("privateSession");
 
         try
         {
@@ -362,20 +358,24 @@ public class ScrollingActivity extends AppCompatActivity {
     {
         if (fileToUpdate.compareTo("history") == 0)
         {
-            if (listHistory != null) {
-                if (listHistory.size() > 0) {
-                    for (Artwork a : listHistory) {
-                        String data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+            if (listHistory != null)
+            {
+                if (!privateSession)
+                {
+                    if (listHistory.size() > 0) {
+                        for (Artwork a : listHistory) {
+                            String data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+                            String filename = "history1.txt";
+                            writeToFile(data, filename);
+                            RenameAppFile(getApplicationContext(), "history1.txt", "history.txt");
+
+                        }
+                    } else {
+                        String data = "";
                         String filename = "history1.txt";
                         writeToFile(data, filename);
                         RenameAppFile(getApplicationContext(), "history1.txt", "history.txt");
-
                     }
-                } else {
-                    String data = "";
-                    String filename = "history1.txt";
-                    writeToFile(data, filename);
-                    RenameAppFile(getApplicationContext(), "history1.txt", "history.txt");
                 }
             }
         }
