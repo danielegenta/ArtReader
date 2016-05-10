@@ -17,6 +17,7 @@
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/jscript-login.js"></script>
 		
+		
 		<script src="http://maps.googleapis.com/maps/api/js"></script>		
 	</head>
 	<body>	
@@ -24,20 +25,20 @@
 			<div class="nav-wrapper">
 			  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
 			  <ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="#" id="navbar-login">Login</a></li>
-				<li><a href="#" id="navbar-help">Help</a></li>
+				<li><a href="#" id="navbar-login">Login/Registrati</a></li>
+				<li><a href="#" id="navbar-help">Aiuto</a></li>
 				<li><a href="#" id="navbar-feedback">Lascia un Feedback</a></li>
 			  </ul>
 			<ul id="slide-out" class="side-nav">
-				<li><a href="#" id="navbar-mobile-login">Login</a></li>
-				<li><a href="#" id="navbar-mobile-help">Help</a></li>
+				<li><a href="#" id="navbar-mobile-login">Login/Registrati</a></li>
+				<li><a href="#" id="navbar-mobile-help">Aiuto</a></li>
 				<li><a href="#" id="navbar-mobile-feedback">Lascia un Feedback</a></li>
 			</ul>
 		  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 			</div>
 		</nav>
 		
-		<div id="page1">
+		<div id="page-home">
 		 
 		<div class="slider">
 			<ul class="slides">
@@ -68,6 +69,13 @@
 		<div class="header">
 			<h1>Art Reader</h1>
 			<h2>Learn faster, Learn more.</h2>
+			<div id="header-social">
+				<table id="table-social">
+					<tr>
+						<td width="33px"><img src="img/system/facebook.png"></td><td  width="33px"><img src="img/system/twitter.png"> </td><td  width="33"><img src="img/system/instagram.png"> </td>
+					</tr>
+				</table>
+			</div>
 			<br><br>
 			<img src="img/system/gplay-badge.png" id="home-googleplaybadge"width="150" height="50"></img>
 		</div>
@@ -103,52 +111,108 @@
 		</div>
 	</div>
 		
-	<div id="page2" style="display:none">
+	<div id="page-login" style="display:none">
 		<!--HEADER SPACE-->
 		<div class="header">
 			<br>
  			<h1>Art Reader</h1>
 			<h2>Learn Faster, Learn More</h2>
 		</div>
-		<div>
- 			<h3>Login</h3>
-		</div>
-		<!--LOGIN FORM-->
-		<form method="post" action="" name="formLogin" class="col s12">
-			<div class="row">
-				<label for="first_name">Username</label>
-				<input placeholder="Inserisci il tuo username" id="first_name" type="text" class="validate" name="txtUsername">
-			</div>
-			<div class="row">
-				<label for="password">Password</label>
-				<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword">
-			</div>
-				<p>
-				  <input type="checkbox" id="chkShowPassword" />
-				  <label for="chkShowPassword">Mostra Password</label>
-				</p>
-			<div>
-				<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="access()">ENTRA
-					<i class="material-icons right">send</i>
-				</button>
-				<div name="lblError" id="lblLoginError">(errori login)</div>
-			</div>
-		</form>
 		
-		<!--NEW USER-->
-		<button class="btn waves-effect waves-light" type="button" name="action" onClick="">NUOVO UTENTE
-		</button>
+		<!--LOGIN FORM-->
+		<div id="page-login-signin">
+			<div>
+				<h3>Bentornato!</h3>
+			</div>
+			<form method="post" action="" name="formLogin" class="col s12">
+				<div class="row">
+					<label for="first_name">Username</label>
+					<input placeholder="Inserisci il tuo username" id="first_name" type="text" class="validate" name="txtUsername">
+				</div>
+				<div class="row">
+					<label for="password">Password</label>
+					<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword">
+				</div>
+					<p>
+					  <input type="checkbox" id="chkShowPassword" />
+					  <label for="chkShowPassword">Mostra Password</label>
+					</p>
+				<div>
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="access()">ENTRA
+						<i class="material-icons right">send</i>
+					</button>
+					<div name="lblError" id="lblLoginError">(errori login)</div>
+				</div>
+			</form>
+			<!--NEW USER-->
+			<div id="page-login-newuser">
+				Nuovo Utente? <a id="page-login-newuser-link">Registrati!</a> 
+			</div>
+		</div>
+		<div id="page-login-signup" style="display: none">
+			<div>
+				<h3>Benvenuto!</h3>
+			</div>
+			<form method="post" action="" name="frmSignUp" class="col s12">
+				<div class="row">
+					<label for="first_name">Username</label>
+					<input placeholder="Scegli username" id="first_name" type="text" class="validate" name="txtUsername-SignUp">
+				</div>
+				<div class="row">
+					<label for="first_name">Mail</label>
+					<input placeholder="Inserisci la tua mail" id="mail" type="text" class="validate" name="txtMail-SignUp">
+				</div>
+				<div class="row">
+					<label for="first_name">Telefono</label>
+					<input placeholder="Inserisci il tuo numero di telefono" id="password" type="text" class="validate" name="txtTelefono-SignUp">
+				</div>
+				<div class="row">
+					<label for="password">Password</label>
+					<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword-SignUp">
+				</div>
+				<div class="row">
+					<label for="password">Conferma Password</label>
+					<input placeholder="Conferma la tua password" id="password" type="password" class="validate" name="txtPasswordConfirm-SignUp">
+				</div>
+				<div>
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnSignUp" onClick="">REGISTRATI
+						<i class="material-icons right">send</i>
+					</button>
+					<div name="lblError" id="lblLoginError-SignUp">(errori registrazione)</div>
+				</div>
+			</form>
+			<!--NEW USER-->
+			<div id="page-login-signup-alreadyuser">
+				Hai già un account? <a id="page-login-signup-alreadyuser-link">Accedi!</a> 
+			</div>
+		</div>
+		
 		
 		
 	</div>
-	<div id="page2Bis" style="display: none">
+	<div id="page-home-2" style="display: none">
 		<div class="material-panel1" id="material-panel-header">
-		<div class="header">
-			<img src="img/tmpLogo.png" height="100" width="130">
+		
 			<br>
- 			<h1>Art Reader</h1>
-			<h2>Learn Faster, Learn More</h2>
-		</div>
+			
+			<div class="header1">
+ 			<video autoplay loop poster="video/homevideo/video.jpg" id="bgvid">
+				<source src="video/homevideo/video.mp4" type="video/mp4">
+			</video>
+				<div id="overlay">	
+					<h1>Art Reader</h1>
+					<h2>Learn Faster, Learn More</h2>
+					<div id="header-social">
+						<table id="table-social">
+							<tr>
+								<td width="33px"><img src="img/system/facebook.png"></td><td  width="33px"><img src="img/system/twitter.png"> </td><td  width="33"><img src="img/system/instagram.png"> </td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+
+
 		</div>
 		<div class="material-panel" id="material-panel-map">
 		<br><br>

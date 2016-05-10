@@ -13,15 +13,17 @@ $(document).ready(function()
 			$("#password").attr("type", "password")
 	});
 	
-	if(navigator.geolocation)
-		navigator.geolocation.getCurrentPosition(mia_posizione);
-	else
-		alert('Il browser non supporta la geolocalizzazione.');
+	
 	$("#viewPage2").click(function()
 	{
-		$("#page1").hide();
+		$("#page-home").hide();
+		
+		$("#page-home-2").show();
 		$('.carousel').carousel();
-		$("#page2Bis").show();
+		if(navigator.geolocation)
+			navigator.geolocation.getCurrentPosition(mia_posizione);
+		else
+			alert('Il browser non supporta la geolocalizzazione.');
 	});
 	
 	/*
@@ -29,9 +31,9 @@ $(document).ready(function()
 	*/
 	$("#navbar-login, #navbar-mobile-login").click(function()
 	{
-		$("#page1").hide();
-		$("#page2").show();
-		$("#page2Bis").hide();
+		$("#page-home").hide();
+		$("#page-login").show();
+		$("#page-home-2").hide();
 		$("#page-feedback").hide();
 		$("#page-help").hide();
 	});
@@ -39,27 +41,27 @@ $(document).ready(function()
 
 	$("#navbar-home").click(function()
 	{
-		$("#page1").show();
-		$("#page2").hide();
-		$("#page2Bis").hide();
+		$("#page-home").show();
+		$("#page-login").hide();
+		$("#page-home-2").hide();
 		$("#page-feedback").hide();
 		$("#page-help").hide();
 	});
 	
 	$("#navbar-feedback, #navbar-mobile-feedback").click(function()
 	{
-		$("#page1").hide();
-		$("#page2").hide();
-		$("#page2Bis").hide();
+		$("#page-home").hide();
+		$("#page-login").hide();
+		$("#page-home-2").hide();
 		$("#page-help").hide();
 		$("#page-feedback").show();
 	});
 	
 	$("#navbar-help, #navbar-mobile-help").click(function()
 	{
-		$("#page1").hide();
-		$("#page2").hide();
-		$("#page2Bis").hide();
+		$("#page-home").hide();
+		$("#page-login").hide();
+		$("#page-home-2").hide();
 		$("#page-feedback").hide();
 		$("#page-help").show();
 		$('.scrollspy').scrollSpy();
@@ -70,8 +72,8 @@ $(document).ready(function()
 	
 	$("#viewPage1").click(function()
 	{
-		$("#page2Bis").hide();
-		$("#page1").show();
+		$("#page-home-2").hide();
+		$("#page-home").show();
 	});
 	
 	 $('.slider').slider({full_width: true, indicators: false});
@@ -83,20 +85,35 @@ $(document).ready(function()
 	{
 		window.open('mailto:support@artreader.com?subject=RICHIESTA SUPPORTO');
 	});
+	
+	//login - signup page
+	$("#page-login-newuser-link").click(function()
+	{
+		$("#page-login-signin").hide();
+		$("#page-login-signup").show();
+	});
+	
+	$("#page-login-signup-alreadyuser-link").click(function()
+	{
+		$("#page-login-signup").hide();
+		$("#page-login-signin").show();
+	});
 });
 
+//creare un marker per ogni museo sfruttando API
 function mia_posizione(position) 
 {	
 	latlng = new google.maps.LatLng(44,7);
 	
-	var opzioni={
-	zoom:8,
-	center:latlng,
-	mapTypeControl:true,
-	mapTypeControlOption:{style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR},
-	navigationControl:true,
-	navigationControlOption:{Style:google.maps.NavigationControlStyle.SMALL},
-	mapTypeId:google.maps.MapTypeId.ROADMAP
+	var opzioni=
+	{
+		zoom: 2,
+		center:latlng,
+		mapTypeControl:false,
+		mapTypeControlOption:{style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR},
+		navigationControl:false,
+		navigationControlOption:{Style:google.maps.NavigationControlStyle.SMALL},
+		mapTypeId:google.maps.MapTypeId.ROADMAP
 	};
 	
 	var mapDiv=document.getElementById('museumMap');
