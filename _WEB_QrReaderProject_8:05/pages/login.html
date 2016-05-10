@@ -17,128 +17,51 @@
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/jscript-login.js"></script>
 		
-		<script src="http://maps.googleapis.com/maps/api/js"></script>	
-		<script>
-		$(document).ready(function()
-		{
-			if(navigator.geolocation)
-				navigator.geolocation.getCurrentPosition(mia_posizione);
-			else
-				alert('Il browser non supporta la geolocalizzazione.');
-			$("#viewPage2").click(function()
-			{
-				$("#page1").hide();
-				$('.carousel').carousel();
-				$("#page2Bis").show();
-			});
-			
-			$("#navbar-login").click(function()
-			{
-				$("#page1").hide();
-				$("#page2").show();
-			});
-			
-			$("#navbar-feedback").click(function()
-			{
-				$("#page1").hide();
-				$("#page-feedback").show();
-			});
-			
-			$("#navbar-help").click(function()
-			{
-				$("#page1").hide();
-				$("#page-help").show();
-				$('.scrollspy').scrollSpy();
-			});
-			
-			
-			
-			$("#viewPage1").click(function()
-			{
-				$("#page2Bis").hide();
-				$("#page1").show();
-			});
-			
-			 $('.slider').slider({full_width: true, indicators: false});
-			 
-			  $("#page1").bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta /120 > 0) {
-					//$(this).text('scrolling up !');
-				}
-				else{
-						$("#page1").hide();
-						$('.carousel').carousel();
-						$("#page2Bis").show();
-				}
-			});
-			
-			 /*$("#page2").bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta /120 > 0) {
-					$("#page2").hide();
-				$("#page1").show();
-				}
-				else{
-				}
-			});*/
-		
-		});
-		
-		function mia_posizione(position) 
-		{	
-			latlng = new google.maps.LatLng(44,7);
-			
-			var opzioni={
-			zoom:8,
-			center:latlng,
-			mapTypeControl:true,
-			mapTypeControlOption:{style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR},
-			navigationControl:true,
-			navigationControlOption:{Style:google.maps.NavigationControlStyle.SMALL},
-			mapTypeId:google.maps.MapTypeId.ROADMAP
-			};
-			
-			var mapDiv=document.getElementById('museumMap');
-			map = new google.maps.Map(mapDiv,opzioni);
-		}
-		</script>
-		
+		<script src="http://maps.googleapis.com/maps/api/js"></script>		
 	</head>
-	<body>
-		
-		<div id="page1">
-		 <nav>
+	<body>	
+		<nav>
 			<div class="nav-wrapper">
-			  <a href="#" class="brand-logo">Art Reader</a>
+			  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
 			  <ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="#" id="navbar-login">Login</a></li>
 				<li><a href="#" id="navbar-help">Help</a></li>
 				<li><a href="#" id="navbar-feedback">Lascia un Feedback</a></li>
 			  </ul>
+			<ul id="slide-out" class="side-nav">
+				<li><a href="#" id="navbar-mobile-login">Login</a></li>
+				<li><a href="#" id="navbar-mobile-help">Help</a></li>
+				<li><a href="#" id="navbar-mobile-feedback">Lascia un Feedback</a></li>
+			</ul>
+		  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 			</div>
 		</nav>
+		
+		<div id="page1">
+		 
 		<div class="slider">
 			<ul class="slides">
 			  <li>
-				<img src="img/index-bg/1.jpg"> <!-- random image -->
+				<img src="img/index-bg/1.jpg">
 				
 			  </li>
 			  <li>
-				<img src="img/index-bg/2.jpg"> <!-- random image -->
+				<img src="img/index-bg/2.jpg">
 			  </li>
 			  <li>
-				<img src="img/index-bg/3.jpg"> <!-- random image -->
+				<img src="img/index-bg/3.jpg">
 			  </li>
 			  <li>
-				<img src="img/index-bg/4.jpg"> <!-- random image -->
+				<img src="img/index-bg/4.jpg">
 			  </li>
 			  <li>
-				<img src="img/index-bg/5.jpg"> <!-- random image -->
+				<img src="img/index-bg/5.jpg">
 			  </li>
 			  <li>
-				<img src="img/index-bg/6.jpg"> <!-- random image -->
+				<img src="img/index-bg/6.jpg"> 
 			  </li>
 			  <li>
-				<img src="img/index-bg/7.jpg"> <!-- random image -->
+				<img src="img/index-bg/7.jpg"> 
 			  </li>
 			</ul>
 		</div>
@@ -146,7 +69,7 @@
 			<h1>Art Reader</h1>
 			<h2>Learn faster, Learn more.</h2>
 			<br><br>
-			<img src="img/system/gplay-badge.png" width="150" height="50"></img>
+			<img src="img/system/gplay-badge.png" id="home-googleplaybadge"width="150" height="50"></img>
 		</div>
 		<br><br>
 		<div class="row">
@@ -183,7 +106,6 @@
 	<div id="page2" style="display:none">
 		<!--HEADER SPACE-->
 		<div class="header">
-			<img src="img/tmpLogo.png" height="100" width="130">
 			<br>
  			<h1>Art Reader</h1>
 			<h2>Learn Faster, Learn More</h2>
@@ -311,7 +233,7 @@
 			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35"></img>
 		</div>
 	</div>
-	
+		<!--PAGINA DI FEEDBACK-->
 		<div id="page-feedback" style="display: none">
 			<div id="feedback-header">
 				<br>
@@ -319,41 +241,45 @@
 				<h2>Facci sapere cosa ne pensi!</h2>
 			</div>
 			<div id="feedback-content">
-			<form id="form-feedback">
-				<div class="row">
-					
-					  <div class="row">
-						<div class="input-field col s6">
-						  <i class="material-icons prefix">account_circle</i>
-						  <input id="icon_prefix2" type="text" class="validate">
-						  <label for="icon_prefix2">Nickname</label>
-						</div>
-						<div class="input-field col s6">
-						  <i class="material-icons prefix">phone</i>
-						  <input id="icon_telephone" type="tel" class="validate">
-						  <label for="icon_telephone">Telefono</label>
-						</div>
-					  </div>
-					</div>
+				<form id="form-feedback">
 					<div class="row">
-					  <div class="input-field col s12">
-						  <i class="material-icons prefix">email</i>
-						  <input id="icon_prefix2" type="text" class="validate">
-						  <label for="icon_prefix2">Mail</label>
+						  <div class="row">
+							<div class="input-field col s6">
+							  <i class="material-icons prefix">account_circle</i>
+							  <input id="icon_prefix2" type="text" class="validate">
+							  <label for="icon_prefix2">Nickname</label>
+							</div>
+							<div class="input-field col s6">
+							  <i class="material-icons prefix">phone</i>
+							  <input id="icon_telephone" type="tel" class="validate">
+							  <label for="icon_telephone">Telefono</label>
+							</div>
+						  </div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="input-field col s12">
-						     <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-							 <label for="icon_prefix2">Messaggio</label>
+						<div class="row">
+						  <div class="input-field col s12">
+							  <i class="material-icons prefix">email</i>
+							  <input id="icon_prefix2" type="text" class="validate">
+							  <label for="icon_prefix2">Mail</label>
+							</div>
 						</div>
-					</div>
-					<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="">INVIA
-					<i class="material-icons right">send</i>
-				</button>
-				  </form></div>
+						<div class="row">
+							<div class="input-field col s12">
+								 <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+								 <label for="icon_prefix2">Messaggio</label>
+							</div>
+						</div>
+						<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="">INVIA
+						<i class="material-icons right">send</i>
+						</button>
+				</form>
+				<div id = "feedback-bottom">
+					Serve altro aiuto? <a id="feedback-bottom-linkmail">Scrivici.</a>
+				</div>
+			</div>
 			</div>
 		</div>
+		<!--PAGINA DI GUIDA-->
 		<div id="page-help" style="display: none">
 			<div id="help-header">
 			<br>
@@ -366,48 +292,16 @@
 			<div class="col s12 m9 l10">
 			  <div id="whatis" class="section scrollspy">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis mattis feugiat. Morbi non commodo nisi, a faucibus augue. Nam et laoreet ex. Ut nec viverra leo, sit amet varius ante. Duis id nisi quis velit vestibulum convallis eu condimentum nulla. Nulla bibendum, leo ut aliquam accumsan, elit quam auctor odio, at suscipit mi ligula id erat. Nulla tempus auctor metus ut pulvinar. Pellentesque rutrum posuere elit, sit amet auctor turpis varius sed. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus interdum velit sed leo interdum volutpat.
-
-Nullam sagittis nisl arcu, ut feugiat mi sagittis vitae. Sed egestas dolor risus, vel suscipit ante commodo sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus elementum, sem eu molestie ultricies, mi leo condimentum nunc, id rutrum est erat ultricies urna. Donec at nibh nulla. Cras congue tellus sed metus gravida, id posuere augue dictum. Aliquam scelerisque eget erat vel gravida. Sed eget massa ante. Nullam fringilla velit eget lacus pulvinar, ut tempor nibh volutpat. Quisque at sapien eget nulla luctus maximus. Mauris id mattis nisl. Pellentesque quis faucibus lorem. Phasellus tellus orci, iaculis cursus purus vitae, finibus fermentum eros. Quisque ut purus ultricies, malesuada quam et, dapibus libero.
-
-Ut a dignissim felis. Nullam diam metus, congue eu quam sit amet, placerat suscipit purus. Aliquam a ligula massa. Maecenas vestibulum pellentesque ipsum, eu rhoncus enim interdum eget. Mauris porttitor metus nisl, eget fermentum ligula condimentum dignissim. Nam in sem vel lectus elementum eleifend. In facilisis neque felis, quis laoreet nisl feugiat eu. Donec magna dolor, tempus id pulvinar nec, viverra sit amet mi. Aenean eget dolor pulvinar, ullamcorper risus in, porttitor felis. Quisque et ante tempus, commodo libero nec, ultricies lacus. Vestibulum lobortis augue urna, vitae semper metus blandit at.
-
-Etiam mattis urna ac mauris egestas, non ultrices magna accumsan. Sed porta dui quis est tempor, elementum convallis odio scelerisque. Vestibulum nec dapibus quam, ut ultricies tortor. Curabitur tempor ante sed leo laoreet aliquet. Mauris sit amet est lacus. Proin commodo leo vel elit pellentesque gravida. Nulla id varius lectus. Etiam at bibendum odio. Nam vel tellus mauris.
-
-Sed commodo semper erat, quis fermentum eros rutrum eget. Aenean lacinia lorem neque, id tincidunt elit finibus sit amet. Etiam auctor nibh orci, non rhoncus nisi dignissim congue. Quisque ante lorem, congue sit amet rutrum in, gravida et orci. Donec luctus nibh at dolor sollicitudin, at cursus neque pretium. Quisque sollicitudin nisi a purus imperdiet, vitae feugiat odio tempus. Pellentesque arcu sem, consequat id ipsum non, mollis tincidunt lectus. Mauris sollicitudin vulputate euismod. Aliquam posuere eros nunc, in dictum augue mollis a. Phasellus in nunc lacinia, ultricies nisi eget, tincidunt neque.
 				</p>
 			  </div>
 
 			  <div id="mobile" class="section scrollspy">
 				<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis mattis feugiat. Morbi non commodo nisi, a faucibus augue. Nam et laoreet ex. Ut nec viverra leo, sit amet varius ante. Duis id nisi quis velit vestibulum convallis eu condimentum nulla. Nulla bibendum, leo ut aliquam accumsan, elit quam auctor odio, at suscipit mi ligula id erat. Nulla tempus auctor metus ut pulvinar. Pellentesque rutrum posuere elit, sit amet auctor turpis varius sed. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus interdum velit sed leo interdum volutpat.
-
-Nullam sagittis nisl arcu, ut feugiat mi sagittis vitae. Sed egestas dolor risus, vel suscipit ante commodo sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus elementum, sem eu molestie ultricies, mi leo condimentum nunc, id rutrum est erat ultricies urna. Donec at nibh nulla. Cras congue tellus sed metus gravida, id posuere augue dictum. Aliquam scelerisque eget erat vel gravida. Sed eget massa ante. Nullam fringilla velit eget lacus pulvinar, ut tempor nibh volutpat. Quisque at sapien eget nulla luctus maximus. Mauris id mattis nisl. Pellentesque quis faucibus lorem. Phasellus tellus orci, iaculis cursus purus vitae, finibus fermentum eros. Quisque ut purus ultricies, malesuada quam et, dapibus libero.
-
-Ut a dignissim felis. Nullam diam metus, congue eu quam sit amet, placerat suscipit purus. Aliquam a ligula massa. Maecenas vestibulum pellentesque ipsum, eu rhoncus enim interdum eget. Mauris porttitor metus nisl, eget fermentum ligula condimentum dignissim. Nam in sem vel lectus elementum eleifend. In facilisis neque felis, quis laoreet nisl feugiat eu. Donec magna dolor, tempus id pulvinar nec, viverra sit amet mi. Aenean eget dolor pulvinar, ullamcorper risus in, porttitor felis. Quisque et ante tempus, commodo libero nec, ultricies lacus. Vestibulum lobortis augue urna, vitae semper metus blandit at.
-
-Etiam mattis urna ac mauris egestas, non ultrices magna accumsan. Sed porta dui quis est tempor, elementum convallis odio scelerisque. Vestibulum nec dapibus quam, ut ultricies tortor. Curabitur tempor ante sed leo laoreet aliquet. Mauris sit amet est lacus. Proin commodo leo vel elit pellentesque gravida. Nulla id varius lectus. Etiam at bibendum odio. Nam vel tellus mauris.
-
-Sed commodo semper erat, quis fermentum eros rutrum eget. Aenean lacinia lorem neque, id tincidunt elit finibus sit amet. Etiam auctor nibh orci, non rhoncus nisi dignissim congue. Quisque ante lorem, congue sit amet rutrum in, gravida et orci. Donec luctus nibh at dolor sollicitudin, at cursus neque pretium. Quisque sollicitudin nisi a purus imperdiet, vitae feugiat odio tempus. Pellentesque arcu sem, consequat id ipsum non, mollis tincidunt lectus. Mauris sollicitudin vulputate euismod. Aliquam posuere eros nunc, in dictum augue mollis a. Phasellus in nunc lacinia, ultricies nisi eget, tincidunt neque.
 				</p>
 			  </div>
 
 			  <div id="faq" class="section scrollspy">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis mattis feugiat. Morbi non commodo nisi, a faucibus augue. Nam et laoreet ex. Ut nec viverra leo, sit amet varius ante. Duis id nisi quis velit vestibulum convallis eu condimentum nulla. Nulla bibendum, leo ut aliquam accumsan, elit quam auctor odio, at suscipit mi ligula id erat. Nulla tempus auctor metus ut pulvinar. Pellentesque rutrum posuere elit, sit amet auctor turpis varius sed. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus interdum velit sed leo interdum volutpat.
-
-Nullam sagittis nisl arcu, ut feugiat mi sagittis vitae. Sed egestas dolor risus, vel suscipit ante commodo sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus elementum, sem eu molestie ultricies, mi leo condimentum nunc, id rutrum est erat ultricies urna. Donec at nibh nulla. Cras congue tellus sed metus gravida, id posuere augue dictum. Aliquam scelerisque eget erat vel gravida. Sed eget massa ante. Nullam fringilla velit eget lacus pulvinar, ut tempor nibh volutpat. Quisque at sapien eget nulla luctus maximus. Mauris id mattis nisl. Pellentesque quis faucibus lorem. Phasellus tellus orci, iaculis cursus purus vitae, finibus fermentum eros. Quisque ut purus ultricies, malesuada quam et, dapibus libero.
-
-Ut a dignissim felis. Nullam diam metus, congue eu quam sit amet, placerat suscipit purus. Aliquam a ligula massa. Maecenas vestibulum pellentesque ipsum, eu rhoncus enim interdum eget. Mauris porttitor metus nisl, eget fermentum ligula condimentum dignissim. Nam in sem vel lectus elementum eleifend. In facilisis neque felis, quis laoreet nisl feugiat eu. Donec magna dolor, tempus id pulvinar nec, viverra sit amet mi. Aenean eget dolor pulvinar, ullamcorper risus in, porttitor felis. Quisque et ante tempus, commodo libero nec, ultricies lacus. Vestibulum lobortis augue urna, vitae semper metus blandit at.
-Nullam sagittis nisl arcu, ut feugiat mi sagittis vitae. Sed egestas dolor risus, vel suscipit ante commodo sit amet. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus elementum, sem eu molestie ultricies, mi leo condimentum nunc, id rutrum est erat ultricies urna. Donec at nibh nulla. Cras congue tellus sed metus gravida, id posuere augue dictum. Aliquam scelerisque eget erat vel gravida. Sed eget massa ante. Nullam fringilla velit eget lacus pulvinar, ut tempor nibh volutpat. Quisque at sapien eget nulla luctus maximus. Mauris id mattis nisl. Pellentesque quis faucibus lorem. Phasellus tellus orci, iaculis cursus purus vitae, finibus fermentum eros. Quisque ut purus ultricies, malesuada quam et, dapibus libero.
-
-Ut a dignissim felis. Nullam diam metus, congue eu quam sit amet, placerat suscipit purus. Aliquam a ligula massa. Maecenas vestibulum pellentesque ipsum, eu rhoncus enim interdum eget. Mauris porttitor metus nisl, eget fermentum ligula condimentum dignissim. Nam in sem vel lectus elementum eleifend. In facilisis neque felis, quis laoreet nisl feugiat eu. Donec magna dolor, tempus id pulvinar nec, viverra sit amet mi. Aenean eget dolor pulvinar, ullamcorper risus in, porttitor felis. Quisque et ante tempus, commodo libero nec, ultricies lacus. Vestibulum lobortis augue urna, vitae semper metus blandit at.
-
-Etiam mattis urna ac mauris egestas, non ultric
-
-Etiam mattis urna ac mauris egestas, non ultrices magna accumsan. Sed porta dui quis est tempor, elementum convallis odio scelerisque. Vestibulum nec dapibus quam, ut ultricies tortor. Curabitur tempor ante sed leo laoreet aliquet. Mauris sit amet est lacus. Proin commodo leo vel elit pellentesque gravida. Nulla id varius lectus. Etiam at bibendum odio. Nam vel tellus mauris.
-
-Sed commodo semper erat, quis fermentum eros rutrum eget. Aenean lacinia lorem neque, id tincidunt elit finibus sit amet. Etiam auctor nibh orci, non rhoncus nisi dignissim congue. Quisque ante lorem, congue sit amet rutrum in, gravida et orci. Donec luctus nibh at dolor sollicitudin, at cursus neque pretium. Quisque sollicitudin nisi a purus imperdiet, vitae feugiat odio tempus. Pellentesque arcu sem, consequat id ipsum non, mollis tincidunt lectus. Mauris sollicitudin vulputate euismod. Aliquam posuere eros nunc, in dictum augue mollis a. Phasellus in nunc lacinia, ultricies nisi eget, tincidunt neque.
 				</p>
 			  </div>
 			</div>

@@ -40,6 +40,11 @@ body
 	background: #eee;
 }
 
+#home-googleplaybadge
+{
+	cursor: pointer;
+}
+
 /*
 *login form 
 */
@@ -79,7 +84,7 @@ input
 	  font-size: 16px;
 	  line-height: 20px;
 	  -webkit-font-smoothing: antialiased;
-	  text-align: center;
+	/*  text-align: center; */
 	  letter-spacing: 1px;
 	  border: 0;
 	  cursor: pointer;
@@ -89,6 +94,8 @@ input
 #lblLoginError
 {
 	color: red;
+	width: 100%;
+	text-align: center;
 }
 
 /*
@@ -111,6 +118,8 @@ input
 
 
 /***********************************************/
+
+/******************************HOME 2***************************/
 
 .material-panel1
 {
@@ -138,6 +147,8 @@ input
 	height: 300px;
 }
 
+/**************************************************************/
+
 /*
 * HELP & FEEDBACK SECTIONS
 */
@@ -158,6 +169,19 @@ input
 #form-feedback
 {
 	width: 600px;
+}
+
+#feedback-bottom
+{
+	width: 100%;
+	text-align: center;
+	bottom: 50px;
+	font-size: 20px;
+}
+
+#feedback-bottom-linkmail
+{
+	cursor: pointer;
 }
 
 #navbar-help1

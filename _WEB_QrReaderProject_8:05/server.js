@@ -600,7 +600,7 @@ app.get("/getAuthors", function(request, response,next) {
 		
 });
 
-//get LocationsArtworks//get authors
+//get LocationsArtworks
 app.get("/getLocations", function(request, response,next) {
 	utility.aggiornaPagina("./pages/index.html", function(window){
 	var header = {"Content-Type":"text/html"};	
@@ -608,14 +608,65 @@ app.get("/getLocations", function(request, response,next) {
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-		var sql = "SELECT IdLocationsArtworks,Description from LocationsArtworks";
+		var sql = "SELECT * from LocationsArtworks";
         var json;
 		var listArtworks = [];			
 			db.each(sql, 
 				function(err, row){					
 					var artwork = {};
 					artwork.id = row.IdLocationsArtworks;
-					artwork.name = row.Description;			
+					artwork.name = row.Description;		
+					artwork.city=row.City;
+					artwork.nation=row.Nation;
+					artwork.wiki=row.WikipediaPageLocation;
+					artwork.address=row.Address;
+					artwork.website=row.Website;
+					artwork.telephone=row.Telephone;
+					
+					listArtworks.push(artwork);
+				},
+				function(err, nRighe){
+					json = JSON.stringify(listArtworks);
+					response.writeHead(200, header);
+					console.log(json);
+					response.end(json);				
+				});
+				
+				db.close();	
+		}); 
+	});
+		
+});
+//get artworks from location
+app.get("/getArtworksFromLocation", function(request, response,next) {
+	var idLocation = request.query["Location"];
+	utility.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+		var sql = "SELECT * from Artworks where Location="+idLocation;
+        var json;
+		var listArtworks = [];			
+			db.each(sql, 
+				function(err, row){					
+					var artwork = {};
+					artwork.id = row.Id;
+					artwork.title = row.Title;
+					artwork.author = row.Author;
+					artwork.abstract = row.Abstract;
+					artwork.pictureUrl = row.PictureUrl;
+					artwork.tecnique = row.Tecnique;
+					artwork.year = row.Year;
+					artwork.artMovement = row.ArtMovement;
+					artwork.dimensionHeight = row.DimensionHeight;
+					artwork.dimensionWidth = row.DimensionWidth;
+					artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
+					artwork.location = row.Location
+					artwork.pictureUrl2 = row.PictureUrl2;
+					artwork.pictureUrl3 = row.PictureUrl3;
+					
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
@@ -631,8 +682,73 @@ app.get("/getLocations", function(request, response,next) {
 		
 });
 
+//API feedback
+//insert feedback
+app.get("/insertFeedback", function(request, response,next) {
+	var type=request.query["Type"];
+	var artwork=request.query["Artwork"];
+	var approved=request.query["Approved"];
+	var description=request.query["Description"];
+	var username=request.query["Username"];
+	var phonenumber=request.query["Phonenumber"];
+	var email=request.query["Email"];
+	
+	//sql
+	var header = {'Content-Type' : 'text/plain', 'Cache-Control':'no-cache, must-revalidate'};
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+				var insert=db.prepare("INSERT INTO Feedbacks (Type,Artwork,Approved,Description,Username,Phonenumber,Email) values(?,?,?,?,?,?,?)");
+				insert.run(type,artwork,approved,description,username,phonenumber,email);
+				insert.finalize();	
+				response.writeHead(200,header);								
+				db.close();	
+	});
+		
+});
 
-
+//get mobile/web feedback
+app.get("/getfeedback", function(request, response,next) {
+	var idartwork = request.query["artwork"];
+	utility.aggiornaPagina("./pages/index.html", function(window){
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+			if(idartwork!=-1){
+				var sql = "SELECT * from Feedbacks where Type='mobile' and Artwork="+idartwork+"order by idFeedback";
+			}
+			else
+			{
+				var sql = "SELECT * from Feedbacks where Type='web' order by idFeedback desc limit 3";
+			}
+        var json;
+		var listArtworks = [];			
+			db.each(sql, 
+				function(err, row){					
+					var artwork = {};
+					artwork.id = row.idFeedback;
+					artwork.type = row.Type;
+					artwork.artwork = row.Artwork;
+					artwork.approved = row.Approved;
+					artwork.description = row.Description;
+					artwork.username = row.Username;
+					artwork.phonenumber = row.Phonenumber;
+					artwork.email = row.Email;
+										
+					listArtworks.push(artwork);
+				},
+				function(err, nRighe){
+					json = JSON.stringify(listArtworks);
+					response.writeHead(200, header);
+					console.log(json);
+					response.end(json);				
+				});
+				
+				db.close();	
+		}); 
+	});
+		
+});
 /*
 admin:
 daniele.genta 
