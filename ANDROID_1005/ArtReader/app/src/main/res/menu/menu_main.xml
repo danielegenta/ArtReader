@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.daniele.artreader.MainActivity">
+    <item
+        android:id="@+id/action_private"
+        android:orderInCategory="100"
+        android:title="Sessione Privata"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_deleteHistory"
+        android:orderInCategory="100"
+        android:title="Cancella Cronologia"
+        app:showAsAction="never" />
+
+</menu>

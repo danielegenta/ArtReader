@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>
+			Welcome to Art Reader
+		</title>
+		<!--Import Google Icon Font-->
+		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+		<link href="css/htmlPagesStyle/login_style.css" rel="stylesheet" type="text/css">
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script type="text/javascript" src="js/jscript-login.js"></script>
+		
+		
+		<script src="http://maps.googleapis.com/maps/api/js"></script>		
+	</head>
+	<body>	
+		<nav>
+			<div class="nav-wrapper">
+			  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
+			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="#" id="navbar-login">Login/Registrati</a></li>
+				<li><a href="#" id="navbar-help">Aiuto</a></li>
+				<li><a href="#" id="navbar-feedback">Lascia un Feedback</a></li>
+			  </ul>
+			<ul id="slide-out" class="side-nav">
+				<li><a href="#" id="navbar-mobile-login">Login/Registrati</a></li>
+				<li><a href="#" id="navbar-mobile-help">Aiuto</a></li>
+				<li><a href="#" id="navbar-mobile-feedback">Lascia un Feedback</a></li>
+			</ul>
+		  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+			</div>
+		</nav>
+		
+		<div id="page-home">
+		 
+		<div class="slider">
+			<ul class="slides">
+			  <li>
+				<img src="img/index-bg/1.jpg">
+				
+			  </li>
+			  <li>
+				<img src="img/index-bg/2.jpg">
+			  </li>
+			  <li>
+				<img src="img/index-bg/3.jpg">
+			  </li>
+			  <li>
+				<img src="img/index-bg/4.jpg">
+			  </li>
+			  <li>
+				<img src="img/index-bg/5.jpg">
+			  </li>
+			  <li>
+				<img src="img/index-bg/6.jpg"> 
+			  </li>
+			  <li>
+				<img src="img/index-bg/7.jpg"> 
+			  </li>
+			</ul>
+		</div>
+		<div class="header">
+			<h1>Art Reader</h1>
+			<h2>Learn faster, Learn more.</h2>
+			<div id="header-social">
+				<table id="table-social">
+					<tr>
+						<td width="33px"><img src="img/system/facebook.png"></td><td  width="33px"><img src="img/system/twitter.png"> </td><td  width="33"><img src="img/system/instagram.png"> </td>
+					</tr>
+				</table>
+			</div>
+			<br><br>
+			<img src="img/system/gplay-badge.png" id="home-googleplaybadge"width="150" height="50"></img>
+		</div>
+		<br><br>
+		<div class="row">
+		<div class="col s4">
+		<img src="img/system/promo1.png" height="100" width="55"></img>
+        <!-- Promo Content 1 goes here -->
+		<h5>Anche in mobilità!</h5>
+		Scopri i vantaggi della nostra App, disponibile gratuitamente su Google Play.
+		Impara direttamente dal tuo cellulare tutto ciò che vi è da sapere sulle opere
+		d'arte più famose al mondo!
+      </div>
+      <div class="col s4">
+	  <img src="img/system/promo2.png" height="100" width="100"></img>
+        <!-- Promo Content 2 goes here -->
+		<h5>Scannerizza, impara.</h5>
+		Con una semplice scansione QR si aprirà ai tuoi occhi un catalogo infinito di informazioni.
+		Il sapere è alla portata di mano, anzi di un dito!
+      </div>
+      <div class="col s4">
+	   <img src="img/system/promo3.png" height="100" width="100"></img>
+        <!-- Promo Content 3 goes here -->
+		<h5>Contribuisci anche tu.</h5>
+		Puoi contribuire a far cresce questo progetto inserendo nuove opere d'arte,
+		lasciando feedback e facendoci sapere cosa migliorare, abbiamo bisogno di te!
+      </div>
+	  <br><br>
+	    </div>
+		<div class="footer">
+
+			<img src="img/ico/down.png" id="viewPage2" height="35" width="35"><img>
+		</div>
+	</div>
+		
+	<div id="page-login" style="display:none">
+		<!--HEADER SPACE-->
+		<div class="header">
+			<br>
+ 			<h1>Art Reader</h1>
+			<h2>Learn Faster, Learn More</h2>
+		</div>
+		
+		<!--LOGIN FORM-->
+		<div id="page-login-signin">
+			<div>
+				<h3>Bentornato!</h3>
+			</div>
+			<form method="post" action="" name="formLogin" class="col s12">
+				<div class="row">
+					<label for="first_name">Username</label>
+					<input placeholder="Inserisci il tuo username" id="first_name" type="text" class="validate" name="txtUsername">
+				</div>
+				<div class="row">
+					<label for="password">Password</label>
+					<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword">
+				</div>
+					<p>
+					  <input type="checkbox" id="chkShowPassword" />
+					  <label for="chkShowPassword">Mostra Password</label>
+					</p>
+				<div>
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="access()">ENTRA
+						<i class="material-icons right">send</i>
+					</button>
+					<div name="lblError" id="lblLoginError">(errori login)</div>
+				</div>
+			</form>
+			<!--NEW USER-->
+			<div id="page-login-newuser">
+				Nuovo Utente? <a id="page-login-newuser-link">Registrati!</a> 
+			</div>
+		</div>
+		<div id="page-login-signup" style="display: none">
+			<div>
+				<h3>Benvenuto!</h3>
+			</div>
+			<form method="post" action="" name="frmSignUp" class="col s12">
+				<div class="row">
+					<label for="first_name">Username</label>
+					<input placeholder="Scegli username" id="first_name" type="text" class="validate" name="txtUsername-SignUp">
+				</div>
+				<div class="row">
+					<label for="first_name">Mail</label>
+					<input placeholder="Inserisci la tua mail" id="mail" type="text" class="validate" name="txtMail-SignUp">
+				</div>
+				<div class="row">
+					<label for="first_name">Telefono</label>
+					<input placeholder="Inserisci il tuo numero di telefono" id="password" type="text" class="validate" name="txtTelefono-SignUp">
+				</div>
+				<div class="row">
+					<label for="password">Password</label>
+					<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword-SignUp">
+				</div>
+				<div class="row">
+					<label for="password">Conferma Password</label>
+					<input placeholder="Conferma la tua password" id="password" type="password" class="validate" name="txtPasswordConfirm-SignUp">
+				</div>
+				<div>
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnSignUp" onClick="">REGISTRATI
+						<i class="material-icons right">send</i>
+					</button>
+					<div name="lblError" id="lblLoginError-SignUp">(errori registrazione)</div>
+				</div>
+			</form>
+			<!--NEW USER-->
+			<div id="page-login-signup-alreadyuser">
+				Hai già un account? <a id="page-login-signup-alreadyuser-link">Accedi!</a> 
+			</div>
+		</div>
+		
+		
+		
+	</div>
+	<div id="page-home-2" style="display: none">
+		<div class="material-panel1" id="material-panel-header">
+		
+			<br>
+			
+			<div class="header1">
+ 			<video autoplay loop poster="video/homevideo/video.jpg" id="bgvid">
+				<source src="video/homevideo/video.mp4" type="video/mp4">
+			</video>
+				<div id="overlay">	
+					<h1>Art Reader</h1>
+					<h2>Learn Faster, Learn More</h2>
+					<div id="header-social">
+						<table id="table-social">
+							<tr>
+								<td width="33px"><img src="img/system/facebook.png"></td><td  width="33px"><img src="img/system/twitter.png"> </td><td  width="33"><img src="img/system/instagram.png"> </td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="material-panel" id="material-panel-map">
+		<br><br>
+			<h5>Musei in cui siamo attivi</h5>
+		<br><br>
+			<div id="museumMap">		
+			</div>
+		</div>
+		<div class="material-panel1" id="material-panel-carousel">
+		 <div class="carousel">
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/1"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/2"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/3"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/4"></a>
+			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/5"></a>
+		 </div>
+		 <div id="carousel-text">
+			<h5>Non si smette mai di imparare</h5>
+			Vieni a scoprire tutto ciò che vi è da sapere sulle ultime opere d'arte inserite! <br>
+			Cogli al volo l'opportunità per entrare nel mondo delle opere d'arte <br>
+		 </div>
+		</div>
+		<div class="material-panel" id="material-panel-reviews">
+		<br>
+		<h5>Cosa dicono di noi?</h5>
+		<br><br><br>
+		<table>
+		<tr>
+		
+		<td>
+		<div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                "Mi si è aperto un mondo con un semplice click! L'arte è alla portata di tutti." Andrea C.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  <td>
+	    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+                "Ho riscoperto la mia passione per l'arte. facile, veloce, efficace. CONSIGLIATO!" Jessica R.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  <td>
+	    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+              <span class="black-text">
+				"L'idea è semplice ma l'utilità è assicurata! Provare per credere, non ve ne pentirete" Marco M.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+	  </td>
+	  </tr>
+	  </table>
+		</div>
+		<div class="footer">
+			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35"></img>
+		</div>
+	</div>
+		<!--PAGINA DI FEEDBACK-->
+		<div id="page-feedback" style="display: none">
+			<div id="feedback-header">
+				<br>
+				<h1>Feedback</h1> 
+				<h2>Facci sapere cosa ne pensi!</h2>
+			</div>
+			<div id="feedback-content">
+				<form id="form-feedback">
+					<div class="row">
+						  <div class="row">
+							<div class="input-field col s6">
+							  <i class="material-icons prefix">account_circle</i>
+							  <input id="icon_prefix2" type="text" class="validate">
+							  <label for="icon_prefix2">Nickname</label>
+							</div>
+							<div class="input-field col s6">
+							  <i class="material-icons prefix">phone</i>
+							  <input id="icon_telephone" type="tel" class="validate">
+							  <label for="icon_telephone">Telefono</label>
+							</div>
+						  </div>
+						</div>
+						<div class="row">
+						  <div class="input-field col s12">
+							  <i class="material-icons prefix">email</i>
+							  <input id="icon_prefix2" type="text" class="validate">
+							  <label for="icon_prefix2">Mail</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								 <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+								 <label for="icon_prefix2">Messaggio</label>
+							</div>
+						</div>
+						<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="">INVIA
+						<i class="material-icons right">send</i>
+						</button>
+				</form>
+				<div id = "feedback-bottom">
+					Serve altro aiuto? <a id="feedback-bottom-linkmail">Scrivici.</a>
+				</div>
+			</div>
+			</div>
+		</div>
+		<!--PAGINA DI GUIDA-->
+		<div id="page-help" style="display: none">
+			<div id="help-header">
+			<br>
+				<h1>Help</h1>
+				<h2>Ciao. Serve aiuto?</h2>
+			</div>
+			<div id="help-content">
+			</div>
+			 <div class="row">
+			<div class="col s12 m9 l10">
+			  <div id="whatis" class="section scrollspy">
+				<p>
+				</p>
+			  </div>
+
+			  <div id="mobile" class="section scrollspy">
+				<p>
+				</p>
+			  </div>
+
+			  <div id="faq" class="section scrollspy">
+				<p>
+				</p>
+			  </div>
+			</div>
+			<div class="col hide-on-small-only m3 l2" id="navbar-help1">
+			  <ul class="section table-of-contents">
+				<li><a href="#whatis">Cos'è Art Reader?</a></li>
+				<li><a href="#mobile">Art Reader Mobile</a></li>
+				<li><a href="#faq">Frequently Asked Questions</a></li>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+	</body>
+</html>
