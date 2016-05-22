@@ -1,12 +1,12 @@
-var express = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/express")
-var session = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/express-session");
-var bodyParser = require("C:/Users/danyg/AppData/Roaming/npm/node_modules/body-parser");
-var sqlite = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/sqlite3');
-var multer  =   require("C:/Users/danyg/AppData/Roaming/npm/node_modules/multer");
+var express = require("/usr/local/lib/node_modules//express")
+var session = require("/usr/local/lib/node_modules/express-session");
+var bodyParser = require("/usr/local/lib/node_modules//body-parser");
+var sqlite = require('/usr/local/lib/node_modules/sqlite3');
+var multer  =   require("/usr/local/lib/node_modules/multer");
 var utility=require("./Utility.js");
 var crypto = require('crypto');
 
-var multipart = require('C:/Users/danyg/AppData/Roaming/npm/node_modules/connect-multiparty');
+var multipart = require('/usr/local/lib/node_modules/connect-multiparty');
 var multipartMiddleware = multipart();
 
 var fs=require('fs');
@@ -147,6 +147,47 @@ app.post("/access", function (request, response, next) {
 	});
 	db.close();	
 });
+
+//LOGIN MOBILE -- PARAMETRI DIVERSI
+app.get("/loginmobile", function (request, response, next) {
+    var utente = request.query["username"];
+	var cryptedPassword = crypto.createHash('sha256').update(request.query["password"]).digest('base64');
+	var logged = false;
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	sqlite.verbose();
+	var db = new sqlite.Database("./Database/myDatabase.db");
+	var index = -1; var ok = false;
+	db.serialize(function(){
+		
+		if (utente != undefined && cryptedPassword != undefined)
+		{
+			var sql = "SELECT DISTINCT(Username) FROM Users WHERE Username='" + utente + "' AND Password = '" + cryptedPassword + "'";
+			
+			db.each(sql, function(err, row)
+			{
+				index = row.Id;
+			},
+			function(err, nRecord)
+			{
+				if (index != -1)
+				{
+					logged = true;
+					ok = true;
+					response.writeHead(200, header);
+					response.end("success");
+				}
+				else
+				{
+					console.log("dati errati");
+					response.writeHead(200, header);
+					response.end("failure");
+				}
+			});	
+		}
+	});	
+});
+
+/*********************/
 
 app.post("/artworkDetails",function(request,response,next)
 {
@@ -491,7 +532,8 @@ app.get("/searchArtwork", function(request, response,next){
 });
 
 //similar artwork 
-app.get("/similarArtworks", function(request, response,next){
+app.get("/similarArtworks", function(request, response,next)
+{
     //utility.aggiornaPagina("./pages/index.html", function(window){
 		
 	var author = request.query["author"];
@@ -601,10 +643,9 @@ app.get("/getAuthors", function(request, response,next) {
 });
 
 //get LocationsArtworks
-app.get("/getLocations", function(request, response,next) {
-	utility.aggiornaPagina("./pages/index.html", function(window){
+app.get("/getLocations", function(request, response,next) 
+{
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
@@ -618,31 +659,27 @@ app.get("/getLocations", function(request, response,next) {
 					artwork.name = row.Description;		
 					artwork.city=row.City;
 					artwork.nation=row.Nation;
-					artwork.wiki=row.WikipediaPageLocation;
+					artwork.wikipediapagelocation=row.WikipediaPageLocation;
 					artwork.address=row.Address;
 					artwork.website=row.Website;
 					artwork.telephone=row.Telephone;
+					artwork.pictureUrl=row.PictureUrlMuseum;
 					
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
 					json = JSON.stringify(listArtworks);
 					response.writeHead(200, header);
-					console.log(json);
 					response.end(json);				
 				});
 				
 				db.close();	
 		}); 
-	});
-		
 });
 //get artworks from location
 app.get("/getArtworksFromLocation", function(request, response,next) {
-	var idLocation = request.query["Location"];
-	utility.aggiornaPagina("./pages/index.html", function(window){
+	var idLocation = request.query["location"];
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
@@ -677,9 +714,7 @@ app.get("/getArtworksFromLocation", function(request, response,next) {
 				});
 				
 				db.close();	
-		}); 
-	});
-		
+		}); 		
 });
 
 //API feedback
