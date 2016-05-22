@@ -4,6 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +43,10 @@ public class ScrollingActivity extends AppCompatActivity {
     boolean isAudioPlaying = false;
     boolean privateSession = false;
     int idArtwork;
+
+    //da cambiare ogni volta (come invia richiesta http)
+    String myIp = "http://192.168.1.104:8080/";
+
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = "";
 
@@ -139,7 +149,8 @@ public class ScrollingActivity extends AppCompatActivity {
         TextView year = (TextView)findViewById(R.id.lblYear);
         TextView artMovement = (TextView)findViewById(R.id.lblArtMovement);
         TextView description = (TextView)findViewById(R.id.lblDescription);
-        Toolbar headerImg = (Toolbar) findViewById(R.id.toolbar);
+        ImageView headerImg = (ImageView) findViewById(R.id.bgheader);
+        ImageView imgArtwork = (ImageView)findViewById(R.id.imgArtwork);
 
         //per far funzionare i link
         location.setMovementMethod(LinkMovementMethod.getInstance());
@@ -152,8 +163,6 @@ public class ScrollingActivity extends AppCompatActivity {
             JSONObject jsonRootObject = new JSONObject(strJson);
 
             //popolo campi
-            //id.setText(jsonRootObject.optString("id"));
-            //messo a 1 per test!!!!!!!!!! decommentare riga sopra!!!!!!!
             idArtwork = Integer.parseInt(jsonRootObject.optString("id"));
 
             mainTitle.setTitle(jsonRootObject.optString("title"));
@@ -167,6 +176,19 @@ public class ScrollingActivity extends AppCompatActivity {
             info.setText(Html.fromHtml("<a href=\""+jsonRootObject.optString("wikipediaPageArtwork")+"\">Ulteriori Informazioni</a> "));
             location.setText(Html.fromHtml("<a href=\"" + jsonRootObject.optString("wikipediaPageLocation") + "\">" + (jsonRootObject.optString("description")) + "</a> "));
             address.setText(jsonRootObject.optString("address"));
+
+            //immagine
+            String imgName = jsonRootObject.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imgArtwork);
+            imgArtwork.setTag(imgName);
+
+
+
+            //header img
+            imgName = jsonRootObject.optString("pictureUrl3");
+            Picasso.with(getApplicationContext())
+                    .load(myIp + "img/parallax/" + imgName)
+                    .into(headerImg);
 
 
             //utili per ricerche correlate
@@ -216,8 +238,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
             //setto attributi
             textRelatedSearch1.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageRelatedSearch1);
 
-            imageRelatedSearch1.setImageResource(R.drawable.img3t); //immagine di test
             //regolare dimensioni immagine da codice
             imageRelatedSearch1.requestLayout();
             imageRelatedSearch1.getLayoutParams().height = 300;
@@ -239,8 +262,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
             //setto attributi
             textRelatedSearch2.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageRelatedSearch2);
 
-            imageRelatedSearch2.setImageResource(R.drawable.img3t); //immagine di test
             //regolare dimensioni immagine da codice
             imageRelatedSearch2.requestLayout();
             imageRelatedSearch2.getLayoutParams().height = 300;
@@ -262,8 +286,9 @@ public class ScrollingActivity extends AppCompatActivity {
 
             //setto attributi
             textRelatedSearch3.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageRelatedSearch3);
 
-            imageRelatedSearch3.setImageResource(R.drawable.img3t); //immagine di test
             //regolare dimensioni immagine da codice
             imageRelatedSearch3.requestLayout();
             imageRelatedSearch3.getLayoutParams().height = 300;
@@ -279,9 +304,9 @@ public class ScrollingActivity extends AppCompatActivity {
     {
         TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
-        //ImageView img = (ImageView) findViewById(R.id.imgArtwork);
-        String tmpImg = "img1t";
-        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), tmpImg);
+        ImageView img = (ImageView) findViewById(R.id.imgArtwork);
+        String imgName = img.getTag().toString();
+        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), imgName);
         int index = 0;
 
         //rimuovo eventuai occorrenze
@@ -307,10 +332,10 @@ public class ScrollingActivity extends AppCompatActivity {
         boolean red = setFavouriteSupport();
         TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
-        //ImageView img = (ImageView) findViewById(R.id.imgArtwork);
-        String img = "img1t";
+        ImageView img = (ImageView) findViewById(R.id.imgArtwork);
+        String imgName = img.getTag().toString();
 
-        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), img);
+        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), imgName);
 
         //aggiornare struttura
         //aggiunta a preferiti

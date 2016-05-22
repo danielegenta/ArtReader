@@ -335,10 +335,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        //Snackbar.make(v, "Aggiornamento in corso ...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         if (myLists != null)
         {
             loadStructures();
+            if (mViewPager.getCurrentItem() == 0)
+            {
+                loadListView("history");
+            }
+            else if (mViewPager.getCurrentItem() == 2)
+            {
+                loadListView("favourites");
+            }
         }
     }
 

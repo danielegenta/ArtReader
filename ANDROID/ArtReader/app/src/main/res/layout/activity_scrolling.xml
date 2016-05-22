@@ -23,8 +23,18 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:background="@drawable/louvre"
             android:clickable="false">
+
+
+        <ImageView
+            android:id="@+id/bgheader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:fitsSystemWindows="true"
+            app:layout_collapseMode="pin" />
+
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
