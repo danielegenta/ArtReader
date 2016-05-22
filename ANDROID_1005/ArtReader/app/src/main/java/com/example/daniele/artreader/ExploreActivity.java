@@ -43,6 +43,8 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     protected Location mLastLocation;
 
     double myLat = -1, myLon = -1;
+    boolean positionAcquired = false;
+    String retVal = "";
 
 
     @Override
@@ -63,11 +65,6 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         });
 
         //current position
-        String permission = "anderoid.permission.ACCESS_COARSE_LOCATION";
-        int res = getApplicationContext().checkCallingOrSelfPermission(permission);
-        if (res != PackageManager.PERMISSION_GRANTED);
-        ActivityCompat.requestPermissions(ExploreActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-
         buildGoogleApiClient();
         getCurrentPosition();
         loadInfo();
@@ -80,26 +77,20 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
 
     private void getCurrentPosition()
     {
-        myLat = 45.4262;
-        myLon = 9.6103;
         if (myLat != -1 && myLon != -1)
         {
+            positionAcquired = true;
+
             //prendo tutti i musei tramite api e li metto in un vettore di stringhe così composto: nomeMuseo;Indirizzo
             getDistanceUserMuseum();
         }
         else
         {
+            positionAcquired = false;
             //non son riuscito a trovare posizione corrente, metto i musei in ordine alfabetico
         }
     }
 
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
 
     //calcola distanza in km fra due punti
     private  double calculateDiscance(double lat1,  double lon1,double lat2, double lon2)
@@ -148,6 +139,30 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
 
     private void getDistanceUserMuseum()
     {
+        //chiamata per avere tutti i musei (prendo nome ed indirizzo)
+
+        View v = findViewById(android.R.id.content);
+        retVal = "nok";
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, ExploreActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                    Toast.makeText(ExploreActivity.this, result, Toast.LENGTH_SHORT).show();
+                else
+                {
+                    retVal = String.valueOf(result);
+                }
+            }
+        };
+
+        String par= null;
+        request.execute("get", "getLocations", par);
+
+
+
+
+
         String [] testAdresses = new String[3];
         testAdresses[0] = "Louvre;rue de Rivoli, 75001 Paris";
         testAdresses[1] = "Van Gogh Museum;Museumplein 6, 1071 DJ Amsterdam";
@@ -236,7 +251,8 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         startActivity(intent);
     }
 
-    public void openTelephoneExplore(View v) {
+    public void openTelephoneExplore(View v)
+    {
         switch (v.getId()) {
             case R.id.btnOpenTelephoneExplore1:
                 startTelephone(1);
@@ -252,7 +268,8 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
 
     private void startTelephone(int sender) {
         String fakePhone = "";
-        if (sender == 1) {
+        if (sender == 1)
+        {
             fakePhone = "111-333-222-4";
         }
 
@@ -276,9 +293,11 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         }
     }
 
-    private void startWebsite(int sender) {
+    private void startWebsite(int sender)
+    {
         String fakeWebsite = "";
-        if (sender == 1) {
+        if (sender == 1)
+        {
             //http obbligatorio!!!!!!!!!
             fakeWebsite = "http://www.google.it";
             if (!fakeWebsite.startsWith("http://") && !fakeWebsite.startsWith("https://"))
@@ -289,21 +308,20 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         startActivity(browserIntent);
     }
 
+
+
+    /*
+    *** RECUPERO POSIZIONE CORRENTE
+     */
+
     @Override
     public void onConnected(Bundle bundle)
     {
-        // Provides a simple way of getting a device's location and is well suited for
-        // applications that do not require a fine-grained location and that do not need location
-        // updates. Gets the best and most recent location currently available, which may be null
-        // in rare cases when a location is not available.
-        String permission = "anderoid.permission.ACCESS_COARSE_LOCATION";
-        int res = getApplicationContext().checkCallingOrSelfPermission(permission);
-        if (res == PackageManager.PERMISSION_GRANTED);
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null)
         {
-                   myLat =  mLastLocation.getLatitude();
-                   myLon =  mLastLocation.getLongitude();
+           myLat =  mLastLocation.getLatitude();
+           myLon =  mLastLocation.getLongitude();
         }
         else
         {
@@ -314,8 +332,6 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     @Override
     public void onConnectionSuspended(int i)
     {
-// The connection to Google Play services was lost for some reason. We call connect() to
-        // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
@@ -323,9 +339,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult)
     {
-        // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
-        // onConnectionFailed.;
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = ");//+ result.getErrorCode());
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = ");
     }
 
     @Override
@@ -343,4 +357,17 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
             mGoogleApiClient.disconnect();
         }
     }
+
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    /*
+    * *
+    * */
 }

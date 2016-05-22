@@ -16,7 +16,9 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +36,11 @@ public class ScrollingActivity extends AppCompatActivity {
     MediaPlayer mp;
     boolean isAudioPlaying = false;
     boolean privateSession = false;
+    int idArtwork;
+
+    String auxTitle = "", auxAuthor= "", auxArtMovement = "";
+
+    String retVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +49,9 @@ public class ScrollingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setBackgroundColor(0xEE6E73);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                finish();
-            }
-        });
 
         Bundle b = getIntent().getExtras();
-      //  listHistory = (ArrayList<Artwork>) b.getSerializable("listHistory");
-      //  listFavourites = (ArrayList<Artwork>) b.getSerializable("listFavourites");
         String strHistory  =  b.getString("jsonHistory");
         String strFavourites  =  b.getString("jsonFavourites");
         String strJson  =  b.getString("jsonArtwork");
@@ -97,20 +94,31 @@ public class ScrollingActivity extends AppCompatActivity {
         }
 
 
-
+        initialSettings();
         loadData(strJson);
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         super.onStop();
         if (mp != null)
             mp.stop();
     }
 
-    public void closeActivity(View v)
-    {
 
+    private void initialSettings()
+    {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setTag("grey");
+        fab.setImageResource(R.drawable.favouritegrey);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                setFavourite(view);
+            }
+        });
     }
 
     /**************DISPLAY ARTWORK INFO : AFTER SCAN**********************/
@@ -120,7 +128,7 @@ public class ScrollingActivity extends AppCompatActivity {
         CollapsingToolbarLayout mainTitle =
                 (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
-        TextView id = (TextView)findViewById(R.id.lblIdArtwork);
+        //TextView id = (TextView)findViewById(R.id.lblIdArtwork);
         TextView title = (TextView)findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView)findViewById(R.id.lblAuthorArtwork);
         TextView tecnique = (TextView)findViewById(R.id.lblTecnique);
@@ -146,7 +154,7 @@ public class ScrollingActivity extends AppCompatActivity {
             //popolo campi
             //id.setText(jsonRootObject.optString("id"));
             //messo a 1 per test!!!!!!!!!! decommentare riga sopra!!!!!!!
-            id.setText("1");
+            idArtwork = Integer.parseInt(jsonRootObject.optString("id"));
 
             mainTitle.setTitle(jsonRootObject.optString("title"));
             title.setText(jsonRootObject.optString("title"));
@@ -160,45 +168,28 @@ public class ScrollingActivity extends AppCompatActivity {
             location.setText(Html.fromHtml("<a href=\"" + jsonRootObject.optString("wikipediaPageLocation") + "\">" + (jsonRootObject.optString("description")) + "</a> "));
             address.setText(jsonRootObject.optString("address"));
 
+
+            //utili per ricerche correlate
+            auxTitle = title.getText().toString();
+            auxAuthor = jsonRootObject.optString("author"); //mi serve id autore
+            auxArtMovement = artMovement.getText().toString();
+
             //verifico se è gia nei preferiti, se sì, cambio colore icona
             if (listFavourites != null)
             {
-                for (Artwork a : listFavourites) {
-                    if (a.getID() == Integer.parseInt(id.getText().toString())) {
+                for (Artwork a : listFavourites)
+                {
+                    if (Integer.valueOf(a.getID()) == Integer.valueOf(idArtwork))
+                    {
                         setFavouriteSupport();
+                        break;
                     }
                 }
             }
             addHistoryRecord();
 
-            //ricerche correlate
-            String testJson_RicercheCorrelate = "[{\"id\":6,\"title\":\"L'Ultima Cena\",\"pictureUrl\":\"http://www.scudit.net/mdleonardo_file/cenacolo100.jpg\",\"nViews\":30,\"dimensionHeight\":460,\"dimensionWidth\":880}]";
-            JSONArray jsonArray = new JSONArray(testJson_RicercheCorrelate);
 
-            int i = 0;
-            JSONObject obj;
-            for (i = 0; i < jsonArray.length(); i++) {
-                //tolgo la label con nessuna ricerca correlata
-                TextView textNoRelatedSearch = (TextView) findViewById(R.id.txtNoRelatedSearch);
-                textNoRelatedSearch.setVisibility(View.INVISIBLE);
-
-                obj = jsonArray.getJSONObject(i);
-                switch (i) {
-                    case 0:
-                        loadRelatedSearch(obj, i);
-                        break;
-                    case 1:
-                        loadRelatedSearch(obj, i);
-                        break;
-                    case 2:
-                        loadRelatedSearch(obj, i);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            //aggiorno file!!!!!!
+            loadRelatedSearchMainRequest();
             scriviModifiche("history");
         }
         catch (JSONException e)
@@ -219,6 +210,10 @@ public class ScrollingActivity extends AppCompatActivity {
             textRelatedSearch1.setVisibility(View.VISIBLE);
             imageRelatedSearch1.setVisibility(View.VISIBLE);
 
+            //
+            String id = obj.optString("id");
+            imageRelatedSearch1.setTag(id);
+
             //setto attributi
             textRelatedSearch1.setText(obj.optString("title"));
 
@@ -237,6 +232,10 @@ public class ScrollingActivity extends AppCompatActivity {
             //setto visibilità
             textRelatedSearch2.setVisibility(View.VISIBLE);
             imageRelatedSearch2.setVisibility(View.VISIBLE);
+
+            //
+            String id = obj.optString("id");
+            imageRelatedSearch2.setTag(id);
 
             //setto attributi
             textRelatedSearch2.setText(obj.optString("title"));
@@ -257,6 +256,10 @@ public class ScrollingActivity extends AppCompatActivity {
             textRelatedSearch3.setVisibility(View.VISIBLE);
             imageRelatedSearch3.setVisibility(View.VISIBLE);
 
+            //
+            String id = obj.optString("id");
+            imageRelatedSearch3.setTag(id);
+
             //setto attributi
             textRelatedSearch3.setText(obj.optString("title"));
 
@@ -274,20 +277,22 @@ public class ScrollingActivity extends AppCompatActivity {
      ******************/
     private void addHistoryRecord()
     {
-        TextView id = (TextView) findViewById(R.id.lblIdArtwork);
         TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
         //ImageView img = (ImageView) findViewById(R.id.imgArtwork);
         String tmpImg = "img1t";
-        Artwork artwork = new Artwork(Integer.parseInt(id.getText().toString()), title.getText().toString(), author.getText().toString(), tmpImg);
+        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), tmpImg);
         int index = 0;
 
         //rimuovo eventuai occorrenze
         if (listHistory != null)
         {
-            for (Artwork a : listHistory) {
-                if (a.getID() == Integer.parseInt(id.getText().toString())) {
+            for (Artwork a : listHistory)
+            {
+                if (Integer.valueOf(a.getID()) == Integer.valueOf(idArtwork))
+                {
                     listHistory.remove(index);
+                    break; //se no errore
                 }
                 index++;
             }
@@ -300,14 +305,12 @@ public class ScrollingActivity extends AppCompatActivity {
     public void setFavourite(View v)
     {
         boolean red = setFavouriteSupport();
-
-        TextView id = (TextView) findViewById(R.id.lblIdArtwork);
         TextView title = (TextView) findViewById(R.id.lblTitleArtwork);
         TextView author = (TextView) findViewById(R.id.lblAuthorArtwork);
         //ImageView img = (ImageView) findViewById(R.id.imgArtwork);
-        String tmpImg = "img1t";
+        String img = "img1t";
 
-        Artwork artwork = new Artwork(Integer.parseInt(id.getText().toString()), title.getText().toString(), author.getText().toString(), tmpImg);
+        Artwork artwork = new Artwork(idArtwork, title.getText().toString(), author.getText().toString(), img);
 
         //aggiornare struttura
         //aggiunta a preferiti
@@ -323,7 +326,7 @@ public class ScrollingActivity extends AppCompatActivity {
             //eliminazione da struttura logica
             for (Artwork a:listFavourites)
             {
-                if (a.getID() == Integer.parseInt(id.getText().toString()))
+                if (a.getID() == idArtwork)
                     break;
                 index++;
             }
@@ -334,7 +337,8 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private boolean setFavouriteSupport()
     {
-        ImageView imgFavourite = (ImageView)findViewById(R.id.imgFavourite);
+        //ImageView imgFavourite = (ImageView)findViewById(R.id.imgFavourite);
+        FloatingActionButton imgFavourite = (FloatingActionButton)findViewById(R.id.fab);
         String tag = (String)imgFavourite.getTag();
         if (tag.compareTo("grey") == 0)
         {
@@ -356,21 +360,30 @@ public class ScrollingActivity extends AppCompatActivity {
     /*****************GESTIONE AGGIORNAMENTO CRONOLOGIA E PREFERITI**************/
     private void scriviModifiche(String fileToUpdate)
     {
+        int index = 0;
         if (fileToUpdate.compareTo("history") == 0)
         {
             if (listHistory != null)
             {
                 if (!privateSession)
                 {
-                    if (listHistory.size() > 0) {
-                        for (Artwork a : listHistory) {
-                            String data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
-                            String filename = "history1.txt";
-                            writeToFile(data, filename);
-                            RenameAppFile(getApplicationContext(), "history1.txt", "history.txt");
-
+                    if (listHistory.size() > 0)
+                    {
+                        String data = "";
+                        String filename = "history1.txt";
+                        for (Artwork a : listHistory)
+                        {
+                            if (index == 0)
+                                data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+                            else
+                                data += ";"+a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+                            index++;
                         }
-                    } else {
+                        writeToFile(data, filename);
+                        RenameAppFile(getApplicationContext(), "history1.txt", "history.txt");
+                    }
+                    else
+                    {
                         String data = "";
                         String filename = "history1.txt";
                         writeToFile(data, filename);
@@ -383,14 +396,23 @@ public class ScrollingActivity extends AppCompatActivity {
         {
             if (listFavourites != null)
             {
-                if (listFavourites.size() > 0) {
-                    for (Artwork a : listFavourites) {
-                        String data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
-                        String filename = "favourites1.txt";
-                        writeToFile(data, filename);
-                        RenameAppFile(getApplicationContext(), "favourites1.txt", "favourites.txt");
+                if (listFavourites.size() > 0)
+                {
+                    String data = "";
+                    for (Artwork a : listFavourites)
+                    {
+                        if (index == 0)
+                            data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+                        else
+                            data += ";"+a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();
+                        index++;
                     }
-                } else {
+                    String filename = "favourites1.txt";
+                    writeToFile(data, filename);
+                    RenameAppFile(getApplicationContext(), "favourites1.txt", "favourites.txt");
+                }
+                else
+                {
                     String data = "";
                     String filename = "favourites1.txt";
                     writeToFile(data, filename);
@@ -418,7 +440,10 @@ public class ScrollingActivity extends AppCompatActivity {
             Context context = getApplicationContext();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(filename, Context.MODE_PRIVATE));
 
-            outputStreamWriter.write(data);
+
+            String auxData [] = data.split(";");
+            for (int i = 0; i<auxData.length; i++)
+                outputStreamWriter.write(auxData[i] +";");
             outputStreamWriter.close();
         }
         catch (IOException e) {
@@ -443,7 +468,8 @@ public class ScrollingActivity extends AppCompatActivity {
     //audio
     public void openAudio(View v)
     {
-        audioPlayer("gioconda");
+        TextView title = (TextView)findViewById(R.id.lbl_Title);
+        audioPlayer(title.getText().toString().toLowerCase());
     }
 
     //feedback
@@ -493,5 +519,120 @@ public class ScrollingActivity extends AppCompatActivity {
         return destBitmap;
     }
     /*****************************/
+
+    /***
+     * Funzioni utilizzate da ricerche correlate
+     *
+     */
+
+    //click su una delle immagini delle ricerche correlate
+    public void relatedSearchClick(View v)
+    {
+        String id = "";
+        if (v.getId() == R.id.imgRelatedSearch1)
+        {
+            ImageView img1 = (ImageView) findViewById(R.id.imgRelatedSearch1);
+            id = img1.getTag().toString();
+
+        }
+        else if (v.getId() == R.id.imgRelatedSearch2)
+        {
+            ImageView img2 = (ImageView) findViewById(R.id.imgRelatedSearch2);
+            id = img2.getTag().toString();
+        }
+        else if (v.getId() == R.id.imgRelatedSearch3)
+        {
+            ImageView img3 = (ImageView) findViewById(R.id.imgRelatedSearch3);
+            id = img3.getTag().toString();
+        }
+        idArtwork = Integer.valueOf(id);
+        loadRelatedSearchRequest(id);
+        ScrollView mainScrollView = (ScrollView)findViewById(R.id.scrollView);
+        mainScrollView.fullScroll(ScrollView.FOCUS_UP);
+    }
+
+    /*
+    * * Richieste AJAX per ricerche correlate
+    * */
+    private void loadRelatedSearchRequest(String id)
+    {
+        View v = findViewById(android.R.id.content);
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, ScrollingActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                    Toast.makeText(ScrollingActivity.this, result, Toast.LENGTH_SHORT).show();
+                else
+                {
+                    initialSettings();
+                    loadData(result);
+                }
+            }
+        };
+        request.execute("get", "oneArtwork", id);
+    }
+
+    private void loadRelatedSearchMainRequest()
+    {
+        //ricerche correlate
+        View v = findViewById(android.R.id.content);
+        retVal = "nok";
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, ScrollingActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                {
+                    Toast.makeText(ScrollingActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //richiamo seconda intent passandogli come parametro la stringa json letta
+                    retVal = String.valueOf(result);
+                    JSONArray jsonArray = null;
+                    if (retVal.compareTo("nok") != 0)
+                    {
+                        try
+                        {
+                            jsonArray = new JSONArray(retVal);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int i = 0;
+                        JSONObject obj = null;
+                        for (i = 0; i < jsonArray.length(); i++)
+                        {
+                            //tolgo la label con nessuna ricerca correlata
+                            TextView textNoRelatedSearch = (TextView) findViewById(R.id.txtNoRelatedSearch);
+                            textNoRelatedSearch.setVisibility(View.INVISIBLE);
+                            try
+                            {
+                                obj = jsonArray.getJSONObject(i);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            switch (i) {
+                                case 0:
+                                    loadRelatedSearch(obj, i);
+                                    break;
+                                case 1:
+                                    loadRelatedSearch(obj, i);
+                                    break;
+                                case 2:
+                                    loadRelatedSearch(obj, i);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        String par = "?title=" + auxTitle + "&author=" + auxAuthor + "&artMovement=" + auxArtMovement;
+        request.execute("get", "similarArtworks", par);
+    }
 
 }

@@ -65,7 +65,7 @@
                     android:paddingTop="20dp" />
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="200dp"
                     android:id="@+id/imgFirstAdvice"
                     android:src="@drawable/louvre" />
@@ -73,7 +73,8 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="97dp"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:id="@+id/z">
 
                     <android.support.design.widget.FloatingActionButton
                         android:layout_width="wrap_content"

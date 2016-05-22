@@ -1,39 +1,11 @@
 package com.example.daniele.artreader;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import android.widget.Toast;
 
 /**
  * A login screen that offers login via email/password.
@@ -48,11 +20,36 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //richiamabile sia da login effettuato con credenziali che da login effettuato come guest
+    //salvare nome utente-----
     public void accedi(View v)
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
 
+    //Richiesta di login al server Express
+    public void richiestaLogin(View v)
+    {
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, LoginActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result)
+            {
+                //login fallito
+                if (result.contains("Exception"))
+                    Toast.makeText(LoginActivity.this, "Accesso Fallito, controlla le credenziali inserite.", Toast.LENGTH_SHORT).show();
+                //login riuscito
+                else
+                {
+                    if (result.compareTo("success") == 0)
+                        accedi(v);
+                }
+            }
+        };
+        TextView tUsername = (TextView)findViewById(R.id.txtUsernameLogin);
+        TextView tPassword = (TextView)findViewById(R.id.txtPasswordLogin);
+        request.execute("get", "loginmobile", tUsername.getText()+";"+tPassword.getText());
     }
 
 

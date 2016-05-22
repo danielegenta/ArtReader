@@ -44,9 +44,11 @@ public class Lists
     {
         JSONArray jsonArr = new JSONArray();
         JSONObject jsonObj = new JSONObject();
-        for (Artwork a:listArtworksHistory)
+        for (int i = 0; i < listArtworksHistory.size(); i++)
         {
-            try {
+            try
+            {
+                Artwork a = listArtworksHistory.get(i);
                 jsonObj.put("id", a.getID());
                 jsonObj.put("title", a.getTitle());
                 jsonObj.put("author", a.getAuthor());
@@ -62,16 +64,21 @@ public class Lists
     public String favouritesToString()
     {
         JSONArray jsonArr = new JSONArray();
-        JSONObject jsonObj = new JSONObject();
-        for (Artwork a:listArtworksFavourites)
+
+        for (int i = 0; i < listArtworksFavourites.size(); i++)
         {
-            try {
+            try
+            {
+                Artwork a = listArtworksFavourites.get(i);
+                JSONObject jsonObj = new JSONObject();
                 jsonObj.put("id", a.getID());
                 jsonObj.put("title", a.getTitle());
                 jsonObj.put("author", a.getAuthor());
                 jsonObj.put("img", a.getImg_path());
                 jsonArr.put(jsonObj);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e)
+            {
                 e.printStackTrace();
             }
         }

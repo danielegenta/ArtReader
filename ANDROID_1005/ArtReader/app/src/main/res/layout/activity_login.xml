@@ -82,6 +82,18 @@
             android:textSize="35dp"
             android:textColor="@android:color/white"
             android:background="#26A69A"
+            android:onClick="richiestaLogin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lblGuestAccess"
+            android:layout_above="@+id/txtUsernameLogin"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            android:textColor="#FFFFFF"
+            android:autoText="false"
+            android:text="@string/guest_access"
             android:onClick="accedi" />
     </RelativeLayout>
 

@@ -23,7 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -86,10 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mViewPager.setCurrentItem(1);
-        //setContentView(R.layout.fragment_main);
-        /*int screenWidth = getScreenWidthInDPs(getApplicationContext());
-        Button btnScan = (Button)findViewById(R.id.btnQrScan);
-        btnScan.setWidth(screenWidth);*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
         {
             String righe[] = aux.split(";");
             String[] colonne;
-            for (int i = 0; i < righe.length; i++) {
+            for (int i = 0; i < righe.length; i++)
+            {
                 colonne = righe[i].split("-");
                 myLists.addHistoryRecord((new Artwork(Integer.parseInt(colonne[0]), colonne[1], colonne[2], colonne[3])));
             }
@@ -126,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
         {
             String righe1[] = aux1.split(";");
             String[] colonne1;
-            for (int i = 0; i < righe1.length; i++) {
+            for (int i = 0; i < righe1.length; i++)
+            {
                 colonne1 = righe1[i].split("-");
                 myLists.addFavouriteRecord((new Artwork(Integer.parseInt(colonne1[0]), colonne1[1], colonne1[2], colonne1[3])));
             }
@@ -192,9 +192,6 @@ public class MainActivity extends AppCompatActivity {
     }
     /***************FINE GESTIONE FILE TXT**************/
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -211,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         // Handle item selection
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case R.id.action_private:
                 managePrivateSession();
                 return true;
@@ -268,14 +266,12 @@ public class MainActivity extends AppCompatActivity {
             else if (nPage == 1)
             {
                 rootView = inflater.inflate(R.layout.fragment_history, container, false);
-                //loadListView("history");
             }
 
             //favourite
             else if (nPage == 3)
             {
                 rootView = inflater.inflate(R.layout.fragment_favourite, container, false);
-                //loadListView("favourites");
             }
             return rootView;
         }
@@ -319,38 +315,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void scanQR(View v) {
+    public void scanQR(View v)
+    {
         try
         {
-           /*  Intent intent = new Intent(ACTION_SCAN);
-             intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-             startActivityForResult(intent, 0);*/
-
-            //testPopolaInfoArtwork(); //old
-            String strJson = "{\"id\":8,\"title\":\"La Gioconda\",\"author\":1,\"abstract\":\"placeholder\",\"pictureUrl\":\"http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg\",\"tecnique\":\"Olio su tavola\",\"year\":1506,\"artMovement\":\"Rinascimento\",\"dimensionHeight\":77,\"dimensionWidth\":53,\"wikipediaPageArtwork\":\"https://it.wikipedia.org/wiki/Gioconda\",\"location\":1,\"pictureUrl2\":\"Artwork8\",\"pictureUrl3\":\"Location1\",\"idLocationsArtworks\":1,\"description\":\"Louvre\",\"city\":\"Parigi\",\"nation\":\"France\",\"wikipediaPageLocation\":\"https://it.wikipedia.org/wiki/Museo_del_Louvre\",\"address\":\"Musée du Louvre, 75001 Paris, France\",\"idAuthor\":1,\"name\":\"Leonardo Da Vinci\n\",\"wikipediaPageAuthor\":\"https://it.wikipedia.org/wiki/Leonardo_da_Vinci\",\"nationalityAuthor\":\"Italia\"}";
-
-
-            //richiamo seconda intent passandogli come parametro la stringa json letta
-            Intent intent = new Intent(this, ScrollingActivity.class);
-            //intent.putExtra("listFavourites", myLists);
-            intent.putExtra("jsonArtwork", strJson);
+            Intent intent = new Intent(this,ScanActivity.class);
             intent.putExtra("jsonHistory", myLists.historyToString());
             intent.putExtra("jsonFavourites", myLists.favouritesToString());
             intent.putExtra("privateSession", privateSession);
-
             startActivity(intent);
         }
-        catch (ActivityNotFoundException anfe) {
+        catch (ActivityNotFoundException anfe)
+        {
             showDialog(MainActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
         }
-
-        //InviaRichiestaHttp http = new InviaRichiestaHttp();
-        //http.execute("get", "/allArtworks");
-
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         //Snackbar.make(v, "Aggiornamento in corso ...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         if (myLists != null)
@@ -365,32 +348,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0)
-        {
-            if (resultCode == RESULT_OK)
-            {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-
-                //in content c'è il contenuto del QrCode:
-                //es: ArtworkId/Id
-                Toast toast = Toast.makeText(this, "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
-
-                String[] res = contents.split("/");
-                String id = res[1];
-
-
-
-
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!SOSTITUIRE CON API
-                //chiamare api oneArtwork
-                //
-                // toast = Toast.makeText(this, id, Toast.LENGTH_LONG);
-                // toast.show();
-            }
-        }
-    }
     /*****************FINE PULSANTE SCAN*****************/
 
     private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
@@ -444,17 +401,31 @@ public class MainActivity extends AppCompatActivity {
     ListView.OnItemClickListener listener = new ListView.OnItemClickListener()
     {
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l)
+        public void onItemClick(final AdapterView<?> adapterView, View view,final int pos, long l)
         {
-            String strJson = "{\"id\":8,\"title\":\"La Gioconda\",\"author\":1,\"abstract\":\"placeholder\",\"pictureUrl\":\"http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg\",\"tecnique\":\"Olio su tavola\",\"year\":1506,\"artMovement\":\"Rinascimento\",\"dimensionHeight\":77,\"dimensionWidth\":53,\"wikipediaPageArtwork\":\"https://it.wikipedia.org/wiki/Gioconda\",\"location\":1,\"pictureUrl2\":\"Artwork8\",\"pictureUrl3\":\"Location1\",\"idLocationsArtworks\":1,\"description\":\"Louvre\",\"city\":\"Parigi\",\"nation\":\"France\",\"wikipediaPageLocation\":\"https://it.wikipedia.org/wiki/Museo_del_Louvre\",\"address\":\"Musée du Louvre, 75001 Paris, France\",\"idAuthor\":1,\"name\":\"Leonardo Da Vinci\n\",\"wikipediaPageAuthor\":\"https://it.wikipedia.org/wiki/Leonardo_da_Vinci\",\"nationalityAuthor\":\"Italia\"}";
-            Artwork item = (Artwork) adapterView.getItemAtPosition(pos);
-            Intent intent = new Intent(getApplicationContext(), ScrollingActivity.class);
-            intent.putExtra("jsonArtwork", strJson);
-            intent.putExtra("jsonHistory", myLists.historyToString());
-            intent.putExtra("jsonFavourites", myLists.favouritesToString());
+            //String strJson = "{\"id\":8,\"title\":\"La Gioconda\",\"author\":1,\"abstract\":\"placeholder\",\"pictureUrl\":\"http://1.bp.blogspot.com/-mAlupcNJ_A8/TudH7XRbAEI/AAAAAAAAAco/Cn8Z8lKDYSM/s1600/Leonardo+La+Gioconda+1503+1506.jpg\",\"tecnique\":\"Olio su tavola\",\"year\":1506,\"artMovement\":\"Rinascimento\",\"dimensionHeight\":77,\"dimensionWidth\":53,\"wikipediaPageArtwork\":\"https://it.wikipedia.org/wiki/Gioconda\",\"location\":1,\"pictureUrl2\":\"Artwork8\",\"pictureUrl3\":\"Location1\",\"idLocationsArtworks\":1,\"description\":\"Louvre\",\"city\":\"Parigi\",\"nation\":\"France\",\"wikipediaPageLocation\":\"https://it.wikipedia.org/wiki/Museo_del_Louvre\",\"address\":\"Musée du Louvre, 75001 Paris, France\",\"idAuthor\":1,\"name\":\"Leonardo Da Vinci\n\",\"wikipediaPageAuthor\":\"https://it.wikipedia.org/wiki/Leonardo_da_Vinci\",\"nationalityAuthor\":\"Italia\"}";
 
-            intent.putExtra("privateSession", privateSession);
-            startActivity(intent);
+            View v = findViewById(android.R.id.content);
+            InviaRichiestaHttp request = new InviaRichiestaHttp(v, MainActivity.this)
+            {
+                @Override
+                protected void onPostExecute(String result) {
+                    if (result.contains("Exception"))
+                        Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                    else
+                    {
+
+                        Intent intent = new Intent(getApplicationContext(), ScrollingActivity.class);
+                        intent.putExtra("jsonArtwork", result);
+                        intent.putExtra("jsonHistory", myLists.historyToString());
+                        intent.putExtra("jsonFavourites", myLists.favouritesToString());
+                        intent.putExtra("privateSession", privateSession);
+                        startActivity(intent);
+                    }
+                }
+            };
+            Artwork item = (Artwork)adapterView.getItemAtPosition(pos);
+            request.execute("get", "oneArtwork", String.valueOf(item.getID()));
         }
     };
 
@@ -490,6 +461,7 @@ public class MainActivity extends AppCompatActivity {
         if (newFile.exists())
         {
             getApplicationContext().deleteFile("history.txt");
+            loadStructures();
         }
         originalFile.renameTo(newFile);
 
