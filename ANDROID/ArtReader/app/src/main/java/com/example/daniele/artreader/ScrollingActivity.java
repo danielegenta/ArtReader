@@ -621,37 +621,39 @@ public class ScrollingActivity extends AppCompatActivity {
                         try
                         {
                             jsonArray = new JSONArray(retVal);
+                            int i = 0;
+                            JSONObject obj = null;
+                            for (i = 0; i < jsonArray.length(); i++)
+                            {
+                                //tolgo la label con nessuna ricerca correlata
+                                TextView textNoRelatedSearch = (TextView) findViewById(R.id.txtNoRelatedSearch);
+                                textNoRelatedSearch.setVisibility(View.INVISIBLE);
+                                try
+                                {
+                                    obj = jsonArray.getJSONObject(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                switch (i)
+                                {
+                                    case 0:
+                                        loadRelatedSearch(obj, i);
+                                        break;
+                                    case 1:
+                                        loadRelatedSearch(obj, i);
+                                        break;
+                                    case 2:
+                                        loadRelatedSearch(obj, i);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        int i = 0;
-                        JSONObject obj = null;
-                        for (i = 0; i < jsonArray.length(); i++)
-                        {
-                            //tolgo la label con nessuna ricerca correlata
-                            TextView textNoRelatedSearch = (TextView) findViewById(R.id.txtNoRelatedSearch);
-                            textNoRelatedSearch.setVisibility(View.INVISIBLE);
-                            try
-                            {
-                                obj = jsonArray.getJSONObject(i);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            switch (i) {
-                                case 0:
-                                    loadRelatedSearch(obj, i);
-                                    break;
-                                case 1:
-                                    loadRelatedSearch(obj, i);
-                                    break;
-                                case 2:
-                                    loadRelatedSearch(obj, i);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
+
                     }
                 }
             }

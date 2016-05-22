@@ -42,27 +42,14 @@
                     android:textSize="25dp"
                     android:padding="10dp"
                     android:layout_gravity="center" />
-            </FrameLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtTestLocation" />
+            </FrameLayout>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MUSEO 1"
-                    android:paddingLeft="10dp"
-                    android:id="@+id/lblFirstAdvice"
-                    android:textSize="20dp"
-                    android:paddingTop="20dp" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -70,44 +57,58 @@
 
                     <ImageView
                         android:layout_width="fill_parent"
-                        android:layout_height="200dp"
-                        android:id="@+id/imgFirstAdvice"
-                        android:src="@drawable/louvre" />
+                        android:layout_height="250dp"
+                        android:id="@+id/imgFirstAdvice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MUSEO 1"
+                        android:id="@+id/lblFirstAdvice"
+                        android:textSize="20dp"
+                        android:textColor="#FFFFFF"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentTop="true"
+                        android:paddingBottom="10dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnOpenMapFirstAdvice"
+                        android:background="@android:drawable/ic_dialog_map"
+                        android:onClick="openMapExplore"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnOpenPhoneFirstAdvice"
+                        android:background="@android:drawable/stat_sys_phone_call"
+                        android:onClick="openTelephoneExplore"
+                        android:layout_alignBottom="@+id/btnOpenWebsiteFirstAdvice"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnOpenWebsiteFirstAdvice"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:onClick="openWebsiteExplore"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp" />
 
                 </RelativeLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="97dp"
-                    android:padding="10dp"
-                    android:id="@+id/z">
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenMapExplore1"
-                        android:layout_gravity="left|top"
-                        android:src="@android:drawable/ic_dialog_map"
-                        android:nestedScrollingEnabled="false"
-                        android:onClick="openMapExplore" />
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenTelephoneExplore1"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/stat_sys_phone_call"
-                        android:nestedScrollingEnabled="false"
-                        android:onClick="openTelephoneExplore" />
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenWebsiteExplore1"
-                        android:layout_gravity="right|center_vertical"
-                        android:src="@android:drawable/ic_menu_info_details"
-                        android:onClick="openWebsiteExplore" />
-                </FrameLayout>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -128,87 +129,104 @@
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView2"
-                                android:src="@drawable/img1t" />
+                                android:id="@+id/imgArtwork1FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView17" />
+                                android:id="@+id/txtArtwork1FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView3"
-                                android:src="@drawable/img2t" />
+                                android:id="@+id/imgArtwork2FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView18" />
+                                android:id="@+id/txtArtwork2FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView4"
-                                android:src="@drawable/img3t" />
+                                android:id="@+id/imgArtwork3FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView19" />
+                                android:id="@+id/txtArtwork3FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView5"
-                                android:visibility="visible"
-                                android:src="@drawable/img1t" />
+                                android:id="@+id/imgArtwork4FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView20" />
+                                android:id="@+id/txtArtwork4FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView6"
-                                android:src="@drawable/img2t" />
+                                android:id="@+id/imgArtwork5FirstAdvice"
+                                android:src="@drawable/img2t"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView21" />
+                                android:id="@+id/txtArtwork5FirstAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -218,63 +236,83 @@
                     android:background="@android:color/darker_gray"
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp" />
+
             </LinearLayout>
+
 
 
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MUSEO 1"
-                    android:paddingLeft="10dp"
-                    android:id="@+id/lblSecondAdvice"
-                    android:textSize="20dp"
-                    android:paddingTop="20dp" />
-
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:id="@+id/imgSecondAdvice"
-                    android:src="@drawable/louvre" />
+                    android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="97dp"
-                    android:padding="10dp">
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="250dp"
+                        android:id="@+id/imgSecondAdvice" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenMapExplore2"
-                        android:layout_gravity="left|top"
-                        android:src="@android:drawable/ic_dialog_map"
-                        android:nestedScrollingEnabled="false" />
+                        android:text="MUSEO 1"
+                        android:id="@+id/lblSecondAdvice"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginBottom="10dp" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenTelephoneExplore2"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/stat_sys_phone_call"
-                        android:nestedScrollingEnabled="false" />
+                        android:id="@+id/btnOpenMapSecondAdvice"
+                        android:background="@android:drawable/ic_dialog_map"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignLeft="@+id/lblSecondAdvice"
+                        android:layout_alignStart="@+id/lblSecondAdvice"
+                        android:layout_marginLeft="10dp"
+                        android:onClick="openMapExplore"
+                        android:layout_marginTop="10dp" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenWebsiteExplore2"
-                        android:layout_gravity="right|center_vertical"
-                        android:src="@android:drawable/ic_menu_info_details" />
-                </FrameLayout>
+                        android:id="@+id/btnOpenPhoneSecondAdvice"
+                        android:background="@android:drawable/stat_sys_phone_call"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="openTelephoneExplore"
+                        android:layout_marginTop="10dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnOpenWebsiteSecondAdvice"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:onClick="openWebsiteExplore"
+                        android:layout_marginTop="10dp" />
+
+                </RelativeLayout>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/horizontalScrollView1"
+                    android:id="@+id/horizontalScrollViewSecondAdvice"
                     android:paddingBottom="20dp">
 
                     <LinearLayout
@@ -290,81 +328,104 @@
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView21" />
+                                android:id="@+id/imgArtwork1SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView171" />
+                                android:id="@+id/txtArtwork1SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView31" />
+                                android:id="@+id/imgArtwork2SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView181" />
+                                android:id="@+id/txtArtwork2SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView41" />
+                                android:id="@+id/imgArtwork3SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView191" />
+                                android:id="@+id/txtArtwork3SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView51" />
+                                android:id="@+id/imgArtwork4SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView201" />
+                                android:id="@+id/txtArtwork4SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView61" />
+                                android:id="@+id/imgArtwork5SecondAdvice"
+                                android:src="@drawable/img2t"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView211" />
+                                android:id="@+id/txtArtwork5SecondAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -376,61 +437,78 @@
                     android:paddingBottom="20dp" />
             </LinearLayout>
 
-
-
             <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MUSEO 1"
-                    android:paddingLeft="10dp"
-                    android:id="@+id/lblThirdAdvice"
-                    android:textSize="20dp"
-                    android:paddingTop="20dp" />
-
-                <ImageView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:id="@+id/imgThirdAdvice"
-                    android:src="@drawable/louvre" />
+                    android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="97dp"
-                    android:padding="10dp">
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="250dp"
+                        android:id="@+id/imgThirdAdvice" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenMapExplore3"
-                        android:layout_gravity="left|top"
-                        android:src="@android:drawable/ic_dialog_map"
-                        android:nestedScrollingEnabled="false" />
+                        android:text="MUSEO 1"
+                        android:id="@+id/lblThirdAdvice"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginBottom="10dp" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenTelephoneExplore3"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/stat_sys_phone_call"
-                        android:nestedScrollingEnabled="false" />
+                        android:id="@+id/btnOpenMapThirdAdvice"
+                        android:background="@android:drawable/ic_dialog_map"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignLeft="@+id/lblThirdAdvice"
+                        android:layout_alignStart="@+id/lblThirdAdvice"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="26dp"
+                        android:onClick="openMapExplore"
+                        android:layout_marginTop="10dp" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/btnOpenWebsiteExplore3"
-                        android:layout_gravity="right|center_vertical"
-                        android:src="@android:drawable/ic_menu_info_details" />
-                </FrameLayout>
+                        android:id="@+id/btnOpenPhoneThirdAdvice"
+                        android:background="@android:drawable/stat_sys_phone_call"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:onClick="openTelephoneExplore" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnOpenWebsiteThirdAdvice"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@android:drawable/ic_dialog_info"
+                        android:onClick="openWebsiteExplore"
+                        android:layout_marginTop="10dp" />
+
+                </RelativeLayout>
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/horizontalScrollView9" >
+                    android:id="@+id/horizontalScrollViewThirdAdvice"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -445,91 +523,114 @@
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView29" />
+                                android:id="@+id/imgArtwork1ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView179" />
+                                android:id="@+id/txtArtwork1ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView39" />
+                                android:id="@+id/imgArtwork2ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView189" />
+                                android:id="@+id/txtArtwork2ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView49" />
+                                android:id="@+id/imgArtwork3ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView199" />
+                                android:id="@+id/txtArtwork3ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView59" />
+                                android:id="@+id/imgArtwork4ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView209" />
+                                android:id="@+id/txtArtwork4ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" >
+                            android:layout_height="match_parent"
+                            android:visibility="invisible">
 
                             <ImageView
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:id="@+id/imageView69" />
+                                android:id="@+id/imgArtwork5ThirdAdvice"
+                                android:src="@drawable/img2t"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="New Text"
-                                android:id="@+id/textView219" />
+                                android:id="@+id/txtArtwork5ThirdAdvice"
+                                android:visibility="invisible"
+                                android:layout_marginLeft="20dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp" />
             </LinearLayout>
-
-
         </LinearLayout>
-
-
     </ScrollView>
-
-
 </RelativeLayout>

@@ -36,9 +36,9 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
         url += risorsa;
         try
         {
-            if(metodo == "get")
+            if(metodo == "get" )
             {
-                if (risorsa.compareTo("allArtworks") == 0)
+                if (risorsa.compareTo("allArtworks") == 0 || risorsa.compareTo("getLocations") == 0 )
                 {
                     //nessun parametro
                 }
@@ -54,7 +54,7 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
                     //username;password
                     url += "?id="+par;
                 }
-                else if (risorsa.compareTo("similarArtworks") == 0)
+                else if (risorsa.compareTo("similarArtworks") == 0 || risorsa.compareTo("getArtworksFromLocation") == 0)
                 {
                     url += par;
                 }
