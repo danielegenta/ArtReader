@@ -663,7 +663,7 @@ app.get("/getLocations", function(request, response,next)
 					artwork.address=row.Address;
 					artwork.website=row.Website;
 					artwork.telephone=row.Telephone;
-					artwork.pictureUrl=row.PictureUrlMuseum;
+					artwork.pictureUrl=row.PictureUrlMuseum; //modificato qui
 					
 					listArtworks.push(artwork);
 				},
@@ -676,6 +676,7 @@ app.get("/getLocations", function(request, response,next)
 				db.close();	
 		}); 
 });
+
 //get artworks from location
 app.get("/getArtworksFromLocation", function(request, response,next) {
 	var idLocation = request.query["location"];
