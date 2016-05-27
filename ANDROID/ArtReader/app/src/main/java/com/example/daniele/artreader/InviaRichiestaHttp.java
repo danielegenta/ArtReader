@@ -32,7 +32,7 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
         String ris = "";
 
         URLConnection conn = null;
-        String url = "http://192.168.1.104:8080/";
+        String url = "http://192.168.1.108:8080/";
         url += risorsa;
         try
         {
@@ -56,7 +56,9 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
                 }
                 else if (risorsa.compareTo("similarArtworks") == 0 || risorsa.compareTo("getArtworksFromLocation") == 0)
                 {
+                    par = par.replace(" ","");
                     url += par;
+
                 }
                 URL _url = new URL(url);
                 conn = _url.openConnection();

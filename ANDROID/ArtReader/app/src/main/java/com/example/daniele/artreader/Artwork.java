@@ -37,7 +37,7 @@ public class Artwork {
         return img_path;
     }
 
-    public void setImg_pathw(String img_path) {
+    public void setImg_path(String img_path) {
         this.img_path = img_path;
     }
 

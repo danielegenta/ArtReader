@@ -4,9 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,7 +42,7 @@ public class ScrollingActivity extends AppCompatActivity {
     int idArtwork;
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.104:8080/";
+    String myIp = "http://192.168.1.108:8080/";
 
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = "";
@@ -124,8 +121,7 @@ public class ScrollingActivity extends AppCompatActivity {
         fab.setImageResource(R.drawable.favouritegrey);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 setFavourite(view);
             }
         });
@@ -209,10 +205,10 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
             }
             addHistoryRecord();
-
+            scriviModifiche("history");
 
             loadRelatedSearchMainRequest();
-            scriviModifiche("history");
+
         }
         catch (JSONException e)
         {
@@ -310,21 +306,20 @@ public class ScrollingActivity extends AppCompatActivity {
         int index = 0;
 
         //rimuovo eventuai occorrenze
-        if (listHistory != null)
+        if (listFavourites != null)
         {
-            for (Artwork a : listHistory)
+            for (Artwork a : listFavourites)
             {
                 if (Integer.valueOf(a.getID()) == Integer.valueOf(idArtwork))
                 {
-                    listHistory.remove(index);
-                    break; //se no errore
+                    listHistory.remove(a);
+                    break;
                 }
-                index++;
             }
-
-            //aggiungo in testa
-            listHistory.add(0, artwork);
         }
+        //aggiungo in testa
+        listHistory.add(0, artwork);
+
     }
 
     public void setFavourite(View v)
@@ -494,7 +489,7 @@ public class ScrollingActivity extends AppCompatActivity {
     public void openAudio(View v)
     {
         TextView title = (TextView)findViewById(R.id.lbl_Title);
-        audioPlayer(title.getText().toString().toLowerCase());
+        audioPlayer("artwork"+String.valueOf(idArtwork));
     }
 
     //feedback
@@ -558,6 +553,7 @@ public class ScrollingActivity extends AppCompatActivity {
         {
             ImageView img1 = (ImageView) findViewById(R.id.imgRelatedSearch1);
             id = img1.getTag().toString();
+
 
         }
         else if (v.getId() == R.id.imgRelatedSearch2)

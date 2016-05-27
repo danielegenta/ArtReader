@@ -1,18 +1,14 @@
 package com.example.daniele.artreader;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -53,7 +49,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     String retVal = "";
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.104:8080/";
+    String myIp = "http://192.168.1.108:8080/";
 
     /**
      * DOCUMENTAZIONE RAPIDA
@@ -254,7 +250,6 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
                     vResults[i] = vResults[j];
                     vResults[j] = tmp;
                 }
-
             }
         }
         loadInfo(vResults);
