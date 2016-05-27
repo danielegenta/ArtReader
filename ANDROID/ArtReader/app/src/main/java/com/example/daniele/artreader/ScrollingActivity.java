@@ -27,25 +27,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class ScrollingActivity extends AppCompatActivity {
 
-    ArrayList<Artwork> listHistory = new ArrayList<Artwork>();
+   // ArrayList<Artwork> listHistory = new ArrayList<Artwork>();
     ArrayList<Artwork> listFavourites = new ArrayList<Artwork>();
     MediaPlayer mp;
     boolean isAudioPlaying = false;
     boolean privateSession = false;
     int idArtwork;
 
+
+
     //da cambiare ogni volta (come invia richiesta http)
     String myIp = "http://192.168.1.108:8080/";
 
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = "";
+    Lists myLists = null;
 
     String retVal;
 
@@ -65,7 +72,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         privateSession = b.getBoolean("privateSession");
 
-        try
+       /* try
         {
             //JSONObject jObj = new JSONObject(strHistory);
             JSONArray jArr = new JSONArray(strHistory);
@@ -82,7 +89,7 @@ public class ScrollingActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+*/
         try
         {
             JSONArray jArr = new JSONArray(strFavourites);
@@ -100,7 +107,7 @@ public class ScrollingActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+        myLists = new Lists();
         initialSettings();
         loadData(strJson);
     }
@@ -125,6 +132,58 @@ public class ScrollingActivity extends AppCompatActivity {
                 setFavourite(view);
             }
         });
+
+        //lettura dei file di testo
+        readFromFile("history.txt");
+        String aux1 = readFromFile("history.txt");
+        if (aux1 != "")
+        {
+            String righe1[] = aux1.split(";");
+            String[] colonne1;
+            for (int i = 0; i < righe1.length; i++)
+            {
+                colonne1 = righe1[i].split("-");
+                myLists.addHistoryRecord((new Artwork(Integer.parseInt(colonne1[0]), colonne1[1], colonne1[2], colonne1[3])));
+            }
+        }
+    }
+
+    private String readFromFile(String filename)
+    {
+        String ret = "";
+        try
+        {
+            InputStream inputStream = openFileInput(filename);
+
+            if ( inputStream != null )
+            {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null )
+                {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+            //CREO IL FILE
+            else
+            {
+                writeToFile("", filename);
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e)
+        {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+        return ret;
     }
 
     /**************DISPLAY ARTWORK INFO : AFTER SCAN**********************/
@@ -306,19 +365,19 @@ public class ScrollingActivity extends AppCompatActivity {
         int index = 0;
 
         //rimuovo eventuai occorrenze
-        if (listFavourites != null)
+        if (myLists.listArtworksHistory != null)
         {
-            for (Artwork a : listFavourites)
+            for (Artwork a : myLists.listArtworksHistory)
             {
                 if (Integer.valueOf(a.getID()) == Integer.valueOf(idArtwork))
                 {
-                    listHistory.remove(a);
+                    myLists.listArtworksHistory.remove(a);
                     break;
                 }
             }
         }
         //aggiungo in testa
-        listHistory.add(0, artwork);
+        myLists.listArtworksHistory.add(0, artwork);
 
     }
 
@@ -383,15 +442,15 @@ public class ScrollingActivity extends AppCompatActivity {
         int index = 0;
         if (fileToUpdate.compareTo("history") == 0)
         {
-            if (listHistory != null)
+            if (myLists.listArtworksHistory != null)
             {
                 if (!privateSession)
                 {
-                    if (listHistory.size() > 0)
+                    if (myLists.listArtworksHistory.size() > 0)
                     {
                         String data = "";
                         String filename = "history1.txt";
-                        for (Artwork a : listHistory)
+                        for (Artwork a : myLists.listArtworksHistory)
                         {
                             if (index == 0)
                                 data = a.getID() + "-" + a.getTitle() + "-" + a.getAuthor() + "-" + a.getImg_path();

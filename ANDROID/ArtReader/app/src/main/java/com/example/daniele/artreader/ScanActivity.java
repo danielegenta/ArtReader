@@ -34,7 +34,6 @@ public class ScanActivity extends AppCompatActivity implements BarcodeCallback
         Bundle b = getIntent().getExtras();
         auxHistory=  b.getString("jsonHistory");
         auxFavourites  =  b.getString("jsonFavourites");
-
         privateSession = b.getBoolean("privateSession");
     }
 

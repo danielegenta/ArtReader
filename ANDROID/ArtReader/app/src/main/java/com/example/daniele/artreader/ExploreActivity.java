@@ -48,6 +48,9 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     boolean positionAcquired = false;
     String retVal = "";
 
+    String auxHistory, auxFavourites;
+    Boolean privateSession;
+
     //da cambiare ogni volta (come invia richiesta http)
     String myIp = "http://192.168.1.108:8080/";
 
@@ -84,6 +87,11 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
                         .setAction("Action", null).show();
             }
         });
+
+        Bundle b = getIntent().getExtras();
+        auxHistory=  b.getString("jsonHistory");
+        auxFavourites  =  b.getString("jsonFavourites");
+        privateSession = b.getBoolean("privateSession");
 
         //current position
         buildGoogleApiClient();
@@ -313,7 +321,9 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
 
                 imageMuseum.setTag(idMuseum);
             }
-            getArtworksMuseum(i, idMuseum);
+            //prendo solo i primi 3
+            if (i<3)
+                getArtworksMuseum(i, idMuseum);
         }
     }
 
@@ -442,7 +452,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
             }
             if (index == 2)
             {
-                 img = (ImageView) findViewById(R.id.imgArtwork5ThirdAdvice);
+                img = (ImageView) findViewById(R.id.imgArtwork5ThirdAdvice);
                 txt = (TextView) findViewById(R.id.txtArtwork5ThirdAdvice);
             }
         }
@@ -450,6 +460,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         txt.setVisibility(View.VISIBLE);
         txt.setText(obj.optString("title"));
         Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+ obj.optString("pictureUrl")).into(img);
+        img.setTag(obj.optString("id"));
     }
 
     /*
@@ -605,7 +616,28 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
                 .build();
     }
 
-    /*
-    * *
-    * */
+    public void exploreShowArtwork(View v)
+    {
+        String idArtwork = v.getTag().toString();
+
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, ExploreActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                    Toast.makeText(ExploreActivity.this, result, Toast.LENGTH_SHORT).show();
+                else
+                {
+
+                    Intent intent1 = new Intent(getApplicationContext(), ScrollingActivity.class);
+                    intent1.putExtra("jsonArtwork", result);
+                    intent1.putExtra("jsonHistory", auxHistory);
+                    intent1.putExtra("jsonFavourites", auxFavourites);
+                    intent1.putExtra("privateSession", privateSession);
+                    startActivity(intent1);
+                }
+            }
+        };
+        request.execute("get", "oneArtwork", idArtwork);
+    }
 }

@@ -131,7 +131,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork1FirstAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -152,7 +153,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork2FirstAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -173,7 +175,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork3FirstAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -195,7 +198,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork4FirstAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -218,7 +222,8 @@
                                 android:id="@+id/imgArtwork5FirstAdvice"
                                 android:src="@drawable/img2t"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -330,7 +335,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork1SecondAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -351,7 +357,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork2SecondAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -372,7 +379,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork3SecondAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -394,7 +402,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork4SecondAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -417,7 +426,8 @@
                                 android:id="@+id/imgArtwork5SecondAdvice"
                                 android:src="@drawable/img2t"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -525,7 +535,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork1ThirdAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -546,7 +557,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork2ThirdAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -567,7 +579,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork3ThirdAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -589,7 +602,8 @@
                                 android:layout_height="100dp"
                                 android:id="@+id/imgArtwork4ThirdAdvice"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -612,7 +626,8 @@
                                 android:id="@+id/imgArtwork5ThirdAdvice"
                                 android:src="@drawable/img2t"
                                 android:visibility="invisible"
-                                android:layout_marginLeft="20dp" />
+                                android:layout_marginLeft="20dp"
+                                android:onClick="exploreShowArtwork" />
 
                             <TextView
                                 android:layout_width="wrap_content"

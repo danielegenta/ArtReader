@@ -352,6 +352,9 @@ public class MainActivity extends AppCompatActivity {
     public void openExplore(View v)
     {
         Intent intent = new Intent(this, ExploreActivity.class);
+        intent.putExtra("jsonHistory", myLists.historyToString());
+        intent.putExtra("jsonFavourites", myLists.favouritesToString());
+        intent.putExtra("privateSession", privateSession);
         startActivity(intent);
     }
 
@@ -471,6 +474,11 @@ public class MainActivity extends AppCompatActivity {
             loadStructures();
         }
         originalFile.renameTo(newFile);
+
+        if (mViewPager.getCurrentItem() == 0)
+        {
+            loadListView("history");
+        }
 
         Snackbar.make(view, "Cronologia Cancellata", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
