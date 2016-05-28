@@ -41,9 +41,6 @@ app.listen(port, function () {
 
 });
 
-
-
-
 //midleware per il parsing dei parametri post
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -743,19 +740,18 @@ app.get("/insertFeedback", function(request, response,next) {
 });
 
 //get mobile/web feedback
-app.get("/getfeedback", function(request, response,next) {
-	var idartwork = request.query["artwork"];
-	utility.aggiornaPagina("./pages/index.html", function(window){
+app.get("/getFeedback", function(request, response,next) {
+	var idartwork = request.query["idArtwork"];
 	var header = {"Content-Type":"text/html"};	
-	var $ = window.$;
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-			if(idartwork!=-1){
-				var sql = "SELECT * from Feedbacks where Type='mobile' and Artwork="+idartwork+"order by idFeedback";
+			if(idartwork != -1)
+			{
+				var sql = "SELECT * from Feedbacks where Type='mobile' and Artwork="+idartwork+" AND Approved = '1' order by idFeedback";
 			}
 			else
 			{
-				var sql = "SELECT * from Feedbacks where Type='web' order by idFeedback desc limit 3";
+				var sql = "SELECT * from Feedbacks where Type='web' and Approved = '1' order by idFeedback desc limit 3";
 			}
         var json;
 		var listArtworks = [];			
@@ -770,6 +766,8 @@ app.get("/getfeedback", function(request, response,next) {
 					artwork.username = row.Username;
 					artwork.phonenumber = row.Phonenumber;
 					artwork.email = row.Email;
+					artwork.dateReview = row.DateReview;
+					artwork.title = row.Title;
 										
 					listArtworks.push(artwork);
 				},
@@ -782,7 +780,6 @@ app.get("/getfeedback", function(request, response,next) {
 				
 				db.close();	
 		}); 
-	});
 		
 });
 /*

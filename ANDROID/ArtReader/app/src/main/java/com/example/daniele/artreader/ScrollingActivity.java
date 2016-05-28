@@ -547,14 +547,16 @@ public class ScrollingActivity extends AppCompatActivity {
     //audio
     public void openAudio(View v)
     {
-        TextView title = (TextView)findViewById(R.id.lbl_Title);
-        audioPlayer("artwork"+String.valueOf(idArtwork));
+        audioPlayer("artwork" + String.valueOf(idArtwork));
     }
 
     //feedback
     public void openFeedback(View v)
     {
+        TextView titleArtwork = (TextView)findViewById(R.id.lblTitleArtwork);
         Intent intent = new Intent(this, ReviewActivity.class);
+        intent.putExtra("idArtwork", idArtwork);
+        intent.putExtra("titleArtwork", titleArtwork.getText());
         startActivity(intent);
     }
 
@@ -583,20 +585,6 @@ public class ScrollingActivity extends AppCompatActivity {
 
     }
 
-
-    // *****************NOT USED*************
-    //CROP IMAGE
-    private Bitmap getCroppedBitmap(Bitmap srcBitmap)
-    {
-        Bitmap destBitmap = null;
-
-        if (srcBitmap.getWidth() <= srcBitmap.getHeight())
-        {
-            destBitmap = Bitmap.createBitmap(srcBitmap, 0, srcBitmap.getHeight() / 2 - srcBitmap.getWidth() / 2, srcBitmap.getWidth(), srcBitmap.getWidth());
-        }
-
-        return destBitmap;
-    }
     /*****************************/
 
     /***

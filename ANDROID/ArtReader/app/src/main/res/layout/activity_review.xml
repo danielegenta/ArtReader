@@ -33,13 +33,14 @@
         android:typeface="sans"
         android:layout_below="@+id/textView10"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="insertNewReview" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recensioni"
-        android:id="@+id/textView12"
+        android:text="Recensioni per:"
+        android:id="@+id/lblSubtitleReview"
         android:textSize="20dp"
         android:layout_below="@+id/btnNewReview"
         android:layout_alignParentLeft="true"
@@ -51,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listViewReviews"
-        android:layout_below="@+id/textView12"
+        android:layout_below="@+id/lblSubtitleReview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingLeft="10dp" />

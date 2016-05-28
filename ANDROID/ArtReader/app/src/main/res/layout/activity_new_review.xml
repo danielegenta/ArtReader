@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="La Tua Opinione è Importante!"
+            android:id="@+id/textView14"
+            android:textSize="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mail:"
+            android:id="@+id/textView17"
+            android:layout_marginTop="52dp"
+            android:layout_below="@+id/textView14"
+            android:layout_alignLeft="@+id/textView14"
+            android:layout_alignStart="@+id/textView14" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/txtReviewMail"
+            android:layout_alignBottom="@+id/textView17"
+            android:layout_alignRight="@+id/textView14"
+            android:layout_alignEnd="@+id/textView14"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:hint="Inserisci la tua Mail" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefono:"
+            android:id="@+id/textView18"
+            android:layout_marginTop="32dp"
+            android:layout_below="@+id/textView17"
+            android:layout_alignLeft="@+id/textView17"
+            android:layout_alignStart="@+id/textView17" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/txtReviewPhone"
+            android:layout_alignBottom="@+id/textView18"
+            android:layout_alignLeft="@+id/txtReviewMail"
+            android:layout_alignStart="@+id/txtReviewMail"
+            android:hint="Inserisci il tuo  Telefono" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Descrizione:"
+            android:id="@+id/textView19"
+            android:layout_marginTop="44dp"
+            android:layout_below="@+id/textView18"
+            android:layout_alignLeft="@+id/textView18"
+            android:layout_alignStart="@+id/textView18" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/txtReviewDescription"
+            android:minLines="6"
+            android:layout_below="@+id/textView19"
+            android:layout_alignLeft="@+id/textView19"
+            android:layout_alignStart="@+id/textView19"
+            android:layout_alignRight="@+id/textView14"
+            android:layout_alignEnd="@+id/textView14"
+            android:layout_marginTop="30dp"
+            android:lines="6"
+            android:maxLines="6"
+            android:hint="Fai sapere agli altri cosa ne pensi!" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Invia Recensione"
+            android:id="@+id/txtInserReview"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="30dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorAccent"
+            android:onClick="insertNewMobileReview" />
+
+    </RelativeLayout>
+
+</LinearLayout>

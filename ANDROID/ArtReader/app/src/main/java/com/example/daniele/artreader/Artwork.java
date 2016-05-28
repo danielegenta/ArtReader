@@ -3,7 +3,8 @@ package com.example.daniele.artreader;
 /**
  * Created by Daniele on 24/04/16.
  */
-public class Artwork {
+public class Artwork
+{
     private String title;
     private String author;
     private String img_path;
