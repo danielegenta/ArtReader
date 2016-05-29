@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ public class ReviewActivity extends AppCompatActivity {
     String retVal;
     int idArtwork;
     ArrayList<Review> listReview;
+    String currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,6 +44,19 @@ public class ReviewActivity extends AppCompatActivity {
         TextView tSubtitle = (TextView)findViewById(R.id.lblSubtitleReview);
         tSubtitle.setText("Recensioni per: \""+title+"\"");
 
+        //controllo se è stato effettuato l'accesso
+        SharedPreferences myPrefs = getSharedPreferences("Shared1", MODE_PRIVATE);
+        currentUser = myPrefs.getString("username","guest");
+
+        if (currentUser.compareTo("guest") == 0)
+        {
+            Button btnNewReview = (Button)findViewById(R.id.btnNewReview);
+            btnNewReview.setVisibility(View.GONE);
+
+            TextView tNoCurrentUser = (TextView)findViewById(R.id.lblNoCurrentUserLoggedReview);
+            tNoCurrentUser.setVisibility(View.VISIBLE);
+        }
+
         loadReview();
     }
 
@@ -48,6 +64,7 @@ public class ReviewActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(this, NewReview.class);
         intent.putExtra("idArtwork", idArtwork);
+        intent.putExtra("username", currentUser);
         startActivity(intent);
     }
 

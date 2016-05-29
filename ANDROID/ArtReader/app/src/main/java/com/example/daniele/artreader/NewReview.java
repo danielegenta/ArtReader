@@ -15,13 +15,14 @@ import java.util.Calendar;
 
 public class NewReview extends AppCompatActivity {
 
-    int idArtwork;
+    int idArtwork; String currentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_review);
         Bundle b = getIntent().getExtras();;
         idArtwork  =  b.getInt("idArtwork");
+        currentUser = b.getString("username");
     }
 
     public void insertNewMobileReview(View v)
@@ -40,8 +41,6 @@ public class NewReview extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-mm-yyyy");
         String dateReview = df.format(c.getTime());
 
-        //dati di test
-        String currentUsername="prova";
 
         if (tTitle.getText().toString().compareTo("") != 0 && tMail.getText().toString().compareTo("") != 0 && tTelefono.getText().toString().compareTo("") != 0 && tReviewDescription.getText().toString().compareTo("") != 0)
         {
@@ -62,7 +61,7 @@ public class NewReview extends AppCompatActivity {
             }
         }
         };
-        String par = "?idArtwork="+idArtwork+"&Type=mobile&Approved=0&Description="+tReviewDescription.getText()+"&Username="+currentUsername+"&Phonenumber="+tTelefono.getText()+"&Email="+tMail.getText()+"&Title="+tTitle.getText()+"&DateReview="+(dateReview);
+        String par = "?idArtwork="+idArtwork+"&Type=mobile&Approved=0&Description="+tReviewDescription.getText()+"&Username="+currentUser+"&Phonenumber="+tTelefono.getText()+"&Email="+tMail.getText()+"&Title="+tTitle.getText()+"&DateReview="+(dateReview);
         request.execute("get", "insertFeedback", par);
 
             this.finish();

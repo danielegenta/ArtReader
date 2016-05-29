@@ -1,6 +1,7 @@
 package com.example.daniele.artreader;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Toast;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    TextView tUsername;
+    TextView tPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,6 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     //salvare nome utente-----
     public void accedi(View v)
     {
+        if (v.getId() == findViewById(R.id.lblGuestAccess).getId())
+        {
+            SharedPreferences myPrefs = getSharedPreferences("Shared1", MODE_PRIVATE);
+            SharedPreferences.Editor editor = myPrefs.edit();
+            editor.putString("username", "guest");
+            editor.commit();
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -31,6 +41,9 @@ public class LoginActivity extends AppCompatActivity {
     //Richiesta di login al server Express
     public void richiestaLogin(View v)
     {
+        tUsername = (TextView)findViewById(R.id.txtUsernameLogin);
+        tPassword = (TextView)findViewById(R.id.txtPasswordLogin);
+
         InviaRichiestaHttp request = new InviaRichiestaHttp(v, LoginActivity.this)
         {
             @Override
@@ -43,12 +56,18 @@ public class LoginActivity extends AppCompatActivity {
                 else
                 {
                     if (result.compareTo("success") == 0)
+                    {
+                        //registro chi ha effettuato l'accesso
+                        SharedPreferences myPrefs = getSharedPreferences("Shared1", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = myPrefs.edit();
+                        editor.putString("username", tUsername.getText().toString());
+                        editor.commit();
                         accedi(v);
+                    }
                 }
             }
         };
-        TextView tUsername = (TextView)findViewById(R.id.txtUsernameLogin);
-        TextView tPassword = (TextView)findViewById(R.id.txtPasswordLogin);
+
         request.execute("get", "loginmobile", tUsername.getText()+";"+tPassword.getText());
     }
 

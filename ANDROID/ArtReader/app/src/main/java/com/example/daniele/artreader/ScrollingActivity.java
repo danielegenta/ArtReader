@@ -670,7 +670,7 @@ public class ScrollingActivity extends AppCompatActivity {
                             {
                                 //tolgo la label con nessuna ricerca correlata
                                 TextView textNoRelatedSearch = (TextView) findViewById(R.id.txtNoRelatedSearch);
-                                textNoRelatedSearch.setVisibility(View.INVISIBLE);
+                                textNoRelatedSearch.setVisibility(View.GONE);
                                 try
                                 {
                                     obj = jsonArray.getJSONObject(i);

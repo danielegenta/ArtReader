@@ -3,11 +3,13 @@ package com.example.daniele.artreader;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -453,12 +456,35 @@ public class MainActivity extends AppCompatActivity {
             privateSession = false;
             Snackbar.make(view, "Sessione Privata DISATTIVA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
+
+            //modificare voce di menu
+            //MenuItem item = (MenuItem)findViewById(R.id.action_private);
+            //item.setTitle("Attiva Sessione Privata");
+
+            //modificare colore status bar
+            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            toolbar.setBackgroundColor(android.graphics.Color.parseColor("#EE6E73"));
+
+            AppBarLayout appbar = (AppBarLayout)findViewById(R.id.appbar);
+            appbar.setBackgroundColor(android.graphics.Color.parseColor("#EE6E73"));
+
+
         }
         else
         {
             Snackbar.make(view, "Sessione Privata ATTIVA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             privateSession = true;
+
+            MenuItem item = (MenuItem)findViewById(R.id.action_private);
+           // item.setTitle("Disattiva Sessione Privata");
+
+            //modificare colore status bar
+            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+            toolbar.setBackgroundColor(android.graphics.Color.parseColor("#000000"));
+
+            AppBarLayout appbar = (AppBarLayout)findViewById(R.id.appbar);
+            appbar.setBackgroundColor(android.graphics.Color.parseColor("#000000"));
         }
     }
 

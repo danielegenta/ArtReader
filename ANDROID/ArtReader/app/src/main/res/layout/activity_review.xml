@@ -21,6 +21,17 @@
         android:paddingLeft="10dp"
         android:paddingBottom="10dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Effettua l&apos;accesso per scrivere una recensione!"
+        android:id="@+id/lblNoCurrentUserLoggedReview"
+        android:layout_below="@+id/textView10"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:visibility="gone" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_weight="1"
@@ -31,10 +42,10 @@
         android:textColor="#ffffff"
         android:background="#EE6E73"
         android:typeface="sans"
-        android:layout_below="@+id/textView10"
+        android:onClick="insertNewReview"
+        android:layout_below="@+id/lblNoCurrentUserLoggedReview"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="insertNewReview" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -56,4 +67,5 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingLeft="10dp" />
+
 </RelativeLayout>
