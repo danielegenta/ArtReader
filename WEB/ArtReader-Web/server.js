@@ -719,19 +719,21 @@ app.get("/getArtworksFromLocation", function(request, response,next) {
 //insert feedback
 app.get("/insertFeedback", function(request, response,next) {
 	var type=request.query["Type"];
-	var artwork=request.query["Artwork"];
+	var artwork=request.query["idArtwork"];
 	var approved=request.query["Approved"];
 	var description=request.query["Description"];
 	var username=request.query["Username"];
 	var phonenumber=request.query["Phonenumber"];
 	var email=request.query["Email"];
+	var title=request.query["Title"];
+	var dateReview=request.query["DateReview"];
 	
 	//sql
 	var header = {'Content-Type' : 'text/plain', 'Cache-Control':'no-cache, must-revalidate'};
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-				var insert=db.prepare("INSERT INTO Feedbacks (Type,Artwork,Approved,Description,Username,Phonenumber,Email) values(?,?,?,?,?,?,?)");
-				insert.run(type,artwork,approved,description,username,phonenumber,email);
+				var insert=db.prepare("INSERT INTO Feedbacks (Type,Artwork,Approved,Description,Username,Phonenumber,Email, Title, DateReview) values(?,?,?,?,?,?,?,?,?)");
+				insert.run(type,artwork,approved,description,username,phonenumber,email, title, dateReview);
 				insert.finalize();	
 				response.writeHead(200,header);								
 				db.close();	

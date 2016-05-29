@@ -35,11 +35,9 @@
             android:ems="10"
             android:id="@+id/txtReviewMail"
             android:layout_alignBottom="@+id/textView17"
+            android:hint="Inserisci la tua Mail"
             android:layout_alignRight="@+id/textView14"
-            android:layout_alignEnd="@+id/textView14"
-            android:layout_marginRight="25dp"
-            android:layout_marginEnd="25dp"
-            android:hint="Inserisci la tua Mail" />
+            android:layout_alignEnd="@+id/textView14" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,18 +55,19 @@
             android:inputType="phone"
             android:ems="10"
             android:id="@+id/txtReviewPhone"
-            android:layout_alignBottom="@+id/textView18"
+            android:hint="Inserisci il tuo  Telefono"
+            android:layout_alignBaseline="@+id/textView18"
+            android:layout_alignBottom="@+id/txtReviewTitle"
             android:layout_alignLeft="@+id/txtReviewMail"
-            android:layout_alignStart="@+id/txtReviewMail"
-            android:hint="Inserisci il tuo  Telefono" />
+            android:layout_alignStart="@+id/txtReviewMail" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Descrizione:"
             android:id="@+id/textView19"
-            android:layout_marginTop="44dp"
-            android:layout_below="@+id/textView18"
+            android:layout_alignBaseline="@+id/txtReviewDescription"
+            android:layout_alignBottom="@+id/txtReviewDescription"
             android:layout_alignLeft="@+id/textView18"
             android:layout_alignStart="@+id/textView18" />
 
@@ -79,30 +78,65 @@
             android:ems="10"
             android:id="@+id/txtReviewDescription"
             android:minLines="6"
-            android:layout_below="@+id/textView19"
-            android:layout_alignLeft="@+id/textView19"
-            android:layout_alignStart="@+id/textView19"
-            android:layout_alignRight="@+id/textView14"
-            android:layout_alignEnd="@+id/textView14"
-            android:layout_marginTop="30dp"
             android:lines="6"
             android:maxLines="6"
-            android:hint="Fai sapere agli altri cosa ne pensi!" />
+            android:hint="Fai sapere agli altri cosa ne pensi!"
+            android:layout_above="@+id/txtInserReview"
+            android:layout_alignLeft="@+id/txtReviewPhone"
+            android:layout_alignStart="@+id/txtReviewPhone"
+            android:layout_alignRight="@+id/textView14"
+            android:layout_alignEnd="@+id/textView14" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:text="Invia Recensione"
             android:id="@+id/txtInserReview"
+            android:textSize="30dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimary"
+            android:onClick="insertNewMobileReview"
+            android:layout_above="@+id/button3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="CHIUDI"
+            android:id="@+id/button3"
+            android:textSize="30dp"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorAccent"
+            android:onClick="insertNewMobileReview"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:textSize="30dp"
-            android:textColor="#FFFFFF"
-            android:background="@color/colorAccent"
-            android:onClick="insertNewMobileReview" />
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Titolo:"
+            android:id="@+id/textView12"
+            android:layout_alignBaseline="@+id/txtReviewTitle"
+            android:layout_alignBottom="@+id/textView19"
+            android:layout_alignLeft="@+id/textView19"
+            android:layout_alignStart="@+id/textView19" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/txtReviewTitle"
+            android:hint="Inserisci un Titolo"
+            android:layout_above="@+id/txtReviewDescription"
+            android:layout_alignLeft="@+id/txtReviewDescription"
+            android:layout_alignStart="@+id/txtReviewDescription" />
 
     </RelativeLayout>
 
