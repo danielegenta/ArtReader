@@ -56,17 +56,17 @@ function showRelated_SinglePageArtwork(response, i)
 		case 0:
 			asignImage("#imgSimilarResearch1", pic, height, width);
 			$("#imgSimilarResearch1_caption").text(title);
-			$("#imgSimilarResearch1, #imgSimilarResearch1_caption").attr("onClick", "showSingle("+id+")");
+			$("#imgSimilarResearch1, #imgSimilarResearch1_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 		case 1:
 			asignImage("#imgSimilarResearch2", pic, height, width);
 			$("#imgSimilarResearch2_caption").text(title);
-			$("#imgSimilarResearch2, #imgSimilarResearch2_caption").attr("onClick", "showSingle("+id+")");
+			$("#imgSimilarResearch2, #imgSimilarResearch2_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 		case 2:
 			asignImage("#imgSimilarResearch3", pic, height, width);
 			$("#imgSimilarResearch3_caption").text(title);
-			$("#imgSimilarResearch3, #imgSimilarResearch3_caption").attr("onClick", "showSingle("+id+")");
+			$("#imgSimilarResearch3, #imgSimilarResearch3_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 	}
 }
