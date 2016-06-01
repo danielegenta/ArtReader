@@ -62,4 +62,13 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="27dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEST NEW HOME"
+        android:id="@+id/button4"
+        android:layout_above="@+id/btnQrScan"
+        android:layout_centerHorizontal="true"
+        android:onClick="testNewHome" />
+
 </RelativeLayout>

@@ -450,6 +450,8 @@ public class MainActivity extends AppCompatActivity {
     public void managePrivateSession()
     {
         View view= this.findViewById(android.R.id.content).getRootView();
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        AppBarLayout appbar = (AppBarLayout)findViewById(R.id.appbar);
         //mostrare interazione con utente
         if(privateSession)
         {
@@ -457,15 +459,7 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(view, "Sessione Privata DISATTIVA", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
-            //modificare voce di menu
-            //MenuItem item = (MenuItem)findViewById(R.id.action_private);
-            //item.setTitle("Attiva Sessione Privata");
-
-            //modificare colore status bar
-            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
             toolbar.setBackgroundColor(android.graphics.Color.parseColor("#EE6E73"));
-
-            AppBarLayout appbar = (AppBarLayout)findViewById(R.id.appbar);
             appbar.setBackgroundColor(android.graphics.Color.parseColor("#EE6E73"));
 
 
@@ -476,14 +470,8 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             privateSession = true;
 
-            MenuItem item = (MenuItem)findViewById(R.id.action_private);
-           // item.setTitle("Disattiva Sessione Privata");
-
             //modificare colore status bar
-            Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
             toolbar.setBackgroundColor(android.graphics.Color.parseColor("#000000"));
-
-            AppBarLayout appbar = (AppBarLayout)findViewById(R.id.appbar);
             appbar.setBackgroundColor(android.graphics.Color.parseColor("#000000"));
         }
     }
@@ -509,6 +497,15 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(view, "Cronologia Cancellata", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
+    }
+
+    public void testNewHome(View v)
+    {
+        Intent intent = new Intent(this, NewHome2.class);
+        intent.putExtra("jsonHistory", myLists.historyToString());
+        intent.putExtra("jsonFavourites", myLists.favouritesToString());
+        intent.putExtra("privateSession", privateSession);
+        startActivity(intent);
     }
 
 }

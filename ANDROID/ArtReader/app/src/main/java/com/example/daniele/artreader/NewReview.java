@@ -20,7 +20,7 @@ public class NewReview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_review);
-        Bundle b = getIntent().getExtras();;
+        Bundle b = getIntent().getExtras();
         idArtwork  =  b.getInt("idArtwork");
         currentUser = b.getString("username");
     }

@@ -32,7 +32,7 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
         String ris = "";
 
         URLConnection conn = null;
-        String url = "http://192.168.1.105:8080/";
+        String url = "http://192.168.1.102:8080/";
         url += risorsa;
         try
         {
