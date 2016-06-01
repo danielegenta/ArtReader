@@ -82,7 +82,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeCallback
             }
         };
         String par = id;
-        request.execute("get", "oneArtwork", par);
+        request.execute("get", "oneArtworkMobile", par);
     }
 
     @Override

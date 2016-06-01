@@ -153,29 +153,29 @@
 			<div>
 				<h3>Benvenuto!</h3>
 			</div>
-			<form method="post" action="" name="frmSignUp" class="col s12">
+			<form method="post" action="/insertUser" name="frmSignUp" class="col s12">
 				<div class="row">
-					<label for="first_name">Username</label>
-					<input placeholder="Scegli username" id="first_name" type="text" class="validate" name="txtUsername-SignUp">
+					<label for="insertUserUName">Username</label>
+					<input placeholder="Scegli username" id="insertUserUName" type="text" class="validate" name="txtUsername-SignUp">
 				</div>
 				<div class="row">
-					<label for="first_name">Mail</label>
+					<label for="mail">Mail</label>
 					<input placeholder="Inserisci la tua mail" id="mail" type="text" class="validate" name="txtMail-SignUp">
 				</div>
 				<div class="row">
-					<label for="first_name">Telefono</label>
-					<input placeholder="Inserisci il tuo numero di telefono" id="password" type="text" class="validate" name="txtTelefono-SignUp">
+					<label for="insertUserCell">Telefono</label>
+					<input placeholder="Inserisci il tuo numero di telefono" id="insertUserCell" type="text" class="validate" name="txtTelefono-SignUp">
 				</div>
 				<div class="row">
-					<label for="password">Password</label>
-					<input placeholder="Inserisci la tua password" id="password" type="password" class="validate" name="txtPassword-SignUp">
+					<label for="insertUserPassword1">Password</label>
+					<input placeholder="Inserisci la tua password" id="insertUserPassword1" type="password" class="validate" name="txtPassword-SignUp">
 				</div>
 				<div class="row">
-					<label for="password">Conferma Password</label>
-					<input placeholder="Conferma la tua password" id="password" type="password" class="validate" name="txtPasswordConfirm-SignUp">
+					<label for="insertUserPassword2">Conferma Password</label>
+					<input placeholder="Conferma la tua password" id="insertUserPassword2" type="password" class="validate" name="txtPasswordConfirm-SignUp">
 				</div>
 				<div>
-					<button class="btn waves-effect waves-light" type="button" name="action" id="btnSignUp" onClick="">REGISTRATI
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnSignUp" onClick="CheckInsertUser()">REGISTRATI
 						<i class="material-icons right">send</i>
 					</button>
 					<div name="lblError" id="lblLoginError-SignUp">(errori registrazione)</div>
@@ -294,7 +294,7 @@
 	  </table>
 		</div>
 		<div class="footer">
-			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35"></img>
+			 <img src="img/ico/up.png" id="viewPage1" height="35" width="35" onClick="allLocationMap()"></img>
 		</div>
 	</div>
 		<!--PAGINA DI FEEDBACK-->
@@ -310,8 +310,8 @@
 						  <div class="row">
 							<div class="input-field col s6">
 							  <i class="material-icons prefix">account_circle</i>
-							  <input id="icon_prefix2" type="text" class="validate">
-							  <label for="icon_prefix2">Nickname</label>
+							  <input id="icon_prefix1" type="text" class="validate">
+							  <label for="icon_prefix1">Nickname</label>
 							</div>
 							<div class="input-field col s6">
 							  <i class="material-icons prefix">phone</i>
@@ -329,11 +329,11 @@
 						</div>
 						<div class="row">
 							<div class="input-field col s12">
-								 <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-								 <label for="icon_prefix2">Messaggio</label>
+								 <textarea id="icon_prefix3" class="materialize-textarea"></textarea>
+								 <label for="icon_prefix3">Messaggio</label>
 							</div>
 						</div>
-						<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="">INVIA
+						<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess"  onClick="sendFeedBack()" >INVIA
 						<i class="material-icons right">send</i>
 						</button>
 				</form>

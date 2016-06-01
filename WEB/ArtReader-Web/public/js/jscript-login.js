@@ -4,6 +4,7 @@
 
 $(document).ready(function()
 {	
+	//allLocationMap();
 	//LOGIN WINDOW - SHOW PASSWORD CHECKBOX
 	$("#chkShowPassword").change(function() 
 	{
@@ -13,7 +14,6 @@ $(document).ready(function()
 			$("#password").attr("type", "password")
 	});
 	
-	
 	$("#viewPage2").click(function()
 	{
 		$("#page-home").hide();
@@ -21,7 +21,7 @@ $(document).ready(function()
 		$("#page-home-2").show();
 		$('.carousel').carousel();
 		if(navigator.geolocation)
-			navigator.geolocation.getCurrentPosition(mia_posizione);
+			navigator.geolocation.getCurrentPosition(mia_posizioneMapMusei);
 		else
 			alert('Il browser non supporta la geolocalizzazione.');
 	});
@@ -100,10 +100,56 @@ $(document).ready(function()
 	});
 });
 
+
+function sendFeedBack(){
+	if($("#icon_prefix1").val()!="" && $("#icon_telephone").val()!="" && $("#icon_prefix2").val()!="" && $("#icon_prefix3").val()!=""){
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test($("#icon_prefix2").val()))
+			{
+				sendfeedback("web","",$("#icon_prefix3").val(),$("#icon_prefix1").val(),$("#icon_telephone").val(),$("#icon_prefix2").val());
+				$("#icon_prefix1").val("");
+				$("#icon_telephone").val("");
+				$("#icon_prefix2").val("");
+				$("#icon_prefix3").val("");
+				
+				$("#icon_prefix1").attr('class', 'validate');
+				$("#icon_telephone").attr('class', 'validate');;
+				$("#icon_prefix2").attr('class', 'validate');
+			}
+			else
+				alert("Mail non valida");		
+	}
+}
+
+function CheckInsertUser(){
+	alert($("#insertUserUName").val()+","+$("#mail").val()+","+$("#insertUserCell").val()+","+$("#insertUserPassword1").val()+","+$("#insertUserPassword2").val());
+	if($("#insertUserUName").val()!="" && $("#mail").val()!="" && $("#insertUserCell").val()!="" && $("#insertUserPassword1").val()!="" && $("#insertUserPassword2").val()!=""){
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test($("#mail").val())){
+			if($("#insertUserPassword1").val()==$("#insertUserPassword2").val()){
+				insertUser();
+				$("#insertUserUName").val();
+				$("#mail").val();
+				$("#insertUserCell").val();
+				$("#insertUserPassword1").val();
+				$("#insertUserPassword2").val();
+				$("#insertUserUName").attr('class', 'validate');
+				$("#mail").attr('class', 'validate');
+				$("#insertUserCell").attr('class', 'validate');
+				$("#insertUserPassword1").attr('class', 'validate');
+				$("#insertUserPassword2").attr('class', 'validate');
+			}else
+				alert("Le password non corrispondono");
+		}
+		else
+			alert("Mail non valida");
+	}
+}
 //creare un marker per ogni museo sfruttando API
-function mia_posizione(position) 
+function mia_posizioneMapMusei(response) 
 {	
-	latlng = new google.maps.LatLng(44,7);
+	
+	latlng = new google.maps.LatLng(0,0);
 	
 	var opzioni=
 	{
@@ -117,5 +163,43 @@ function mia_posizione(position)
 	};
 	
 	var mapDiv=document.getElementById('museumMap');
-	map = new google.maps.Map(mapDiv,opzioni);
+	var map = new google.maps.Map(mapDiv,opzioni);
+	console.log(response[0].address);
+	var pos=response[0].address;
+getCoords(pos,map);	
+	/*for(var key in response){
+		console.log(response[key].address);
+	getCoords(response[key].address,map);
+	}*/
+	//makeMarker(latlng);
+	
 }
+//creo marker
+		function makeMarker(latlng,map){
+			var marker=new google.maps.Marker({
+			position:latlng,
+			map:map,
+			title:''
+			});
+		}
+		function getCoords(address,map)
+		{
+			var gc      = new google.maps.Geocoder(),
+				opts    = { 'address' : address };
+
+			gc.geocode(opts, function (results, status)
+			{
+				console.log(opts);
+				if (status == google.maps.GeocoderStatus.OK)
+				{   
+					var loc     = results[0].geometry.location,
+						lat     = results[0].geometry.location.lat(),
+						lon    = results[0].geometry.location.lng();
+				
+					latlng = new google.maps.LatLng(lat,lon);
+			
+					makeMarker(latlng,map);
+					
+				}
+			});
+		}

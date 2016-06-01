@@ -49,7 +49,7 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
                     String aux [] = par.split(";");
                     url += "?username="+aux[0]+"&password="+aux[1];
                 }
-                else if (risorsa.compareTo("oneArtwork") == 0)
+                else if (risorsa.compareTo("oneArtworkMobile") == 0)
                 {
                     //username;password
                     url += "?id="+par;

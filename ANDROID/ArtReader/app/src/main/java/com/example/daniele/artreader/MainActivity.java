@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
             Artwork item = (Artwork)adapterView.getItemAtPosition(pos);
-            request.execute("get", "oneArtwork", String.valueOf(item.getID()));
+            request.execute("get", "oneArtworkMobile", String.valueOf(item.getID()));
         }
     };
 

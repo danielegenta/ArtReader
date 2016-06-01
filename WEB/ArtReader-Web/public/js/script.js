@@ -2,7 +2,7 @@
 * Script functions (interaction with the server) - AJAX calls
 ************************/
 
-var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation;
+var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation,feedBack;
 
 /**************************************************************LOGIN CALLS***************************************************************/
 //login to index page
@@ -100,6 +100,23 @@ function updateArtwork(tit,aut,abs,pic,nv,idloc,tec,y,artm,height,width,wiki,par
 	notQueryRequest.send();
 }
 
+function post(path, params) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/artworkDetails");
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+         }
+    }
+    document.body.appendChild(form);
+    form.submit();
+}
 
 /************************* END CRUD ******************************/
 
@@ -158,6 +175,13 @@ function allLocation(){
 	reqCbLocation.onreadystatechange = caricacomboLocation;
 	reqCbLocation.send(null);
 }
+function allLocationMap(){
+	reqCbLocation = new XMLHttpRequest();
+	var url="/getLocations";
+	reqCbLocation.open("GET", url, true);
+	reqCbLocation.onreadystatechange = caricaMap;
+	reqCbLocation.send(null);
+}
 /**********************
 *	AFTER QUERY/NOT QUERY calls
 ***********************/
@@ -167,6 +191,18 @@ function caricacomboAuthors(){
 		var response = JSON.parse(reqCbAuthor.responseText);
 		var artworks = response;
 		cbAuthors(artworks);		
+	}
+}
+function caricaMap(){
+	if (reqCbLocation.readyState == 4 && reqCbLocation.status == 200)
+	{
+		var response = JSON.parse(reqCbLocation.responseText);
+		//for(var key in response){
+			
+			mia_posizioneMapMusei(response);
+	
+		// }
+				
 	}
 }
 function caricacomboLocation(){
@@ -181,6 +217,7 @@ function readUpdate()
 {
 	if (readRequest.readyState == 4 && readRequest.status == 200)
 	{
+		console.log(readRequest.responseText);
 		var response = JSON.parse(readRequest.responseText);
 		var artworks = response;
 		var i = 0;
@@ -254,14 +291,33 @@ function relatedArtworksUpdate()
 	}
 }
 
-function showSingleArtworkInfo(id)
+function showSingleArtworkInfo()
 {
-	var idArtwork = id;
+	//var idArtwork = id;
 	readRequest = new XMLHttpRequest();
-	var url="/oneArtwork?id="+encodeURIComponent(idArtwork);
+	var url="/oneArtwork";
+	//id="+encodeURIComponent(idArtwork);
 	readRequest.open("GET", url, true);
 	readRequest.onreadystatechange = singleArtworkUpdate;
 	readRequest.send(null);
+}
+
+function sendfeedback(type,artwork,description,username,phonenumber,email){
+	var Type=type;
+	var Description=description;
+	var Username=username;
+	var Phonenumber=phonenumber;
+	var Email=email;
+	var Artwork=artwork;		
+	feedBack = new XMLHttpRequest();
+	var url="/insertFeedback?Tipo="+encodeURIComponent(Type)+"&Artwork="+encodeURIComponent(Artwork)+"&Description="+encodeURIComponent(Description)+"&Username="+encodeURIComponent(Username)+"&Phonenumber="+encodeURIComponent(Phonenumber)+"&Email="+encodeURIComponent(Email)+"";
+	feedBack.open("GET", url, true);
+	feedBack.onreadystatechange = notQueryUpdate;
+	feedBack.send(null);
+}
+
+function insertUser(){
+	document.frmSignUp.submit();
 }
 
 function singleArtworkUpdate()
@@ -275,6 +331,8 @@ function singleArtworkUpdate()
 		printArtworkDetails(artwork);
 	}
 }
+
+
 /********************
 * 	end single page artwork calls
 */

@@ -129,6 +129,7 @@ $('#uploadForm').submit(function() {
       alignment: 'left' // Displays dropdown with edge aligned to the left of buttons
     }
   );
+  
         
 		
 	
@@ -210,6 +211,7 @@ $('#uploadForm').submit(function() {
 		
 	});
 	
+	
 	//RESERACH 
 	$("txtSearch").focus(function() { $(this).select(); } );
 	 $("input:text").click(function() { $(this).select(); } );
@@ -271,14 +273,8 @@ $('#uploadForm').submit(function() {
 	
 	//showing single artwork info(click on title td)
 	$("#tableArtworks").delegate('tr td:nth-child(2)', 'click', function() {
-		//retrieve id
 		var id = $(this).closest('tr').find('td:first').text();
-		event.preventDefault(); // Stops browser from navigating away from page
-        var data;
-        $.post('/artworkDetails', data, function(resp) {
-            $('body').html(resp);
-			showSingle(id);
-        });
+        post('/artworkDetails', { codice: id });
     });
 	
 	//INSERT NEW ARTWORK DIALOG - error in insert fields...
@@ -376,7 +372,16 @@ function showArtwork(response, i)
 	var locationAbstract=$("<td></td>");
 	locationAbstract.text(response[i].city);
 	riga.append(locationAbstract);
+	$("#colonnaOperazioni").hide();	
+	$("#btnInsertArtwork").hide();
 	
+	
+	console.log("!!!"+response);
+	console.log("!!!"+response[i].type);
+	if(response[i].type)
+	{
+	$("#colonnaOperazioni").show();		
+	$("#btnInsertArtwork").show();	
 	var tdbutt=$("<td></td>");
 	var butDel=document.createElement("button");
 	butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
@@ -422,7 +427,9 @@ function showArtwork(response, i)
 	});
 	tdbutt.append(butMod);
 	
-	riga.append(tdbutt);				  
+	riga.append(tdbutt);	
+	}
+			  
 	tabella.append(riga);
 }
 
@@ -448,99 +455,7 @@ function showSimilar(response, i)
 		$("#noTip").text("Nessuna ricerca correlata al quadro ricercato");
 		
 }
-/******************************************************
-*		SINGLE PAGE ARTWORK.HTML
-*******************************************************/
-//PRINT SINGLE ARTWORK DETAIL in singleArtwork.html
-function printArtworkDetails(artwork)
-{
-	//map
-	$("#lblAddress").text(artwork.address);
-	if ($("#lblTitle").text() != "")
-	{
-		mia_posizione(artwork.address);
-	}
-	$("#lblTitle, #infoHeader").text(artwork.title);
-	
-	$("#lblAuthor-link").text(artwork.name +", "+artwork.nationalityAuthor);
-	$("#lblAuthor-link").attr("href", artwork.wikipediaPageAuthor);
-	
-	
-	$("#lblTecnique").text(artwork.tecnique);
-	var tmp = artwork.dimensionWidth + "x" + artwork.dimensionHeight + " (cm)";
-	$("#lblDimensions").text(tmp);
-	$("#lblWikipediaPageArtwork").attr("href", artwork.wikipediaPageArtwork);
-	
-	$("#lblLocation-link").text(artwork.description + ", "+ artwork.city + ", "+artwork.nation);
-	$("#lblLocation-link").attr("href", artwork.wikipediaPageLocation);
-	
-	$("#lblYear").text(artwork.year);
-	$("#lblArtMovement").text(artwork.artMovement);
-	$("#lblArtworkAbstract").text(artwork.abstract);
-	
-	$("#imgArtwork").attr("src", "img/immagini/"+artwork.pictureUrl);
-	
-	//parallax
-	$("#parallaxTop").attr("src", "img/parallax/"+artwork.pictureUrl2);
-	$("#parallaxBottom").attr("src", "img/parallax/"+artwork.pictureUrl3);
-	
 
-	
-	//related artworks
-	relatedArtworks_SinglePageArtwork(artwork.author, artwork.title, artwork.artMovement);
-}
-
-
-
-//PRINT RELATED ARTWORKS in singleArtwork.html
-function showRelated_SinglePageArtwork(response, i)
-{
-	var id = response[i].id;
-	var title = response[i].title;
-	var pic = 'img/immagini/'+response[i].pictureUrl;
-	var width = response[i].dimensionWidth;
-	var height = response[i].dimensionHeight;
-	switch (i)
-	{
-		case 0:
-			asignImage("#imgSimilarResearch1", pic, height, width);
-			$("#imgSimilarResearch1_caption").text(title);
-			$("#imgSimilarResearch1, #imgSimilarResearch1_caption").attr("onClick", "showSingle("+id+")");
-		break;
-		case 1:
-			asignImage("#imgSimilarResearch2", pic, height, width);
-			$("#imgSimilarResearch2_caption").text(title);
-			$("#imgSimilarResearch2, #imgSimilarResearch2_caption").attr("onClick", "showSingle("+id+")");
-		break;
-		case 2:
-			asignImage("#imgSimilarResearch3", pic, height, width);
-			$("#imgSimilarResearch3_caption").text(title);
-			$("#imgSimilarResearch3, #imgSimilarResearch3_caption").attr("onClick", "showSingle("+id+")");
-		break;
-	}
-}
-
-//RELATED ARTWORKS dimension optimization
-function asignImage(id, pic, height, width)
-{
-	var nHeight=250, nWidth=250;
-	if ((height >= width) && (height - width<=10))
-	{
-		nHeight = 250; nWidth = 250;
-	}
-	else if ((height > width) && (height - width>=10))
-	{
-		nHeight = 250; nWidth = 200;
-	}
-	else if ((height < width) && (width - height>=10))
-	{
-		nHeight = 200; nWidth = 250;
-	}
-	
-	$(id).attr("src", pic);
-	$(id).attr("width", nWidth+"px");
-	$(id).attr("height", nHeight+"px");
-}
 
 /************
 *END SINGLE PAGE ARTWORK

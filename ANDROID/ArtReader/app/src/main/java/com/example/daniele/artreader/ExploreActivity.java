@@ -638,6 +638,6 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
                 }
             }
         };
-        request.execute("get", "oneArtwork", idArtwork);
+        request.execute("get", "oneArtworkMobile", idArtwork);
     }
 }

@@ -638,7 +638,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
             }
         };
-        request.execute("get", "oneArtwork", id);
+        request.execute("get", "oneArtworkMobile", id);
     }
 
     private void loadRelatedSearchMainRequest()

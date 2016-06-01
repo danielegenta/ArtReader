@@ -18,6 +18,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<script type="text/javascript" src="Utility/jquery-2.1.4.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/jscriptOneArtwork.js"></script>
+		
 
 
 		<script>
@@ -26,6 +29,7 @@
 		
 		$(document).ready(function()
 		{
+		showSingleArtworkInfo();
 			$('.parallax').parallax();
 		if(navigator.geolocation)
 			navigator.geolocation.getCurrentPosition(mia_posizione);
@@ -74,6 +78,7 @@
 		
 		function getCoords(address)
 		{
+		console.log(address);
 			var gc      = new google.maps.Geocoder(),
 				opts    = { 'address' : address };
 

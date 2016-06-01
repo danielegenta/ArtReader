@@ -11,8 +11,22 @@ var multipartMiddleware = multipart();
 
 var fs=require('fs');
 var port = 8080;
-var app = express();
+var app = express();/*
+var express = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/express")
+var session = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/express-session");
+var bodyParser = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/body-parser");
+var sqlite = require('C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/sqlite3');
+var multer  =   require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/multer");
+var utility=require("./Utility.js");
+var crypto = require('crypto');
+//var cookieParser = require('cookie-parser');
 
+var multipart = require('C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/connect-multiparty');
+var multipartMiddleware = multipart();*/
+
+var fs=require('fs');
+var port = 8080;
+var app = express();
 
 
 //file uploading
@@ -30,9 +44,6 @@ var app = express();
 iframeFileUpload.addRedirectResponder(app);
 app.post(/^.*\/upload$/, iframeFileUpload.middleware());*/
 
-
-
-
 app.use(express.static("public"));
 app.use(bodyParser()); 
 app.listen(port, function () {
@@ -40,6 +51,9 @@ app.listen(port, function () {
     console.log("server avviato sulla porta : " + port);
 
 });
+
+
+
 
 //midleware per il parsing dei parametri post
 app.use(bodyParser.json());
@@ -99,26 +113,33 @@ app.post("/access", function (request, response, next) {
 	sqlite.verbose();
 	var db = new sqlite.Database("./Database/myDatabase.db");
 	var index = -1;
+	var userType="";
 	db.serialize(function(){
 		
 		if (utente != undefined && cryptedPassword != undefined)
 		{
-			var sql = "SELECT DISTINCT(Username) FROM Users WHERE Username='" + utente + "' AND Password = '" + cryptedPassword + "'";
+			var sql = "SELECT * FROM Users WHERE Username='" + utente + "' AND Password = '" + cryptedPassword + "'";
 			
 			db.each(sql, function(err, row)
 			{
 				index = row.Id;
+				userType=row.Type
 			},
 			function(err, nRecord)
 			{
 				if (index != -1)
 				{
+					if(userType=="normal"){
+						request.session.admin=false;
+					}
+					else{
+						request.session.admin=true;
+					}
 					logged = true;
 					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 					utility.aggiornaPagina("./pages/index.html", function(window){
-						response.writeHead(200,header);
-						
-						response.end(window.document.documentElement.innerHTML);
+						//response.writeHead(200,header);
+						response.send(window.document.documentElement.innerHTML);
 					});
 					
 				}
@@ -170,7 +191,7 @@ app.get("/loginmobile", function (request, response, next) {
 				{
 					logged = true;
 					ok = true;
-					response.writeHead(200, header);
+					yulresponse.writeHead(200, header);
 					response.end("success");
 				}
 				else
@@ -188,10 +209,18 @@ app.get("/loginmobile", function (request, response, next) {
 
 app.post("/artworkDetails",function(request,response,next)
 {
+	/*var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	utility.aggiornaPagina("./pages/index.html", function(window){
+		response.send(window.document.documentElement.innerHTML);
+	});*/
+	
+	
+	
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	request.session.idArtwork=request.body["codice"];
 	utility.aggiornaPagina("./pages/singleArtwork.html", function(window){
-		response.writeHead(200,header);
-		response.end(window.document.documentElement.innerHTML);
+		//response.writeHead(200,header);
+		response.send(window.document.documentElement.innerHTML);
 	});
 });
 
@@ -354,7 +383,8 @@ app.get("/delArtwork", function(request, response,next){
 
 //one artwork info
 app.get("/oneArtwork", function(request, response,next){
-	var id = request.query["id"];
+	console.log(request.session.idArtwork);
+	var id = request.session.idArtwork;
 	var header = {"Content-Type":"text/html"};	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
@@ -412,10 +442,7 @@ app.get("/oneArtwork", function(request, response,next){
 					//console.log("....."+myId);
 					
 				}
-				);*/
-				
-		
-				
+				);*/	
 		db.close();
 		});	
 		});		
@@ -463,7 +490,8 @@ app.get("/allArtworks", function(request, response,next){
 					artwork.address = row.Address;
 					
 					//field table 'authors'
-					artwork.idAuthor = row.IdAuthors;
+					artwork.type=request.session.admin;
+					artwork.idAuthor = request.session.admin;
 					artwork.name = row.Name;
 					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
 					artwork.nationalityAuthor = row.NationalityAuthor;
@@ -784,6 +812,146 @@ app.get("/getFeedback", function(request, response,next) {
 		}); 
 		
 });
+
+//insert new user
+app.post("/insertUser", function (request, response, next) {
+    var username = request.body["txtUsername-SignUp"];
+	var mail=request.body["txtMail-SignUp"];
+	var telefono=request.body["txtTelefono-SignUp"];
+	var cryptedPassword = crypto.createHash('sha256').update(request.body["txtPassword-SignUp"]).digest('base64');		
+	
+	sqlite.verbose();
+	var db = new sqlite.Database("./Database/myDatabase.db");
+	var index = -1;
+	db.serialize(function(){
+				var insert=db.prepare("INSERT INTO Users (Username,Password,LastAccess,Type,Mail) values(?,?,?,?,?)");
+				insert.run(username,cryptedPassword,"","normal",mail);
+				insert.finalize();	
+				var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+				utility.aggiornaPagina("./pages/login.html", function(window){
+						response.writeHead(200,header);						
+						response.end(window.document.documentElement.innerHTML);
+					});
+	});
+});
+
+
+//NEW*********
+//artwork advice - usato in home di app
+app.get("/artworkAdvice", function(request, response,next)
+{
+    //utility.aggiornaPagina("./pages/index.html", function(window){
+		
+	var author = request.query["author"];
+	//author =author.replace("'","''");
+	var header = {"Content-Type":"text/html"};	
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.name = '" + author + "' ) ORDER BY NViews DESC LIMIT 3 ";
+	console.log(sql);
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+				var artwork = {};
+				artwork.id = row.Id;
+				artwork.title = row.Title;
+				artwork.pictureUrl = row.PictureUrl;
+				artwork.nViews = row.NViews;
+				artwork.dimensionHeight = row.DimensionHeight;
+				artwork.dimensionWidth = row.DimensionWidth;
+				listArtworks.push(artwork);
+				
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);
+				
+				response.writeHead(200, header);
+				console.log(json);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	//});
+});
+
+//one artwork info
+app.get("/oneArtworkMobile", function(request, response,next){
+	var id = request.query["id"];
+	var header = {"Content-Type":"text/html"};	
+		var db = new sqlite.Database("Database/myDatabase.db");
+		db.serialize(function(){
+			var insert=db.prepare("UPDATE Artworks SET NViews = NViews + 1 WHERE Id="+id);
+			insert.run();
+			insert.finalize();
+			db.serialize(function(){
+			var sql = "SELECT * FROM Artworks, LocationsArtworks, Authors WHERE id="+id+" AND Artworks.Location = LocationsArtworks.IdLocationsArtworks AND Artworks.Author = Authors.IdAuthors";
+            
+			var json;
+            var json;
+            var artwork = {};
+			db.get(sql, function(err, row)
+			{
+				if(row!=undefined)
+				{
+					artwork.id = row.Id;
+					artwork.title = row.Title;
+					artwork.author = row.Author;
+					artwork.abstract = row.Abstract;
+					artwork.pictureUrl = row.PictureUrl;
+					artwork.tecnique = row.Tecnique;
+					artwork.year = row.Year;
+					artwork.artMovement = row.ArtMovement;
+					artwork.dimensionHeight = row.DimensionHeight;
+					artwork.dimensionWidth = row.DimensionWidth;
+					artwork.wikipediaPageArtwork = row.WikipediaPageArtwork;
+					artwork.location = row.Location
+					artwork.pictureUrl2 = row.PictureUrl2;
+					artwork.pictureUrl3 = row.PictureUrl3;
+					
+					//field table 'locationsArtworks'
+					artwork.idLocationsArtworks = row.IdLocationsArtworks;
+					artwork.description = row.Description;
+					artwork.city = row.City;
+					artwork.nation = row.Nation;
+					artwork.wikipediaPageLocation = row.WikipediaPageLocation;
+					artwork.address = row.Address;
+					
+					//field table 'authors'
+					artwork.idAuthor = row.IdAuthors;
+					artwork.name = row.Name;
+					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
+					artwork.nationalityAuthor = row.NationalityAuthor;
+
+					json = JSON.stringify(artwork);					
+					response.writeHead(200, header);
+					response.end(json);	
+				}							
+				}),
+				/*function(err, row)
+				{
+					
+					//db = new sqlite.Database("Database/myDatabase.db");
+					//console.log("....."+myId);
+					
+				}
+				);*/
+				
+		
+				
+		db.close();
+		});	
+		});		
+});
+
+//ritorno a pagina principale se url è errato
+app.use("*", function(request, response,next){
+	utility.aggiornaPagina("./pages/login.html", function(window){
+						//response.writeHead(200,header);
+						response.send(window.document.documentElement.innerHTML);
+					});
+});
+
 /*
 admin:
 daniele.genta 
