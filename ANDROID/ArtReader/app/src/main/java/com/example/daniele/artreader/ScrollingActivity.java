@@ -48,7 +48,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.102:8080/";
+    String myIp = "http://192.168.1.103:8080/";
 
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = "";
@@ -615,8 +615,8 @@ public class ScrollingActivity extends AppCompatActivity {
         }
         idArtwork = Integer.valueOf(id);
         loadRelatedSearchRequest(id);
-        ScrollView mainScrollView = (ScrollView)findViewById(R.id.scrollView);
-        mainScrollView.fullScroll(ScrollView.FOCUS_UP);
+        //ScrollView mainScrollView = (ScrollView)findViewById(R.id.scrollView);
+        //mainScrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
     /*

@@ -32,7 +32,7 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
         String ris = "";
 
         URLConnection conn = null;
-        String url = "http://192.168.1.102:8080/";
+        String url = "http://192.168.1.103:8080/";
         url += risorsa;
         try
         {
@@ -59,6 +59,14 @@ public class InviaRichiestaHttp extends AsyncTask<String,Void,String>
                     par = par.replace(" ","");
                     url += par;
 
+                }
+                else if (risorsa.compareTo("artworkAdvice") == 0)
+                {
+                    if (par.substring(par.length()-1, par.length()).compareTo(" ") == 0)
+                        url += par.substring(0,par.length()-1);
+                    else
+                        url+=par;
+                    url = url.replace(" ", "%20");
                 }
                 URL _url = new URL(url);
                 conn = _url.openConnection();

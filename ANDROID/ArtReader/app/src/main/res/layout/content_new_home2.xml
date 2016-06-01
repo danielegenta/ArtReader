@@ -26,7 +26,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Visualizzati di recente"
-                    android:id="@+id/textView20"
+                    android:id="@+id/lblHomeLatestViewed"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:textSize="20dp" />
@@ -35,11 +35,10 @@
                     android:layout_width="match_parent"
                     android:padding="10dp"
                     android:layout_height="150dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_below="@+id/textView20"
+                    android:layout_below="@+id/lblHomeLatestViewed"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:id="@+id/tableLayout">
+                    android:id="@+id/tableLayoutHomeLatestViewed">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -109,111 +108,109 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consigli per te"
+                android:id="@+id/lblHomeAdivce"
+                android:textSize="20dp"
+                android:layout_above="@+id/tableLayoutHomeAdvice"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="150dp"
+                android:id="@+id/tableLayoutHomeAdvice"
+                android:layout_above="@+id/textView23"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgHomeAdvice1"
+                        android:visibility="invisible"
+                        android:nestedScrollingEnabled="false"
+                        android:minHeight="100dp"
+                        android:minWidth="100dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgHomeAdvice2"
+                        android:minHeight="100dp"
+                        android:minWidth="100dp"
+                        android:visibility="invisible"
+                        android:onClick="relatedSearchClick" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imgHomeAdvice3"
+                        android:minHeight="100dp"
+                        android:minWidth="100dp"
+                        android:visibility="invisible"
+                        android:onClick="relatedSearchClick" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/txtHomeAdvice1"
+                        android:layout_column="0"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/txtHomeAdvice2"
+                        android:layout_column="1"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/txtHomeAdvice3"
+                        android:layout_column="2"
+                        android:visibility="invisible" />
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scopri le nostre opere"
+                android:id="@+id/textView23"
+                android:textSize="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView23"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/dynamicTable">
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PROVA TABELLA DINAMICA"
-        android:id="@+id/textView23"
-        android:textSize="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="191dp" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView23"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/dynamicTable">
-
-    </LinearLayout>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:padding="10dp"
-        android:layout_height="150dp"
-        android:id="@+id/tableLayout2"
-        android:layout_above="@+id/textView23"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgHomeAdvice1"
-                android:visibility="invisible"
-                android:nestedScrollingEnabled="false"
-                android:minHeight="100dp"
-                android:minWidth="100dp"
-                android:layout_marginLeft="20dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgHomeAdvice2"
-                android:minHeight="100dp"
-                android:minWidth="100dp"
-                android:visibility="invisible"
-                android:onClick="relatedSearchClick"
-                android:layout_marginLeft="20dp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgHomeAdvice3"
-                android:minHeight="100dp"
-                android:minWidth="100dp"
-                android:visibility="invisible"
-                android:onClick="relatedSearchClick"
-                android:layout_marginLeft="20dp" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtHomeAdvice1"
-                android:layout_column="0"
-                android:visibility="invisible" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtHomeAdvice2"
-                android:layout_column="1"
-                android:visibility="invisible" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtHomeAdvice3"
-                android:layout_column="2"
-                android:visibility="invisible" />
-        </TableRow>
-    </TableLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Consigli per te"
-        android:id="@+id/textView21"
-        android:textSize="20dp"
-        android:layout_above="@+id/tableLayout2"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
