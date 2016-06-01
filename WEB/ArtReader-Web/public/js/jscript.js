@@ -219,6 +219,7 @@ $('#uploadForm').submit(function() {
 	$( "#txtSearch" ).keyup(function() {
 		cleanTable();
 		var stringSearch = $("#txtSearch").val();
+		$(".riga").show();
 		refreshTable(stringSearch);
 		ricerca();
 	});
@@ -240,7 +241,7 @@ $('#uploadForm').submit(function() {
 		//aux: title - author - artMovement
 		var aux = selVal.split(" - ");
 		$("#txtSearch").val(aux[0]);
-		$("#lstSuggerimenti").css("display", "none")
+		$(".riga").hide();
 		refreshTable(aux[0]);
 		$("#searchTips").show();
 		similarArtworks(aux[1], aux[0], aux[2]); 
@@ -438,7 +439,7 @@ function showSimilar(response, i)
 {
 	if (i!=-1)
 		var title = response[i].title;
-	$("#noTip").html("");
+	$("#noTip").hide();
 	switch (i)
 	{
 		case 0:
@@ -452,7 +453,7 @@ function showSimilar(response, i)
 		break;
 	}
 	if (i == -1)
-		$("#noTip").text("Nessuna ricerca correlata al quadro ricercato");
+		$("#noTip").show();
 		
 }
 

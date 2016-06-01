@@ -5,13 +5,17 @@ var sqlite = require('/usr/local/lib/node_modules/sqlite3');
 var multer  =   require("/usr/local/lib/node_modules/multer");
 var utility=require("./Utility.js");
 var crypto = require('crypto');
+var nodemailer = require('/usr/local/lib/node_modules/nodemailer');
 
 var multipart = require('/usr/local/lib/node_modules/connect-multiparty');
 var multipartMiddleware = multipart();
 
 var fs=require('fs');
 var port = 8080;
-var app = express();/*
+var app = express();
+var transporter;
+
+/*
 var express = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/express")
 var session = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/express-session");
 var bodyParser = require("C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/body-parser");
@@ -22,11 +26,11 @@ var crypto = require('crypto');
 //var cookieParser = require('cookie-parser');
 
 var multipart = require('C:/Users/Hp Notebook/AppData/Roaming/npm/node_modules/connect-multiparty');
-var multipartMiddleware = multipart();*/
+var multipartMiddleware = multipart();
 
 var fs=require('fs');
 var port = 8080;
-var app = express();
+var app = express();*/
 
 
 //file uploading
@@ -86,7 +90,7 @@ app.use(session({
     secret: "myKeyword",
     // nome da assegnare al cookie in cui salvare il sessionID
     name: "sessionId",   // The default value is 'connect.sid'.
-	// propriet‡ legate allo Store delle Session su db
+	// propriet√† legate allo Store delle Session su db
     resave: false,
     saveUninitialized: false,
     cookie: { 
@@ -137,7 +141,7 @@ app.post("/access", function (request, response, next) {
 					}
 					logged = true;
 					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
-					utility.aggiornaPagina("./pages/index.html", function(window){
+					utility.aggiornaPagina("./pages/newIndex.html", function(window){
 						//response.writeHead(200,header);
 						response.send(window.document.documentElement.innerHTML);
 					});
@@ -823,7 +827,8 @@ app.post("/insertUser", function (request, response, next) {
 	sqlite.verbose();
 	var db = new sqlite.Database("./Database/myDatabase.db");
 	var index = -1;
-	db.serialize(function(){
+	db.serialize(function()
+	{
 				var insert=db.prepare("INSERT INTO Users (Username,Password,LastAccess,Type,Mail) values(?,?,?,?,?)");
 				insert.run(username,cryptedPassword,"","normal",mail);
 				insert.finalize();	
@@ -944,7 +949,7 @@ app.get("/oneArtworkMobile", function(request, response,next){
 		});		
 });
 
-//ritorno a pagina principale se url Ë errato
+//ritorno a pagina principale se url √® errato
 app.use("*", function(request, response,next){
 	utility.aggiornaPagina("./pages/login.html", function(window){
 						//response.writeHead(200,header);

@@ -39,7 +39,7 @@ h2
 	bottom:40px;  
 }
 
-#searchTips, #no-tip
+#searchTips, #noTip
 {
 	font-size: 15px;
 }
@@ -51,8 +51,8 @@ h2
 .riga
 {
 	font-size:16pt;
-	width:5600px; 
-	margin-top: -20px;
+	width:100%; 
+	margin-top: -30px;
 }
 
 /*
@@ -77,4 +77,39 @@ h2
 	font-weight: bold;
 }
 
+/*
+*	NEW
+*/
+
+#test0
+{
+	height: 200px;
+	width: 250px;
+	padding-top: 80px;
+	font-size: 100px;
+}
+
+.tableLayoutHome-common-title
+{
+	font-size: 40px;
+	margin-bottom: 50px;		
+}
+
+#tableLayoutHome-Artworks
+{
+	background-color: #EDEFED;
+	margin-bottom: 50px;
+}
+
+.cardH
+{
+	max-width: 250px;
+	max-height: 200px;
+}
+
+.cardV
+{
+	max-width: 200px;
+	max-height: 250px;
+}
 
