@@ -93,29 +93,36 @@ h2
 	margin-bottom: 50px;		
 }
 
-#tableLayoutHome-Artworks-Table
+#tableLayoutHome-Artworks-Table, #tableLayoutHome-Locations-Table, #tableLayoutHome-Authors-Table
 {
 	background-color: #EDEFED;
 	margin-bottom: 50px;
+	width: 1500px;
+	overflow: scroll;
 
 }
 
-#tableLayoutHome-Artworks-Table td
+#tableLayoutHome-Artworks-Table td, #tableLayoutHome-Locations-Table td, #tableLayoutHome-Authors-Table td
 {
 	height: 300px;
 	padding: 50px;
+
 }
 
 
 .cardH
 {
-	max-width: 250px;
+	max-width: 300px;
 	max-height: 200px;
+	min-width: 300px;
+	min-height: 200px;
 }
 
 .cardV
 {
 	max-width: 200px;
 	max-height: 250px;
+	min-width: 200px;
+	min-height: 250px;
 }
 

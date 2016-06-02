@@ -2,7 +2,7 @@
 * Script functions (interaction with the server) - AJAX calls
 ************************/
 
-var readRequest, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation,feedBack;
+var readRequest,readRequest1,readRequest2, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation,feedBack;
 
 /**************************************************************LOGIN CALLS***************************************************************/
 //login to index page
@@ -126,7 +126,6 @@ function post(path, params) {
 
 function showArtworks()
 {
-	console.log("k");
 	readRequest = new XMLHttpRequest();
 	var url="/allArtworks";
 	readRequest.open("GET", url, true);
@@ -134,7 +133,25 @@ function showArtworks()
 	readRequest.send(null);
 }
 
+function showLocations()
+{
+	readRequest1 = new XMLHttpRequest();
+	var url="/getLocations";
+	readRequest1.open("GET", url, true);
+	readRequest1.onreadystatechange = readUpdateLocations;
+	readRequest1.send(null);
+}
 
+function showAuthors()
+{
+	readRequest2 = new XMLHttpRequest();
+	var url="/getAuthors";
+	readRequest2.open("GET", url, true);
+	readRequest2.onreadystatechange = readUpdateAuthors;
+	readRequest2.send(null);
+}
+
+/****/
 
 function searchArtworks(partial)
 {
@@ -168,7 +185,8 @@ function allAuthors(){
 	reqCbAuthor.onreadystatechange = caricacomboAuthors;
 	reqCbAuthor.send(null);
 }
-function allLocation(){
+function allLocation()
+{
 	reqCbLocation = new XMLHttpRequest();
 	var url="/getLocations";
 	reqCbLocation.open("GET", url, true);
@@ -213,6 +231,8 @@ function caricacomboLocation(){
 		cbLocations(artworks);		
 	}
 }
+
+
 function readUpdate()
 {
 	if (readRequest.readyState == 4 && readRequest.status == 200)
@@ -225,6 +245,39 @@ function readUpdate()
 		for (var counter in artworks)
 		{
 			showArtwork(artworks, i);
+			i++;
+		}
+	}
+}
+
+function readUpdateLocations()
+{
+	if (readRequest1.readyState == 4 && readRequest1.status == 200)
+	{
+		var response = JSON.parse(readRequest1.responseText);
+		console.log(response);
+		var locations = response;
+		var i = 0;
+		cleanTableLocations();
+		for (var counter in locations)
+		{
+			showLocation(locations, i);
+			i++;
+		}
+	}
+}
+
+function readUpdateAuthors()
+{
+	if (readRequest2.readyState == 4 && readRequest2.status == 200)
+	{
+		var response = JSON.parse(readRequest2.responseText);
+		var authors = response;
+		var i = 0;
+		cleanTableAuthors();
+		for (var counter in authors)
+		{
+			showAuthor(authors, i);
 			i++;
 		}
 	}

@@ -153,6 +153,8 @@ $('#uploadForm').submit(function() {
 	  
 	//first loading of the artworks table
 	jqShowArtworks();
+	jqShowLocations();
+	jqShowAuthors();
 	
 	$("#searchTips").hide();
 	$(".riga").hide();
@@ -430,6 +432,103 @@ function showArtwork(response, i)
 	
 }
 
+//Creating a table row with dynamic buttons to delete or edit the artwork
+function showLocation(response, i)
+{
+	/*
+	*	NEW
+	*/
+	if (i == 0)
+	{
+		var tabella=$("#tableLayoutHome-Locations-Table");
+		var righe = "<tr id=\"tableLayoutHome-Locations-Table-firstRow\"></tr><tr id=\"tableLayoutHome-Locations-Table-secondRow\"></tr>";
+		tabella.append(righe);
+	}
+
+	var tabella=$("#tableLayoutHome-Locations-Table");
+	var riga;
+	//prima o seconda riga?
+	if ( (i) % 2==0)
+		riga=$("#tableLayoutHome-Locations-Table-firstRow");
+	else
+		riga=$("#tableLayoutHome-Locations-Table-secondRow");
+
+	//recupero informazioni utili
+	var id = response[i].id;
+	var locationName = response[i].name;
+	var pictureUrl = response[i].pictureUrl;
+
+	var htmlCell; var htmlDiv;
+	htmlCell = "<td id=\"tableLayoutHome-Locations-Table-"+i+"\"></td>";
+	htmlCell = "<td id=\"tableLayoutHome-Locations-Table-"+i+"\"></td>";
+	htmlDiv = "<div class=\"card cardH\" id=\"tableLayoutHome-Locations-Table-container"+i+"\"><div class=\"card-image waves-effect waves-block waves-light\"><img class=\"activator\" id=\"tableLayoutHome-Locations-Table-img"+i+"\"></div></div>";
+
+	htmlDiv2 = "<div class=\"card-reveal\"><span class=\"card-title grey-text text-darken-4\">"+ locationName +"<i class=\"material-icons right\">close</i></span>";
+	htmlDiv2 += "<br><br>";
+	//btn
+	htmlDiv2 += "<p><a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Locations-Table-btnView"+i+"\"><img src=\"img/ico/view.png\"></a>";
+	//htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Locations-Table-btnEdit"+i+"\"><img src=\"img/ico/edit.png\"></a>";
+	//htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Locations-Table-btnDelete"+i+"\"><img src=\"img/ico/delete.png\"></a></p>";
+	htmlDiv2 += "</div>";
+
+	riga.append(htmlCell);
+	$("#tableLayoutHome-Locations-Table-"+i+"").append(htmlDiv);
+	$("#tableLayoutHome-Locations-Table-container"+i+"").append(htmlDiv2);
+	
+	//immagine alla cella
+	asignImage("#tableLayoutHome-Locations-Table-img"+i, "img/parallax/"+pictureUrl, 400, 600);
+	//listener ai bottoni
+	//$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
+}
+
+function showAuthor(response, i)
+{
+	/*
+	*	NEW
+	*/
+	if (i == 0)
+	{
+		var tabella=$("#tableLayoutHome-Authors-Table");
+		var righe = "<tr id=\"tableLayoutHome-Authors-Table-firstRow\"></tr><tr id=\"tableLayoutHome-Authors-Table-secondRow\"></tr>";
+		tabella.append(righe);
+	}
+
+	var tabella=$("#tableLayoutHome-Authors-Table");
+	var riga;
+	//prima o seconda riga?
+	if ( (i) % 2==0)
+		riga=$("#tableLayoutHome-Authors-Table-firstRow");
+	else
+		riga=$("#tableLayoutHome-Authors-Table-secondRow");
+
+	//recupero informazioni utili
+	var id = response[i].id;
+	var name = response[i].name;
+	var pictureUrl = response[i].pictureUrlAuthor;
+
+	var htmlCell; var htmlDiv;
+	htmlCell = "<td id=\"tableLayoutHome-Authors-Table-"+i+"\"></td>";
+	htmlCell = "<td id=\"tableLayoutHome-Authors-Table-"+i+"\"></td>";
+	htmlDiv = "<div class=\"card cardV\" id=\"tableLayoutHome-Authors-Table-container"+i+"\"><div class=\"card-image waves-effect waves-block waves-light\"><img class=\"activator\" id=\"tableLayoutHome-Authors-Table-img"+i+"\"></div></div>";
+
+	htmlDiv2 = "<div class=\"card-reveal\"><span class=\"card-title grey-text text-darken-4\">"+ name +"<i class=\"material-icons right\">close</i></span>";
+	htmlDiv2 += "<br><br>";
+	//btn
+	htmlDiv2 += "<p><a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Authors-Table-btnView"+i+"\"><img src=\"img/ico/view.png\"></a>";
+	//htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Locations-Table-btnEdit"+i+"\"><img src=\"img/ico/edit.png\"></a>";
+	//htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Locations-Table-btnDelete"+i+"\"><img src=\"img/ico/delete.png\"></a></p>";
+	htmlDiv2 += "</div>";
+
+	riga.append(htmlCell);
+	$("#tableLayoutHome-Authors-Table-"+i+"").append(htmlDiv);
+	$("#tableLayoutHome-Authors-Table-container"+i+"").append(htmlDiv2);
+	
+	//immagine alla cella
+	asignImage("#tableLayoutHome-Authors-Table-img"+i, "img/immagini/autori/"+pictureUrl, 600, 400);
+	//listener ai bottoni
+	//$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
+}
+
 /*
 *	Support btnArtwork
 */
@@ -481,6 +580,17 @@ function showSimilar(response, i)
 function cleanTable()
 {
 	$( "#tableLayoutHome-Artworks-Table").empty();
+	//$( "#tableLayoutHome-Locations-Table").empty();
+}
+
+function cleanTableLocations()
+{
+	$( "#tableLayoutHome-Locations-Table").empty();
+}
+
+function cleanTableAuthors()
+{
+	$( "#tableLayoutHome-Authors-Table").empty();
 }
 
 //show all artworks
@@ -488,6 +598,17 @@ function jqShowArtworks()
 {
 	showArtworks();
 }
+
+function jqShowLocations()
+{
+	showLocations();
+}
+
+function jqShowAuthors()
+{
+	showAuthors();
+}
+
 
 //gestione combobox 
 function cbAuthors(authors){
@@ -576,7 +697,7 @@ function asignImage(id, pic, height, width)
 	}
 	else if ((height < width) && (width - height>=10))
 	{
-		nHeight = 200; nWidth = 250;
+		nHeight = 200; nWidth = 300;
 	}
 	$(id).attr("src", pic);
 	$(id).attr("width", nWidth+"px");

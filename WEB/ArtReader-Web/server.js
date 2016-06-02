@@ -650,14 +650,15 @@ app.get("/getAuthors", function(request, response,next) {
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-		var sql = "SELECT IdAuthors,Name from Authors";
+		var sql = "SELECT * from Authors";
         var json;
 		var listArtworks = [];			
 			db.each(sql, 
 				function(err, row){					
 					var artwork = {};
 					artwork.id = row.IdAuthors;
-					artwork.name = row.Name;			
+					artwork.name = row.Name;	
+					artwork.pictureUrlAuthor = row.PictureUrlAuthor;		
 					listArtworks.push(artwork);
 				},
 				function(err, nRighe){
