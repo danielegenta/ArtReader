@@ -130,14 +130,6 @@ $('#uploadForm').submit(function() {
     }
   );
   
-        
-		
-	
-
-
-	
-
-	
 	//INSERT NEW ARTWORK var and fields
 	var dialog, form,
       title = $( "#txtTitle" ),
@@ -163,6 +155,9 @@ $('#uploadForm').submit(function() {
 	jqShowArtworks();
 	
 	$("#searchTips").hide();
+	$(".riga").hide();
+	$("#noTip").hide();
+
 	//ARTWORK dialog
 	dialog = $( "#dialogInsertArtwork" ).dialog({
 		 autoOpen: false,
@@ -229,10 +224,10 @@ $('#uploadForm').submit(function() {
 		if ($(this).val() == "" )
 		{
 			$(this).val("Ricerca un'opera d'arte..."); 
-			$("#searchTips").hide();
+
 		}
-			
-		
+		$("#searchTips").hide();
+		$("#riga").hide();
 	});
 
 	//GOOGLE ISTANT tips
@@ -273,10 +268,10 @@ $('#uploadForm').submit(function() {
 	});
 	
 	//showing single artwork info(click on title td)
-	$("#tableArtworks").delegate('tr td:nth-child(2)', 'click', function() {
+	/*$("#tableLayoutHome-Artworks-Table").delegate('tr td:nth-child(2)', 'click', function() {
 		var id = $(this).closest('tr').find('td:first').text();
         post('/artworkDetails', { codice: id });
-    });
+    });*/
 	
 	//INSERT NEW ARTWORK DIALOG - error in insert fields...
 	function updateTips( t ) {
@@ -348,91 +343,107 @@ $('#uploadForm').submit(function() {
 //Creating a table row with dynamic buttons to delete or edit the artwork
 function showArtwork(response, i)
 {
-	var tabella=$("#tableArtworks");
-	var riga=$("<tr></tr>");
-				   
-	var id=$("<td></td>");
-	id.text(response[i].id);
-	riga.append(id);
-	
-	var title=$("<td class='cellTitle'></td>");
-	title.text(response[i].title);
-	riga.append(title);
-	 
-	var author=$("<td></td>");
-	author.text(response[i].name);
-	riga.append(author);
-				   
-	var pictureurl=$("<td></td>");
-	var img = $('<img width="150" >'); 
-	img.attr('src', 'img/immagini/'+response[i].pictureUrl);
-	pictureurl.append(img);
-	riga.append(pictureurl);
-		
-	//alert(response[i].description);
-	var locationAbstract=$("<td></td>");
-	locationAbstract.text(response[i].city);
-	riga.append(locationAbstract);
-	$("#colonnaOperazioni").hide();	
-	$("#btnInsertArtwork").hide();
-	
-	
-	console.log("!!!"+response);
-	console.log("!!!"+response[i].type);
-	if(response[i].type)
+	/*
+	*	NEW
+	*/
+
+	if (i == 0)
 	{
-	$("#colonnaOperazioni").show();		
-	$("#btnInsertArtwork").show();	
-	var tdbutt=$("<td></td>");
-	var butDel=document.createElement("button");
-	butDel.addEventListener('click',function(){deleteArtwork(response[i].id); jqShowArtworks();});
-	var att = document.createAttribute("class");       // Create a "class" attribute
-	att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
-	butDel.setAttributeNode(att);
-	att = document.createAttribute("style");   
-	att.value = "background-image:url('img/ico/delete.png'); background-repeat:no-repeat";   
-	butDel.setAttributeNode(att);
-	tdbutt.append(butDel);
-	
-	
-	var butMod=document.createElement("button");
-	butMod.name="mod";
-	var att = document.createAttribute("class");       // Create a "class" attribute
-	att.value = "btn-floating btn-large waves-effect waves-light";                           // Set the value of the class attribute
-	butMod.setAttributeNode(att);
-	att = document.createAttribute("style");   
-	att.value = "background-image:url('img/ico/edit.png'); background-repeat:no-repeat";   
-	butMod.setAttributeNode(att);
-	butMod.addEventListener('click',function()
-	{
-		$("#dialogInsertArtwork").dialog('open');
-		$("#btnModifica").show();
-		$("#btnInsert").hide();
-		
-		$("#txtTitle").val(response[i].title);
-		$("#txtAbstract").val(response[i].abstract);		
-		$( "#txtTecnique" ).val(response[i].tecnique);
-		$( "#txtMovimento" ).val(response[i].artMovement);
-		$( "#txtWiki" ).val(response[i].wikipediaPageArtwork);
-		$( "#txtAnno" ).val(response[i].year);
-		$( "#txtAltezza" ).val(response[i].dimensionHeight);
-		$( "#txtLarghezza" ).val(response[i].dimensionWidth);
-		$("#showImg").attr('src','img/immagini/'+response[i].pictureUrl);		
-		$("#showImg1").attr('src','img/parallax/'+response[i].pictureUrl2);
-		$("#showImg2").attr('src','img/parallax/'+response[i].pictureUrl3);
-		$("#cbAuthor").attr('value',response[i].author);
-		$("#cbAuthor").text(response[i].name);
-		$("#cbLocation").attr('value',response[i].idLocationsArtworks);
-		$("#cbLocation").text(response[i].city);
-		jqShowArtworks();
-	});
-	tdbutt.append(butMod);
-	
-	riga.append(tdbutt);	
+		var tabella=$("#tableLayoutHome-Artworks-Table");
+		var righe = "<tr id=\"tableLayoutHome-Artworks-Table-firstRow\"></tr><tr id=\"tableLayoutHome-Artworks-Table-secondRow\"></tr>";
+		tabella.append(righe);
+		var riga=$("#tableLayoutHome-Artworks-Table-firstRow");
+		var htmlCell = "<td id=tableLayoutHome-Artworks-Table-0></td>"
+		htmlDiv = "<a class=\"waves-effect waves-light btn\" id=\"btnInsertArtwork\">+</a>"
+		riga.append(htmlCell);
+		$("#tableLayoutHome-Artworks-Table-0").append(htmlDiv);
 	}
-			  
-	tabella.append(riga);
+	i++;
+
+	var tabella=$("#tableLayoutHome-Artworks-Table");
+	var riga;
+	//prima o seconda riga?
+	if ( (i-1) % 2==0)
+		riga=$("#tableLayoutHome-Artworks-Table-firstRow");
+	else
+		riga=$("#tableLayoutHome-Artworks-Table-secondRow");
+
+	//recupero informazioni utili
+	var id = response[i-1].id;
+	var title = response[i-1].title;
+	var height = response[i-1].dimensionHeight;
+	var width = response[i-1].dimensionWidth;
+	var pictureUrl = response[i-1].pictureUrl;
+
+	
+
+	var htmlCell; var htmlDiv;
+	htmlCell = "<td id=\"tableLayoutHome-Artworks-Table-"+i+"\"></td>";
+	
+	htmlCell = "<td id=\"tableLayoutHome-Artworks-Table-"+i+"\"></td>";
+	if (height >= width) 
+	htmlDiv = "<div class=\"card cardV\" id=\"tableLayoutHome-Artworks-Table-container"+i+"\"><div class=\"card-image waves-effect waves-block waves-light\"><img class=\"activator\" id=\"tableLayoutHome-Artworks-Table-img"+i+"\"></div></div>";
+	else
+	htmlDiv = "<div class=\"card cardH\" id=\"tableLayoutHome-Artworks-Table-container"+i+"\"><div class=\"card-image waves-effect waves-block waves-light\"><img class=\"activator\" id=\"tableLayoutHome-Artworks-Table-img"+i+"\"></div></div>";
+
+	htmlDiv2 = "<div class=\"card-reveal\"><span class=\"card-title grey-text text-darken-4\">"+ title +"<i class=\"material-icons right\">close</i></span>";
+	htmlDiv2 += "<br><br>";
+	//btn
+	htmlDiv2 += "<p><a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnView"+i+"\"><img src=\"img/ico/view.png\"></a>";
+	htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnEdit"+i+"\"><img src=\"img/ico/edit.png\"></a>";
+	htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnDelete"+i+"\"><img src=\"img/ico/delete.png\"></a></p>";
+	htmlDiv2 += "</div>";
+
+	riga.append(htmlCell);
+	$("#tableLayoutHome-Artworks-Table-"+i+"").append(htmlDiv);
+	$("#tableLayoutHome-Artworks-Table-container"+i+"").append(htmlDiv2);
+	
+	//immagine alla cella
+	asignImage("#tableLayoutHome-Artworks-Table-img"+i, "img/immagini/"+pictureUrl, height, width);
+	//listener ai bottoni
+	$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
+	$("#tableLayoutHome-Artworks-Table-btnDelete"+i).attr("onClick", "supportDeleteArtwork("+id+")");
+	var btnMod = document.getElementById("tableLayoutHome-Artworks-Table-btnEdit"+i);
+	btnMod.addEventListener('click',function()
+	{
+			$("#dialogInsertArtwork").dialog('open');
+			$("#btnModifica").show();
+			$("#btnInsert").hide();
+			$("#txtTitle").val(response[i-1].title);
+			$("#txtAbstract").val(response[i-1].abstract);		
+			$( "#txtTecnique" ).val(response[i-1].tecnique);
+			$( "#txtMovimento" ).val(response[i-1].artMovement);
+			$( "#txtWiki" ).val(response[i-1].wikipediaPageArtwork);
+			$( "#txtAnno" ).val(response[i-1].year);
+			$( "#txtAltezza" ).val(response[i-1].dimensionHeight);
+			$( "#txtLarghezza" ).val(response[i-1].dimensionWidth);
+			$("#showImg").attr('src','img/immagini/'+response[i-1].pictureUrl);		
+			$("#showImg1").attr('src','img/parallax/'+response[i-1].pictureUrl2);
+			$("#showImg2").attr('src','img/parallax/'+response[i-1].pictureUrl3);
+			$("#cbAuthor").attr('value',response[i-1].author);
+			$("#cbAuthor").text(response[i-1].name);
+			$("#cbLocation").attr('value',response[i-1].idLocationsArtworks);
+			$("#cbLocation").text(response[i-1].city);
+			jqShowArtworks();
+	});
+
+	
 }
+
+/*
+*	Support btnArtwork
+*/
+function supportViewArtwork(id)
+{
+	post('/artworkDetails', { codice: id });
+}
+
+function supportDeleteArtwork(id)
+{
+	deleteArtwork(id); 
+	jqShowArtworks();
+}
+
 
 //SHOW SIMILAR RESEARCH field (max 3) after a research (related researchs)
 function showSimilar(response, i)
@@ -469,13 +480,12 @@ function showSimilar(response, i)
 //empty the artworks table
 function cleanTable()
 {
-	$( "#mainTable").empty();
+	$( "#tableLayoutHome-Artworks-Table").empty();
 }
 
 //show all artworks
 function jqShowArtworks()
 {
-	console.log("ok");
 	showArtworks();
 }
 
@@ -547,6 +557,30 @@ function cleanDialogFields()
 	$("#cbLocation").attr('value',-1);
 	$("#cbAuthor").text("Museo");
 	$("#cbLocation").text("Autore");
+}
+
+/*
+*	NEW
+*/
+//used to resize programatically images
+function asignImage(id, pic, height, width)
+{
+	var nHeight=250, nWidth=250;
+	if ((height >= width) && (height - width<=10))
+	{
+		nHeight = 250; nWidth = 250;
+	}
+	else if ((height > width) && (height - width>=10))
+	{
+		nHeight = 250; nWidth = 200;
+	}
+	else if ((height < width) && (width - height>=10))
+	{
+		nHeight = 200; nWidth = 250;
+	}
+	$(id).attr("src", pic);
+	$(id).attr("width", nWidth+"px");
+	$(id).attr("height", nHeight+"px");
 }
 
 /**************************END*********************/

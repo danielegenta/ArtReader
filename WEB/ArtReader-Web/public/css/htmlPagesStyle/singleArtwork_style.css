@@ -7,19 +7,7 @@
 /************
 *	HEADER
 *************/
-h1
-{
-	font: 50px Helvetica, Sans-Serif;
-	
-	color: rgba(0,0,255,0.5); 
-	text-shadow: 8px 8px 0 rgba(255,0,180,0.5);
-	letter-spacing: -5px;
-}
 
-h2 
-{
-	font-size: 20px;
-}
 
 #header 
 {
@@ -92,4 +80,19 @@ span, .normal
 {
 	width: 100%;
 	height: 300px;
+}
+
+/*
+*
+*/
+#singleArtwork-header
+{
+	width: 100%;
+	height: 300px;
+	text-align: center;
+	padding-top: 100px;
+	background-color: #EE6E73;
+	text-align:center;
+	color: white;
+	font: 90px Helvetica, Sans-Serif;
 }

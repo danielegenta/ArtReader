@@ -24,7 +24,7 @@
 		<script src="js/form-master/upload.js"></script>	
 	</head>
 	<body>
-	
+	<!--Menù-->
 	<nav>
 		<div class="nav-wrapper">
 		  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
@@ -43,50 +43,6 @@
 	  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 		</div>
 	</nav>
-
-
-	<script>
-	//nascondo cmb suggerimenti
-	$(document).ready(function()
-	{	
-		$(".riga").hide();
-		$("#noTip").hide();
-		$("#tableArtworks").hide();
-		//$("#tableArtworks").hide();
-
-		//RELATED ARTWORKS dimension optimization
-		
-		asignImage("#test1", "img/immagini/ultimacena.jpg", 400, 600);
-		asignImage("#test2", "img/immagini/gioconda.jpg", 700, 600);
-		asignImage("#test3", "img/immagini/ultimacena.jpg", 400, 600);
-		asignImage("#test5", "img/immagini/metamorfosidinarciso.jpg", 400, 600);
-		asignImage("#test11", "img/immagini/ultimacena.jpg", 400, 600);
-		asignImage("#test21", "img/immagini/gioconda.jpg", 700, 600);	
-		asignImage("#test31", "img/immagini/metamorfosidinarciso.jpg", 400, 600);
-		asignImage("#test41", "img/immagini/ultimacena.jpg", 400, 600);
-	});
-	function asignImage(id, pic, height, width)
-	{
-		var nHeight=250, nWidth=250;
-		if ((height >= width) && (height - width<=10))
-		{
-			nHeight = 250; nWidth = 250;
-		}
-		else if ((height > width) && (height - width>=10))
-		{
-			nHeight = 250; nWidth = 200;
-		}
-		else if ((height < width) && (width - height>=10))
-		{
-			nHeight = 200; nWidth = 250;
-		}
-		
-		$(id).attr("src", pic);
-		$(id).attr("width", nWidth+"px");
-		$(id).attr("height", nHeight+"px");
-	}
-	</script>
-	
 	<div id="page1">
 		<div class="header">
 			<!--<img src="img/tmpLogo.png" height="80" width="100">-->
@@ -189,7 +145,7 @@
 		<!--Research space-->	
 		<input type="text" name="search" id="txtSearch" value="Ricerca un opera d'arte..." class="text ui-widget-content ui-corner-all">
 		<!--similg google istant tips-->
-		<select id="lstSuggerimenti" size="4" class="riga" style="display:none">
+		<select id="lstSuggerimenti" size="4" class="riga">
 		</select>
 		<br>  
 		<!--Related research-->
@@ -200,71 +156,20 @@
 			<a href="javascript:void(0)" id="similarSearch3">tip3</a>
 		</div>
 		<div id="noTip">Nessuna Immagine Correlata</div>
-		<!--Insert new artwork-->
-		
-		
 		<br><br><br><br>
-<div id="tableLayoutHome">
-	
+		<div id="tableLayoutHome">
 			<div class="tableLayoutHome-common-title">Opere</div>
 			<div id="tableLayoutHome-Artworks">
-				
 				<table id="tableLayoutHome-Artworks-Table">
 					<tr id="tableLayoutHome-Artworks-Table-firstRow">
-						<td rowspan="2"><a class="btn-floating btn-large waves-effect waves-light"><</a></td>
-						<td><a class="waves-effect waves-light btn" id="test0">+</a></td>
-						<td>
-
-						 <div class="card cardH">
-						    <div class="card-image waves-effect waves-block waves-light">
-						      <img class="activator" id="test1">
-						    </div>
-						    <div class="card-reveal">
-						      <span class="card-title grey-text text-darken-4">La Gioconda<i class="material-icons right">close</i></span>
-						      <br><br>
-						      <p><a class="btn-floating btn-large waves-effect waves-light"><img src="img/ico/view.png"></a>
-						      <a class="btn-floating btn-large waves-effect waves-light"><img src="img/ico/edit.png"></a>
-						      <a class="btn-floating btn-large waves-effect waves-light"><img src="img/ico/delete.png"></a></p>
-						    </div>
-						  </div>
-
-						</td>
-						<td>
-							<div class="card cardV">
-						    <div class="card-image waves-effect waves-block waves-light">
-						      <img class="activator" id="test2">
-						    </div>
-						    <div class="card-reveal">
-						      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-						      <p>Here is some more information about this product that is only revealed once clicked on.</p>
-						    </div>
-						  </div>
-						</td>
-						<td>
-							<div class="card cardH">
-						    <div class="card-image waves-effect waves-block waves-light">
-						      <img class="activator" id="test3">
-						    </div>
-						    <div class="card-reveal">
-						      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-						      <p>Here is some more information about this product that is only revealed once clicked on.</p>
-						    </div>
-						  </div>
-						</td>
-	
-						<td rowspan="2"><a class="btn-floating btn-large waves-effect waves-light">></a></td>
+						<!--<td rowspan="2"><a class="btn-floating btn-large waves-effect waves-light"><</a></td>-->
 					</tr>
 					<tr  id="tableLayoutHome-Artworks-Table-secondRow">
-
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
 					</tr>
 				</table>
 			</div>
 			<div id="tableLayoutHome-Authors">
-				<div class="tableLayoutHome-common-title">Autori<div>
+				<div class="tableLayoutHome-common-title">Autori</div>
 					<table id="tableLayoutHome-Authors-Table">
 						<tr id="tableLayoutHome-Authors-Table-firstRow">
 						</tr>
@@ -272,7 +177,7 @@
 						</tr>
 					</table>
 			</div>
-			<div class="tableLayoutHome-common-title">Musei<div>
+			<div class="tableLayoutHome-common-title">Musei</div>
 			<div id="tableLayoutHome-Locations">
 				
 					<table id="tableLayoutHome-Locations-Table">
@@ -283,22 +188,6 @@
 					</table>
 			</div>
 		</div>
-
-
-		<!--Artworks main table-->
-		<table id="tableArtworks" class="responsive highlight">
-			<thead class="ui-widget-header ">
-				<th>ID</th>
-				<th>Titolo</th>
-				<th>Autore</th>
-				<th>Url Immagine</th>
-				<th>Locazione</th>
-				<th id="colonnaOperazioni">Operazioni</th>
-			</thead>
-			<tbody id="mainTable">
-			</tbody>
-		</table>
-		
 	</div>
 	</body>
 </html>

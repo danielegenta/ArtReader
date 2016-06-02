@@ -20,9 +20,6 @@
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/script.js"></script>
 		<script type="text/javascript" src="js/jscriptOneArtwork.js"></script>
-		
-
-
 		<script>
 		var map;
 		var latlng;
@@ -110,29 +107,23 @@
 			});
 		}
 		//google.maps.event.addDomListener(window, 'load', initialize);
-		
-		
-//google.maps.event.addDomListener(window, "load", initializ);
-		
-
+		//google.maps.event.addDomListener(window, "load", initializ);
 		</script>
 	</head>
-	<body onload="init">
+	<body>
 		<!--TOP Header-->
-		<div id="header">
-			<img src="img/tmpLogo.png" height="80" width="100">
-			<br>
- 			<h1>Art Reader</h1>
-			<h2>Learn Faster, Learn More</h2>
+		<div id="singleArtwork-header">
+ 			<div id="infoHeader">QUADRONAME Info</div>
 		</div>
 		
+		<br><br><br><br>
 		<!--TOP IMAGE-->
 		<div class="parallax-container">
 			<div class="parallax"><img src="" id="parallaxTop"></div>
 	    </div>
 		<div class="section white">
 			<div class="row container">
-				<h2 id="infoHeader" class="header">QUADRONAME Info</h2>
+				
 				
 				<!--Artwork INFO Space-->
 				<div id="bodyInfo">
@@ -199,7 +190,7 @@
 				
 				<!--Related research-->
 				<div id="similarResearch">
-					<div id="headerSimilarResearch">Ricerche correlate:</div>
+					<div id="headerSimilarResearch">Opere correlate:</div>
 					<br>
 					<span id="similarResearch1" class="similarResearch">
 					<figure>

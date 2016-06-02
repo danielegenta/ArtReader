@@ -71,4 +71,27 @@ function showRelated_SinglePageArtwork(response, i)
 	}
 }
 
-\
+/*
+*	NEW
+*/
+//used to resize programatically images
+function asignImage(id, pic, height, width)
+{
+	var nHeight=250, nWidth=250;
+	if ((height >= width) && (height - width<=10))
+	{
+		nHeight = 250; nWidth = 250;
+	}
+	else if ((height > width) && (height - width>=10))
+	{
+		nHeight = 250; nWidth = 200;
+	}
+	else if ((height < width) && (width - height>=10))
+	{
+		nHeight = 200; nWidth = 250;
+	}
+	
+	$(id).attr("src", pic);
+	$(id).attr("width", nWidth+"px");
+	$(id).attr("height", nHeight+"px");
+}

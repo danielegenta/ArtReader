@@ -34,9 +34,14 @@ h2
 
 #btnInsertArtwork 
 {  
-	position: fixed; 
+	/*position: fixed; 
 	right: 40px;
-	bottom:40px;  
+	bottom:40px;  */
+
+	height: 200px;
+	width: 250px;
+	padding-top: 80px;
+	font-size: 100px;
 }
 
 #searchTips, #noTip
@@ -81,13 +86,6 @@ h2
 *	NEW
 */
 
-#test0
-{
-	height: 200px;
-	width: 250px;
-	padding-top: 80px;
-	font-size: 100px;
-}
 
 .tableLayoutHome-common-title
 {
@@ -95,11 +93,19 @@ h2
 	margin-bottom: 50px;		
 }
 
-#tableLayoutHome-Artworks
+#tableLayoutHome-Artworks-Table
 {
 	background-color: #EDEFED;
 	margin-bottom: 50px;
+
 }
+
+#tableLayoutHome-Artworks-Table td
+{
+	height: 300px;
+	padding: 50px;
+}
+
 
 .cardH
 {

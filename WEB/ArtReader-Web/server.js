@@ -547,6 +547,8 @@ app.get("/searchArtwork", function(request, response,next){
 				artwork.description = row.Description;
 				artwork.pictureAbstract = row.Abstract;
 				artwork.pictureUrl = row.PictureUrl;
+				artwork.dimensionHeight = row.DimensionHeight;
+				artwork.dimensionWidth = row.DimensionWidth;
 				artwork.nViews = row.NViews;
 				listArtworks.push(artwork);
 			},
