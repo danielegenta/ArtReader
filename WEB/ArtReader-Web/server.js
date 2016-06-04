@@ -107,17 +107,21 @@ app.use(session({
 }));
 
 //-------- INIZIO AREA CLIENT ---------
-app.post("/access", function (request, response, next) {
-    var utente = request.body["txtUsername"];
-	var cryptedPassword = crypto.createHash('sha256').update(request.body["txtPassword"]).digest('base64');
+app.get("/access", function (request, response, next) {
+    var utente = request.query["txtUsername"];
+	var cryptedPassword = crypto.createHash('sha256').update(request.query["txtPassword"]).digest('base64');
+
+	console.log("ssss:"+utente);
+	console.log("aaa:"+cryptedPassword);
+
 	var logged = false;
-	
-	
-	
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	sqlite.verbose();
 	var db = new sqlite.Database("./Database/myDatabase.db");
 	var index = -1;
 	var userType="";
+	var json;
+    var res = {};
 	db.serialize(function(){
 		
 		if (utente != undefined && cryptedPassword != undefined)
@@ -136,35 +140,27 @@ app.post("/access", function (request, response, next) {
 					if(userType=="normal"){
 						request.session.admin=false;
 					}
-					else{
+					else
+					{
 						request.session.admin=true;
 					}
 					logged = true;
-					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
-					utility.aggiornaPagina("./pages/newIndex.html", function(window){
-						//response.writeHead(200,header);
-						response.send(window.document.documentElement.innerHTML);
-					});
-					
+				
+					response.writeHead(200, header);
+					response.end("success");
 				}
 				else
 				{
 					console.log("dati errati");
-					var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
-					utility.aggiornaPagina("./pages/login.html", function(window){
-						response.writeHead(200,header);
-						response.end(window.document.documentElement.innerHTML);
-					});
+					response.writeHead(200, header);
+					response.end("failure");
 				}
 			});	
 		}
 		else
 		{
-			//highlight dei campi in rosso (ajax?)
-			utility.aggiornaPagina("./pages/login.html", function(window){
-			response.writeHead(200,header);
-			response.end(window.document.documentElement.innerHTML);
-			});
+			response.writeHead(200, header);
+			response.end("failure");
 		}
 	});
 	db.close();	
@@ -195,7 +191,7 @@ app.get("/loginmobile", function (request, response, next) {
 				{
 					logged = true;
 					ok = true;
-					yulresponse.writeHead(200, header);
+					response.writeHead(200, header);
 					response.end("success");
 				}
 				else
@@ -397,8 +393,6 @@ app.get("/oneArtwork", function(request, response,next){
 			insert.finalize();
 			db.serialize(function(){
 			var sql = "SELECT * FROM Artworks, LocationsArtworks, Authors WHERE id="+id+" AND Artworks.Location = LocationsArtworks.IdLocationsArtworks AND Artworks.Author = Authors.IdAuthors";
-            
-			var json;
             var json;
             var artwork = {};
 			db.get(sql, function(err, row)
@@ -460,7 +454,7 @@ app.get("/allArtworks", function(request, response,next){
 	
 		var db = new sqlite.Database("Database/myDatabase.db");
 		db.serialize(function(){
-			var sql = "SELECT * FROM Artworks, Authors, LocationsArtworks WHERE Authors.IdAuthors = Artworks.Author AND Artworks.Location = LocationsArtworks.IdLocationsArtworks ORDER BY nViews DESC";
+			var sql = "SELECT * FROM Artworks, Authors, LocationsArtworks WHERE Authors.IdAuthors = Artworks.Author AND Artworks.Location = LocationsArtworks.IdLocationsArtworks ORDER BY Id, nViews DESC";
             var json;
 	
 			var listArtworks = [];

@@ -25,11 +25,13 @@
 			<div class="nav-wrapper">
 			  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
 			  <ul id="nav-mobile" class="right hide-on-med-and-down">
+			  	<li><a href="#" id="navbar-aboutus">Chi siamo?</a></li>
 				<li><a href="#" id="navbar-login">Login/Registrati</a></li>
 				<li><a href="#" id="navbar-help">Aiuto</a></li>
 				<li><a href="#" id="navbar-feedback">Lascia un Feedback</a></li>
 			  </ul>
 			<ul id="slide-out" class="side-nav">
+				<li><a href="#" id="navbar-mobile-aboutus">Chi siamo?</a></li>
 				<li><a href="#" id="navbar-mobile-login">Login/Registrati</a></li>
 				<li><a href="#" id="navbar-mobile-help">Aiuto</a></li>
 				<li><a href="#" id="navbar-mobile-feedback">Lascia un Feedback</a></li>
@@ -114,13 +116,14 @@
 	<div id="page-login" style="display:none">
 		<!--LOGIN FORM-->
 		<div id="page-login-signin">
+			<br><br><br><br>
 			<div>
 				<h3>Bentornato!</h3>
 			</div>
-			<form method="post" action="" name="formLogin" class="col s12">
+			<form name="formLogin" class="col s12">
 				<div class="row">
 					<label for="first_name">Username</label>
-					<input placeholder="Inserisci il tuo username" id="first_name" type="text" class="validate" name="txtUsername">
+					<input placeholder="Inserisci il tuo username" id="username" type="text" class="validate" name="txtUsername">
 				</div>
 				<div class="row">
 					<label for="password">Password</label>
@@ -131,10 +134,10 @@
 					  <label for="chkShowPassword">Mostra Password</label>
 					</p>
 				<div>
-					<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess" onClick="access()">ENTRA
+					<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess">ENTRA
 						<i class="material-icons right">send</i>
 					</button>
-					<div name="lblError" id="lblLoginError">(errori login)</div>
+					<div name="lblError" id="lblLoginError"></div>
 				</div>
 			</form>
 			<!--NEW USER-->
@@ -171,7 +174,7 @@
 					<button class="btn waves-effect waves-light" type="button" name="action" id="btnSignUp" onClick="CheckInsertUser()">REGISTRATI
 						<i class="material-icons right">send</i>
 					</button>
-					<div name="lblError" id="lblLoginError-SignUp">(errori registrazione)</div>
+					<div name="lblError" id="lblLoginError-SignUp"></div>
 				</div>
 			</form>
 			<!--NEW USER-->
@@ -216,11 +219,11 @@
 		</div>
 		<div class="material-panel1" id="material-panel-carousel">
 		 <div class="carousel">
-			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/1"></a>
-			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/2"></a>
-			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/3"></a>
-			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/4"></a>
-			<a class="carousel-item" href="#"><img src="http://lorempixel.com/250/250/nature/5"></a>
+			<a class="carousel-item"  href="#"><img src="" id="home-carousel-0"></a>
+			<a class="carousel-item"  href="#"><img src="" id="home-carousel-1"></a>
+			<a class="carousel-item"  href="#"><img src="" id="home-carousel-2"></a>
+			<a class="carousel-item"  href="#"><img src="" id="home-carousel-3"></a>
+			<a class="carousel-item"  href="#"><img src="" id="home-carousel-4"></a>
 		 </div>
 		 <div id="carousel-text">
 			<h5>Non si smette mai di imparare</h5>
@@ -240,11 +243,11 @@
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row valign-wrapper">
             <div class="col s2">
-              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+              <img src="img/users/user.png"  alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
             </div>
             <div class="col s10">
-              <span class="black-text">
-                "Mi si è aperto un mondo con un semplice click! L'arte è alla portata di tutti." Andrea C.
+              <span class="black-text" id="home-webFeedback-0">
+                
               </span>
             </div>
           </div>
@@ -256,11 +259,11 @@
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row valign-wrapper">
             <div class="col s2">
-              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+              <img src="img/users/user1.png" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
             </div>
             <div class="col s10">
-              <span class="black-text">
-                "Ho riscoperto la mia passione per l'arte. facile, veloce, efficace. CONSIGLIATO!" Jessica R.
+              <span class="black-text" id="home-webFeedback-1">
+               	
               </span>
             </div>
           </div>
@@ -272,11 +275,11 @@
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row valign-wrapper">
             <div class="col s2">
-              <img src="http://lorempixel.com/100/100/people/" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+              <img src="img/users/user2.png"  alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
             </div>
             <div class="col s10">
-              <span class="black-text">
-				"L'idea è semplice ma l'utilità è assicurata! Provare per credere, non ve ne pentirete" Marco M.
+              <span class="black-text" id="home-webFeedback-2">
+				
               </span>
             </div>
           </div>
@@ -303,12 +306,10 @@
 					
 						  <div class="row">
 							<div class="input-field col s6">
-							  <i class="material-icons prefix">account_circle</i>
 							  <input id="icon_prefix1" type="text" class="validate">
 							  <label for="icon_prefix1">Nickname</label>
 							</div>
 							<div class="input-field col s6">
-							  <i class="material-icons prefix">phone</i>
 							  <input id="icon_telephone" type="tel" class="validate">
 							  <label for="icon_telephone">Telefono</label>
 							</div>
@@ -316,7 +317,6 @@
 					
 						<div class="row">
 						  <div class="input-field col s12">
-							  <i class="material-icons prefix">email</i>
 							  <input id="icon_prefix2" type="text" class="validate">
 							  <label for="icon_prefix2">Mail</label>
 							</div>
@@ -334,7 +334,7 @@
 				</form>
 				</div>
 				<div id = "feedback-bottom">
-					Serve altro aiuto? <a id="feedback-bottom-linkmail">Scrivici.</a>
+					Vuoi dirci qualcos'altro? <a id="feedback-bottom-linkmail">Scrivici.</a>
 				</div>
 			</div>
 		</div>
@@ -345,33 +345,15 @@
 				<h1>Help</h1>
 				<h2>Ciao. Serve aiuto?</h2>
 			</div>
-			<div id="help-content">
-			</div>
-			 <div class="row">
-			<div class="col s12 m9 l10">
-			  <div id="whatis" class="section scrollspy">
-				<p>
-				</p>
+			  <div id="whatis">
+					<div id="help-firstpage-content">
+						<img src="img/system/support1.jpg" id="help-firstpage-img">
+						<div id="help-firstpage-content-title">Bisogno di aiuto? Noi ci siamo.</div><br>
+						<div id="help-firstpage-content-body">ArtReader &egrave una realt&agrave diversificata ed avente un target di utenza eterogeneo.<br>Siamo felici di aiutare chiunque 
+						abbia dubbi nell'utilizzo della nostra piattaforma. Chiedete.<br>
+						<a id="help-bottom-linkmail">Scrivici.</a></div>
+					</div>
 			  </div>
-
-			  <div id="mobile" class="section scrollspy">
-				<p>
-				</p>
-			  </div>
-
-			  <div id="faq" class="section scrollspy">
-				<p>
-				</p>
-			  </div>
-			</div>
-			<div class="col hide-on-small-only m3 l2" id="navbar-help1">
-			  <ul class="section table-of-contents">
-				<li><a href="#whatis">Cos'è Art Reader?</a></li>
-				<li><a href="#mobile">Art Reader Mobile</a></li>
-				<li><a href="#faq">Frequently Asked Questions</a></li>
-			  </ul>
-			</div>
-		  </div>
 		</div>
 	</body>
 </html>

@@ -4,6 +4,12 @@
 
 var readRequest,readRequest1,readRequest2, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation,feedBack;
 
+// 2 pagina home
+var readRequestLatestArtworks, readUpdateLatestArtworks, readRequestWebFeedbacks, readUpdateWebFeedbacks, readRequestMuseumPosition, readUpdateMuseumsPositions;
+
+//login e registrazione
+var readRequestLogin, readUpdateLogin;
+
 /**************************************************************LOGIN CALLS***************************************************************/
 //login to index page
 function access()
@@ -132,6 +138,8 @@ function showArtworks()
 	readRequest.onreadystatechange = readUpdate;
 	readRequest.send(null);
 }
+
+
 
 function showLocations()
 {
@@ -429,4 +437,115 @@ function aggiornaPag()
 }
 
 
+/*
+*** 2 PAGINA HOME
+*/
 
+//carosello ultimi artwork
+function showLatestArtworks()
+{
+	readRequestLatestArtworks = new XMLHttpRequest();
+	var url="/allArtworks";
+	readRequestLatestArtworks.open("GET", url, true);
+	readRequestLatestArtworks.onreadystatechange = readUpdateLatestArtworks;
+	readRequestLatestArtworks.send(null);
+}
+
+function readUpdateLatestArtworks()
+{
+	if (readRequestLatestArtworks.readyState == 4 && readRequestLatestArtworks.status == 200)
+	{
+		var response = JSON.parse(readRequestLatestArtworks.responseText);
+		var artworks = response;
+		var i = 0;
+		for (var counter in artworks)
+		{
+			loadLatestArtworks(artworks, i);
+			i++;
+		}
+	}
+}
+
+//web feedback
+//carosello ultimi artwork
+function showWebFeedbacks()
+{
+	readRequestWebFeedbacks = new XMLHttpRequest();
+	var url="/getFeedback?idArtwork=-1";
+	readRequestWebFeedbacks.open("GET", url, true);
+	readRequestWebFeedbacks.onreadystatechange = readUpdateWebFeedbacks;
+	readRequestWebFeedbacks.send(null);
+}
+
+function readUpdateWebFeedbacks()
+{
+	if (readRequestWebFeedbacks.readyState == 4 && readRequestWebFeedbacks.status == 200)
+	{
+		var response = JSON.parse(readRequestWebFeedbacks.responseText);
+		var artworks = response;
+		var i = 0;
+		for (var counter in artworks)
+		{
+			loadWebFeedbacks(artworks, i);
+			i++;
+		}
+	}
+}
+
+//museums markers
+function showMuseumsPositions()
+{
+	readRequestMuseumPosition = new XMLHttpRequest();
+	var url="/getLocations";
+	readRequestMuseumPosition.open("GET", url, true);
+	readRequestMuseumPosition.onreadystatechange = readUpdateMuseumsPositions;
+	readRequestMuseumPosition.send(null);
+}
+
+function readUpdateMuseumsPositions()
+{
+	if (readRequestMuseumPosition.readyState == 4 && readRequestMuseumPosition.status == 200)
+	{
+		var response = JSON.parse(readRequestMuseumPosition.responseText);
+		var positions = response;
+		var i = 0;
+		for (var counter in positions)
+		{
+			loadMuseumsPositions(positions, i);
+			i++;
+		}
+	}
+}
+
+/***
+*	Login e registrazione
+*****/
+
+function requestLogin(user, password)
+{
+	readRequestLogin = new XMLHttpRequest();
+	var url="/access?txtUsername="+user+"&txtPassword="+password;
+
+	readRequestLogin.open("GET", url, true);
+	readRequestLogin.onreadystatechange = readUpdateLogin;
+	readRequestLogin.send(null);
+}
+
+function readUpdateLogin()
+{
+	if (readRequestLogin.readyState == 4 && readRequestLogin.status == 200)
+	{
+		var response = readRequestLogin.responseText;
+		
+		if (response == "failure")
+		{
+
+			console.log(response);
+			document.getElementById("lblLoginError").innerHTML="Username o Password non corretti."
+		}
+		else
+		{
+			window.location.href = "./newIndex.html";
+		}
+	}
+}

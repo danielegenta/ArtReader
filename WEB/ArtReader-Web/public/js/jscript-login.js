@@ -1,7 +1,7 @@
 /************************************************
 *************Funzioni jQuery/jQuery-UI***********
 *************************************************/
-
+var map;
 $(document).ready(function()
 {	
 	//allLocationMap();
@@ -17,13 +17,17 @@ $(document).ready(function()
 	$("#viewPage2").click(function()
 	{
 		$("#page-home").hide();
-		
 		$("#page-home-2").show();
 		$('.carousel').carousel();
 		if(navigator.geolocation)
-			navigator.geolocation.getCurrentPosition(mia_posizioneMapMusei);
+			navigator.geolocation.getCurrentPosition(requestMuseumsPositions);
 		else
 			alert('Il browser non supporta la geolocalizzazione.');
+
+		//ultimi artworks
+		requestLatestArtworks();
+		//web feedbaks
+		requestWebFeedbacks();
 	});
 	
 	/*
@@ -83,6 +87,11 @@ $(document).ready(function()
 	 //mail feedback
 	 $("#feedback-bottom-linkmail").click(function()
 	{
+		window.open('mailto:support@artreader.com?subject=RICHIESTA FEEDBACK');
+	});
+
+	$("#help-bottom-linkmail").click(function()
+	{
 		window.open('mailto:support@artreader.com?subject=RICHIESTA SUPPORTO');
 	});
 	
@@ -97,6 +106,14 @@ $(document).ready(function()
 	{
 		$("#page-login-signup").hide();
 		$("#page-login-signin").show();
+	});
+
+	//LOGIN E REGISTRAZIONE
+	$("#btnAccess").click(function()
+	{
+		var user = $("#username").val();
+		var pw  = $("#password").val();
+		requestLogin(user, pw);
 	});
 });
 
@@ -145,15 +162,21 @@ function CheckInsertUser(){
 			alert("Mail non valida");
 	}
 }
+
+
+/******************************
+*	SECONDA PAGINA (MAPPE, FEEDBACK ED ULTIMI ARTWORK)
+*******************************/
+
 //creare un marker per ogni museo sfruttando API
-function mia_posizioneMapMusei(response) 
+function requestMuseumsPositions(response) 
 {	
 	
-	latlng = new google.maps.LatLng(0,0);
+	latlng = new google.maps.LatLng(50,10);
 	
 	var opzioni=
 	{
-		zoom: 2,
+		zoom: 3,
 		center:latlng,
 		mapTypeControl:false,
 		mapTypeControlOption:{style:google.maps.MapTypeControlStyle.HORIZONTAL_BAR},
@@ -163,43 +186,83 @@ function mia_posizioneMapMusei(response)
 	};
 	
 	var mapDiv=document.getElementById('museumMap');
-	var map = new google.maps.Map(mapDiv,opzioni);
-	console.log(response[0].address);
-	var pos=response[0].address;
-getCoords(pos,map);	
-	/*for(var key in response){
-		console.log(response[key].address);
-	getCoords(response[key].address,map);
-	}*/
-	//makeMarker(latlng);
-	
-}
-//creo marker
-		function makeMarker(latlng,map){
-			var marker=new google.maps.Marker({
-			position:latlng,
-			map:map,
-			title:''
-			});
-		}
-		function getCoords(address,map)
-		{
-			var gc      = new google.maps.Geocoder(),
-				opts    = { 'address' : address };
+	map = new google.maps.Map(mapDiv,opzioni);
 
-			gc.geocode(opts, function (results, status)
-			{
-				console.log(opts);
-				if (status == google.maps.GeocoderStatus.OK)
-				{   
-					var loc     = results[0].geometry.location,
-						lat     = results[0].geometry.location.lat(),
-						lon    = results[0].geometry.location.lng();
-				
-					latlng = new google.maps.LatLng(lat,lon);
+	showMuseumsPositions();
+}
+
+//creo marker
+function makeMarker(latlng,map,title){
+	var marker=new google.maps.Marker({
+	position:latlng,
+	map:map,
+	title: title
+	});
+}
+
+function getCoords(address,map,title)
+{
+	var gc      = new google.maps.Geocoder(),
+		opts    = { 'address' : address };
+
+	gc.geocode(opts, function (results, status)
+	{
+		console.log(opts);
+		if (status == google.maps.GeocoderStatus.OK)
+		{   
+			var loc     = results[0].geometry.location,
+				lat     = results[0].geometry.location.lat(),
+				lon    = results[0].geometry.location.lng();
+		
+			latlng = new google.maps.LatLng(lat,lon);
+	
+			makeMarker(latlng,map, title);
 			
-					makeMarker(latlng,map);
-					
-				}
-			});
 		}
+	});
+}
+
+function loadMuseumsPositions(response, i)
+{
+	var address = response[i].address;
+	var title = response[i].description;
+	getCoords(address, map, title);
+}
+
+
+//Ultimi Artwork (carosello)
+function requestLatestArtworks()
+{
+	showLatestArtworks();
+}
+
+function loadLatestArtworks(response, i)
+{
+	if (i<5)
+	{
+		var img = response[i].pictureUrl;
+		var id = "home-carousel-"+i;
+		$("#"+id).attr("src", "img/immagini/"+img);
+	}
+}
+
+//feedback
+//Ultimi Artwork (carosello)
+function requestWebFeedbacks()
+{
+	showWebFeedbacks();
+}
+
+function loadWebFeedbacks(response, i)
+{
+	if (i<3)
+	{
+		var title = response[i].title;
+		var description = response[i].description;
+		var author = response[i].username;
+		var id = "home-webFeedback-"+i;
+
+		$("#"+id).html("<b>" + title + "</b><br> \"" + description + "\" <br>"+ author);
+		console.log("ciao ciao");
+	}
+}

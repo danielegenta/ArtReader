@@ -187,6 +187,7 @@ input
 	height: 500px;
 	background-color: #EE6E73;
 	position:relative;
+	color: white;
 }
 
 .material-panel
@@ -241,7 +242,7 @@ input
 	font-size: 20px;
 }
 
-#feedback-bottom-linkmail
+#feedback-bottom-linkmail, #help-bottom-linkmail 
 {
 	cursor: pointer;
 }
@@ -258,4 +259,40 @@ input
 	position: relative;
 	z-index:1;
 	background-color: #EE6E73;
+}
+
+/**
+*	HELP PAGE
+*/
+#help-firstpage-img
+{
+	width: 100%;
+	position: relative;
+	/*height: 500px;*/
+}
+
+#help-firstpage-content
+{
+	position: absolute; 
+	font-size: 20px;
+	width: 100%;
+	top: 364;
+	text-align: center;
+}
+
+#help-firstpage-content-body
+{
+	position: absolute; 
+	font-size: 20px;
+	width: 100%;
+	top:150;
+}
+
+#help-firstpage-content-title
+{
+	position: absolute; 
+	text-align: center;
+	font-size: 50px;
+	width: 100%;
+	top: 70;
 }
