@@ -63,17 +63,17 @@ function showAuthorArtworks(response, i)
 	{
 		case 0:
 			asignImage("#imgAuthorArtworks1", pic, height, width);
-			$("#imgAuthorArtworks1_caption").text(name);
+			$("#imgAuthorArtworks1_caption").text(title);
 			$("#imgAuthorArtworks1, #imgAuthorArtworks1_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 		case 1:
 			asignImage("#imgAuthorArtworks2", pic, height, width);
-			$("#imgAuthorArtworks2_caption").text(name);
+			$("#imgAuthorArtworks2_caption").text(title);
 			$("#imgAuthorArtworks2, #imgAuthorArtworks2_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 		case 2:
 			asignImage("#imgAuthorArtworks3", pic, height, width);
-			$("#imgAuthorArtworks3_caption").text(name);
+			$("#imgAuthorArtworks3_caption").text(title);
 			$("#imgAuthorArtworks3, #imgAuthorArtworks3_caption").attr("onClick", "post('/artworkDetails', { codice: "+id+" })");
 		break;
 	}

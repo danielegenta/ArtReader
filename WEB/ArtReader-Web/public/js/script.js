@@ -5,7 +5,7 @@
 var readRequest,readRequest1,readRequest2, notQueryRequest, richiestaSugg, similarRequest, similarRequestSinglePageArtwork,reqCbAuthor,reqCbLocation,feedBack;
 
 // 2 pagina home
-var readRequestLatestArtworks, readUpdateLatestArtworks, readRequestWebFeedbacks, readUpdateWebFeedbacks, readRequestMuseumPosition, readUpdateMuseumsPositions;
+var readRequestLatestArtworks, readUpdateLatestArtworks, readRequestWebFeedbacks, readUpdateWebFeedbacks, readRequestMuseumPosition, readUpdateMuseumsPositions, mostFamousArtworksRequest, mostFamousArtworksUpdate;
 
 //login e registrazione
 var readRequestLogin, readUpdateLogin;
@@ -405,10 +405,34 @@ function relatedAuthorsUpdate()
 	}
 }
 
+function mostFamousArtworks(id)
+{
+	mostFamousArtworksRequest = new XMLHttpRequest();
+	var url="/getArtworksAuthor?id="+id;
+	mostFamousArtworksRequest.open("GET", url, true);
+	mostFamousArtworksRequest.onreadystatechange = mostFamousArtworksUpdate;
+	mostFamousArtworksRequest.send(null);
+}
+
+function mostFamousArtworksUpdate()
+{
+	if (mostFamousArtworksRequest.readyState == 4 && mostFamousArtworksRequest.status == 200)
+	{
+		var response = JSON.parse(mostFamousArtworksRequest.responseText);
+		var artworks = response;
+		var i = 0;
+		for (var counter in artworks)
+		{
+			showMostFamousArtworks(artworks, i);
+			i++;
+		}
+	}
+}
+
 function authorArtworks(id)
 {
 	authorArtworksRequest = new XMLHttpRequest();
-	var url="/getArtworksAuthor?id="+id;
+	var url="/getArtworksFromLocation?location="+id;
 	authorArtworksRequest.open("GET", url, true);
 	authorArtworksRequest.onreadystatechange = authorArtworksUpdate;
 	authorArtworksRequest.send(null);
@@ -450,6 +474,15 @@ function showSingleAuthorInfo()
 	readRequest.send(null);
 }
 
+function showSingleLocationInfo()
+{
+	readRequest = new XMLHttpRequest();
+	var url="/oneLocation";
+	readRequest.open("GET", url, true);
+	readRequest.onreadystatechange = singleLocationUpdate;
+	readRequest.send(null);
+}
+
 function sendfeedback(type,artwork,description,username,phonenumber,email){
 	var Type=type;
 	var Description=description;
@@ -485,6 +518,16 @@ function singleAuthorUpdate()
 		var response = JSON.parse(readRequest.responseText);
 		var author = response;
 		printAuthorDetails(author);
+	}
+}
+
+function singleLocationUpdate()
+{
+	if (readRequest.readyState == 4 && readRequest.status == 200)
+	{
+		var response = JSON.parse(readRequest.responseText);
+		var location = response;
+		printLocationDetails(location);
 	}
 }
 

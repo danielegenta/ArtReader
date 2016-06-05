@@ -237,6 +237,15 @@ app.post("/authorDetails",function(request,response,next)
 	});
 });
 
+app.post("/locationDetails",function(request,response,next)
+{	
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	request.session.idLocation=request.body["codice"];
+	utility.aggiornaPagina("./pages/singlePageLocation.html", function(window){
+		response.send(window.document.documentElement.innerHTML);
+	});
+});
+
 app.get( "/welcome", function(request,response,next) {	
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	utility.aggiornaPagina("./pages/login.html", function(window){
@@ -463,8 +472,6 @@ app.get("/oneAuthor", function(request, response,next){
 	var id = request.session.idAuthor;
 	var header = {"Content-Type":"text/html"};	
 		var db = new sqlite.Database("Database/myDatabase.db");
-	
-	console.log("----"+id);
 			db.serialize(function(){
 			var sql = "SELECT * FROM Authors WHERE idAuthors ="+id;
             var json;
@@ -484,6 +491,34 @@ app.get("/oneAuthor", function(request, response,next){
 					json = JSON.stringify(author);					
 					response.writeHead(200, header);
 					response.end(json);							
+				});
+		db.close();
+		});		
+});
+
+//one location info
+app.get("/oneLocation", function(request, response,next){
+	var id = request.session.idLocation;
+	var header = {"Content-Type":"text/html"};	
+		var db = new sqlite.Database("Database/myDatabase.db");
+			db.serialize(function(){
+			var sql = "SELECT * FROM LocationsArtworks WHERE idLocationsArtworks ="+id;
+            var json;
+			db.get(sql, function(err, row)
+			{
+				var location = {};
+				location.id = row.IdLocationsArtworks;
+				location.description = row.Description;
+				location.city = row.City;
+				location.nation = row.Nation;
+				location.wikipediapagelocation = row.WikipediaPageLocation;
+				location.address = row.Address;
+				location.website = row.Website;
+				location.telephone = row.Telephone;
+				location.pictureUrlMuseum = row.PictureUrlMuseum;
+				json = JSON.stringify(location);					
+				response.writeHead(200, header);
+				response.end(json);							
 				});
 		db.close();
 		});		

@@ -274,12 +274,6 @@ $('#uploadForm').submit(function() {
 		$("#txtSearch").val(auxText);
 	});
 	
-	//showing single artwork info(click on title td)
-	/*$("#tableLayoutHome-Artworks-Table").delegate('tr td:nth-child(2)', 'click', function() {
-		var id = $(this).closest('tr').find('td:first').text();
-        post('/artworkDetails', { codice: id });
-    });*/
-	
 	//INSERT NEW ARTWORK DIALOG - error in insert fields...
 	function updateTips( t ) {
       tips
@@ -309,7 +303,6 @@ $('#uploadForm').submit(function() {
 	//INSERT NEW ARTWORK DIALOG - adding of the artwork
 	function checkArtwork(tipo)
 	{
-		
 		var valid = true;
 		allFields.removeClass( "ui-state-error" );
 			
@@ -381,8 +374,6 @@ function showArtwork(response, i)
 	var height = response[i-1].dimensionHeight;
 	var width = response[i-1].dimensionWidth;
 	var pictureUrl = response[i-1].pictureUrl;
-
-	
 
 	var htmlCell; var htmlDiv;
 	htmlCell = "<td id=\"tableLayoutHome-Artworks-Table-"+i+"\"></td>";
@@ -483,7 +474,7 @@ function showLocation(response, i)
 	//immagine alla cella
 	asignImage("#tableLayoutHome-Locations-Table-img"+i, "img/parallax/"+pictureUrl, 400, 600);
 	//listener ai bottoni
-	//$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
+	$("#tableLayoutHome-Locations-Table-btnView"+i).attr("onClick", "supportViewLocation("+id+")");
 }
 
 function showAuthor(response, i)
@@ -546,6 +537,11 @@ function supportViewArtwork(id)
 function supportViewAuthor(id)
 {
 	post('/authorDetails', { codice: id });
+}
+
+function supportViewLocation(id)
+{
+	post('/locationDetails', { codice: id });
 }
 
 function supportDeleteArtwork(id)

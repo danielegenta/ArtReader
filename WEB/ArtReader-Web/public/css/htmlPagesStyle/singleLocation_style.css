@@ -1,0 +1,97 @@
+/***************************************************
+****************************************************
+*****SINGLE PAGE AUTHOR CSS SHEET******************
+****************************************************
+****************************************************/
+
+/************
+*	HEADER
+*************/
+
+
+#header 
+{
+	text-align:center;
+	color: #636363;
+}
+
+/**************************
+*	MAIN TABLE (artwork info and photo)
+****************************/
+table
+{
+	width: 100%;
+}
+
+#txtInfo, #txtContacts
+{
+	width: 50%;
+	max-height: 600px; 
+	overflow: auto;
+}
+
+#bodyInfo
+{
+	max-height: 800px;
+	overflow: auto;
+}
+
+.int
+{
+	font-weight: bold;
+}
+
+span, .normal
+{
+	font-weight: normal;
+}
+
+/*********************
+*	SIMILAR RESEARCH 
+*************************/
+#headerMap, #headerMostFamousArtworks
+{
+	font-size: 20pt;
+}
+
+.similarResearch, .mostFamousArtwork
+{
+	margin-left: 20px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#imgLocation
+{
+	/*max-height: 700px;*/
+	max-height: 850px;
+}
+
+#imgLocation
+{
+	width: 100%;
+	text-align: center;
+}
+
+.caption
+{
+	font-size: 12pt;
+}
+
+#singleLocation-header
+{
+	width: 100%;
+	height: 300px;
+	text-align: center;
+	padding-top: 100px;
+	background-color: #EE6E73;
+	text-align:center;
+	color: white;
+	font: 90px Helvetica, Sans-Serif;
+}
+
+#museumMap
+{
+	width: 100%;
+	height: 300px;
+}
