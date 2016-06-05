@@ -215,10 +215,15 @@ $('#uploadForm').submit(function() {
 	//called when i type on txtSearch
 	$( "#txtSearch" ).keyup(function() {
 		cleanTable();
+		cleanTableLocations();
+		cleanTableAuthors();
 		var stringSearch = $("#txtSearch").val();
 		$(".riga").show();
 		refreshTable(stringSearch);
+		refreshTableAuthors(stringSearch);
+		refreshTableLocations(stringSearch);
 		ricerca();
+
 	});
 	//RESTORE INITIAL STATUS of txtSearch
 	$("#txtSearch").focusout(function()
@@ -641,6 +646,18 @@ function cbLocations(locations){
 function refreshTable(partial)
 {
 	searchArtworks(partial);
+}
+
+function refreshTableAuthors(author)
+{
+	console.log("okokok");
+	searchAuthors(author);
+}
+
+function refreshTableLocations(location)
+{
+	console.log("okokok");
+	searchLocations(location);
 }
 
 //show a single artwork in a new page

@@ -166,6 +166,18 @@ app.get("/access", function (request, response, next) {
 	db.close();	
 });
 
+app.post("/successLogin", function (request, response, next) 
+{
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	utility.aggiornaPagina("./pages/newIndex.html", function(window){
+		//response.writeHead(200,header);
+		response.send(window.document.documentElement.innerHTML);
+	});
+});
+
+
+
+
 //LOGIN MOBILE -- PARAMETRI DIVERSI
 app.get("/loginmobile", function (request, response, next) {
     var utente = request.query["username"];
@@ -522,7 +534,9 @@ app.get("/searchArtwork", function(request, response,next){
 	var header = {"Content-Type":"text/html"};	
 	var $ = window.$;
 	var db = new sqlite.Database("Database/myDatabase.db");
-	db.serialize(function(){
+	db.serialize(function()
+	{
+
 		if (partialTitle != "" && partialAuthor != "")
 			var sql = "SELECT * FROM Artworks, Authors, LocationsArtworks WHERE Artworks.Location = LocationsArtworks.IdLocationsArtworks AND Authors.IdAuthors = Artworks.Author AND (Title LIKE '" + partialTitle + "%' OR Authors.Name LIKE '" + partialAuthor + "%') ORDER BY NViews DESC";
 		else
@@ -545,6 +559,80 @@ app.get("/searchArtwork", function(request, response,next){
 				artwork.dimensionWidth = row.DimensionWidth;
 				artwork.nViews = row.NViews;
 				listArtworks.push(artwork);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);
+				response.writeHead(200, header);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	});
+});
+
+app.get("/searchAuthor", function(request, response,next){
+    utility.aggiornaPagina("./pages/index.html", function(window){
+	var partialAuthor = request.query["author"];
+	partialAuthor = partialAuthor.replace("'","''");
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function()
+	{
+		
+		if (partialAuthor != "")
+			var sql = "SELECT * FROM Authors WHERE Name LIKE '" + partialAuthor + "%'";
+		else
+			var sql = "SELECT * FROM Authors";
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+				var artwork = {};
+				artwork.id = row.IdAuthors;
+				artwork.name = row.Name;	
+				artwork.pictureUrlAuthor = row.PictureUrlAuthor;	
+				listArtworks.push(artwork);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);
+				response.writeHead(200, header);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	});
+});
+
+app.get("/searchLocation", function(request, response,next){
+    utility.aggiornaPagina("./pages/index.html", function(window){
+	var partialDescription = request.query["description"];
+	partialDescription = partialDescription.replace("'","''");
+	var header = {"Content-Type":"text/html"};	
+	var $ = window.$;
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function()
+	{
+		
+		if (partialDescription != "")
+			var sql = "SELECT * FROM LocationsArtworks WHERE Description LIKE '" + partialDescription + "%'";
+		else
+			var sql = "SELECT * FROM locationsArtworks";
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+				var artwork = {};
+					artwork.id = row.IdLocationsArtworks;
+					artwork.name = row.Description;		
+					artwork.city=row.City;
+					artwork.nation=row.Nation;
+					artwork.wikipediapagelocation=row.WikipediaPageLocation;
+					artwork.address=row.Address;
+					artwork.website=row.Website;
+					artwork.telephone=row.Telephone;
+					artwork.pictureUrl=row.PictureUrlMuseum; //modificato qui
+					listArtworks.push(artwork);
 			},
 			function(err, nRighe){
 				json = JSON.stringify(listArtworks);

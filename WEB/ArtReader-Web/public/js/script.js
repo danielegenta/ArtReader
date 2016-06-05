@@ -124,6 +124,15 @@ function post(path, params) {
     form.submit();
 }
 
+function postLogin() {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/successLogin");
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
 /************************* END CRUD ******************************/
 
 /****************************
@@ -171,6 +180,27 @@ function searchArtworks(partial)
 	readRequest.onreadystatechange = readUpdate;
 	readRequest.send(null);
 }
+
+function searchAuthors(partial)
+{
+	readRequest2 = new XMLHttpRequest();
+	var author = partial;
+	var url="/searchAuthor?author="+encodeURIComponent(author);
+	readRequest2.open("GET", url, true);
+	readRequest2.onreadystatechange = readUpdateAuthors;
+	readRequest2.send(null);
+}
+
+function searchLocations(partial)
+{
+	readRequest1 = new XMLHttpRequest();
+	var description =partial;
+	var url="/searchLocation?description="+encodeURIComponent(description);
+	readRequest1.open("GET", url, true);
+	readRequest1.onreadystatechange = readUpdateLocations;
+	readRequest1.send(null);
+}
+
 
 function similarArtworks(auth, tit, artM)
 {
@@ -545,7 +575,7 @@ function readUpdateLogin()
 		}
 		else
 		{
-			window.location.href = "./newIndex.html";
+			postLogin();
 		}
 	}
 }
