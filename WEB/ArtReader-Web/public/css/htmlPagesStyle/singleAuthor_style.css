@@ -1,0 +1,86 @@
+/***************************************************
+****************************************************
+*****SINGLE PAGE AUTHOR CSS SHEET******************
+****************************************************
+****************************************************/
+
+/************
+*	HEADER
+*************/
+
+
+#header 
+{
+	text-align:center;
+	color: #636363;
+}
+
+/**************************
+*	MAIN TABLE (artwork info and photo)
+****************************/
+table
+{
+	width: 100%;
+}
+
+#txtInfo, #imgInfo
+{
+	width: 50%;
+	max-height: 600px; 
+	max-width: 800px;
+	overflow: auto;
+}
+
+#bodyInfo
+{
+	max-height: 800px;
+	overflow: auto;
+}
+
+.int
+{
+	font-weight: bold;
+}
+
+span, .normal
+{
+	font-weight: normal;
+}
+
+/*********************
+*	SIMILAR RESEARCH 
+*************************/
+#headerSimilarResearch, #headerAuthorArtworks
+{
+	font-size: 20pt;
+}
+
+.similarResearch, .authorArtwork
+{
+	margin-left: 20px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#imgArtwork
+{
+	max-height: 600px;
+	max-width: 600px;
+}
+
+.caption
+{
+	font-size: 12pt;
+}
+
+#singleAuthor-header
+{
+	width: 100%;
+	height: 300px;
+	text-align: center;
+	padding-top: 100px;
+	background-color: #EE6E73;
+	text-align:center;
+	color: white;
+	font: 90px Helvetica, Sans-Serif;
+}

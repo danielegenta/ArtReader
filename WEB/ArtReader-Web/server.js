@@ -220,18 +220,19 @@ app.get("/loginmobile", function (request, response, next) {
 /*********************/
 
 app.post("/artworkDetails",function(request,response,next)
-{
-	/*var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
-	utility.aggiornaPagina("./pages/index.html", function(window){
-		response.send(window.document.documentElement.innerHTML);
-	});*/
-	
-	
-	
+{	
 	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
 	request.session.idArtwork=request.body["codice"];
 	utility.aggiornaPagina("./pages/singleArtwork.html", function(window){
-		//response.writeHead(200,header);
+		response.send(window.document.documentElement.innerHTML);
+	});
+});
+
+app.post("/authorDetails",function(request,response,next)
+{	
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	request.session.idAuthor=request.body["codice"];
+	utility.aggiornaPagina("./pages/singlePageAuthor.html", function(window){
 		response.send(window.document.documentElement.innerHTML);
 	});
 });
@@ -395,7 +396,6 @@ app.get("/delArtwork", function(request, response,next){
 
 //one artwork info
 app.get("/oneArtwork", function(request, response,next){
-	console.log(request.session.idArtwork);
 	var id = request.session.idArtwork;
 	var header = {"Content-Type":"text/html"};	
 		var db = new sqlite.Database("Database/myDatabase.db");
@@ -455,6 +455,37 @@ app.get("/oneArtwork", function(request, response,next){
 				);*/	
 		db.close();
 		});	
+		});		
+});
+
+//one artwork info
+app.get("/oneAuthor", function(request, response,next){
+	var id = request.session.idAuthor;
+	var header = {"Content-Type":"text/html"};	
+		var db = new sqlite.Database("Database/myDatabase.db");
+	
+	console.log("----"+id);
+			db.serialize(function(){
+			var sql = "SELECT * FROM Authors WHERE idAuthors ="+id;
+            var json;
+           
+			db.get(sql, function(err, row)
+			{
+					var author = {};
+					author.id = row.IdAuthors;
+					author.name = row.Name;
+					author.wikipediaPageAuthor = row.WikipediaPageAuthor;
+					author.nationalityAuthor = row.NationalityAuthor;
+					author.pictureUrlAuthor = row.PictureUrlAuthor;
+					author.dateBorn = row.DateBorn;
+					author.locationBorn = row.LocationBorn;
+
+					
+					json = JSON.stringify(author);					
+					response.writeHead(200, header);
+					response.end(json);							
+				});
+		db.close();
 		});		
 });
 
@@ -688,6 +719,72 @@ app.get("/similarArtworks", function(request, response,next)
 	//});
 });
 
+//similar artwork 
+app.get("/similarAuthors", function(request, response,next)
+{	
+	var nationality = request.query["nationality"];
+	var id = request.session.idAuthor;
+	var header = {"Content-Type":"text/html"};	
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+	var sql = "SELECT * FROM Authors WHERE nationalityAuthor = '" + nationality + "' AND idAuthors != " + id; 
+	console.log(sql);
+		var json;
+		var listAuthors = [];
+		db.each(sql, 
+			function(err, row){
+				var author = {};
+				author.id = row.IdAuthors;
+				author.name = row.Name;
+				author.wikipediaPageAuthor = row.WikipediaPageAuthor;
+				author.nationalityAuthor = row.NationalityAuthor;
+				author.pictureUrlAuthor = row.PictureUrlAuthor;
+				author.dateBorn = row.DateBorn;
+				author.locationBorn = row.LocationBorn;
+				listAuthors.push(author);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listAuthors);				
+				response.writeHead(200, header);
+				console.log(json);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+	//});
+});
+
+//similar artwork 
+app.get("/getArtworksAuthor", function(request, response,next)
+{	
+	var id = request.query["id"];
+	var header = {"Content-Type":"text/html"};	
+	var db = new sqlite.Database("Database/myDatabase.db");
+	db.serialize(function(){
+	var sql = "SELECT * FROM Artworks, Authors WHERE Artworks.Author = Authors.idAuthors AND authors.idAuthors="+id+" ORDER BY nViews DESC LIMIT 3"; 
+	console.log(sql);
+		var json;
+		var listArtworks = [];
+		db.each(sql, 
+			function(err, row){
+			var artwork = {};
+				artwork.id = row.Id;
+				artwork.title = row.Title;
+				artwork.pictureUrl = row.PictureUrl;
+				artwork.nViews = row.NViews;
+				artwork.dimensionHeight = row.DimensionHeight;
+				artwork.dimensionWidth = row.DimensionWidth;
+				listArtworks.push(artwork);
+			},
+			function(err, nRighe){
+				json = JSON.stringify(listArtworks);				
+				response.writeHead(200, header);
+				console.log(json);
+				response.end(json);								
+			});
+			db.close();	
+	}); 
+});
 
 //SUGGERIMENTI SIMIL GOOGOLE
 app.get("/completion", function(req, res,next) {	

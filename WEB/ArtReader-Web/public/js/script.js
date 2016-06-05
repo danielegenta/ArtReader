@@ -10,6 +10,8 @@ var readRequestLatestArtworks, readUpdateLatestArtworks, readRequestWebFeedbacks
 //login e registrazione
 var readRequestLogin, readUpdateLogin;
 
+var similarRequestSinglePageAuthor, authorArtworksRequest, authorArtworksUpdate;
+
 /**************************************************************LOGIN CALLS***************************************************************/
 //login to index page
 function access()
@@ -106,10 +108,12 @@ function updateArtwork(tit,aut,abs,pic,nv,idloc,tec,y,artm,height,width,wiki,par
 	notQueryRequest.send();
 }
 
-function post(path, params) {
+function post(path, params) 
+{
+	console.log("passa");
     var form = document.createElement("form");
     form.setAttribute("method", "post");
-    form.setAttribute("action", "/artworkDetails");
+    form.setAttribute("action", path);
 
     for(var key in params) {
         if(params.hasOwnProperty(key)) {
@@ -216,7 +220,6 @@ function similarArtworks(auth, tit, artM)
 }
 
 function allAuthors(){
-	console.log("wala2");
 	reqCbAuthor = new XMLHttpRequest();
 	var url="/getAuthors";
 	reqCbAuthor.open("GET", url, true);
@@ -275,7 +278,6 @@ function readUpdate()
 {
 	if (readRequest.readyState == 4 && readRequest.status == 200)
 	{
-		console.log(readRequest.responseText);
 		var response = JSON.parse(readRequest.responseText);
 		var artworks = response;
 		var i = 0;
@@ -293,7 +295,6 @@ function readUpdateLocations()
 	if (readRequest1.readyState == 4 && readRequest1.status == 200)
 	{
 		var response = JSON.parse(readRequest1.responseText);
-		console.log(response);
 		var locations = response;
 		var i = 0;
 		cleanTableLocations();
@@ -337,7 +338,6 @@ function similarArtworksUpdate()
 	{
 		var response = JSON.parse(similarRequest.responseText);
 		var artworks = response;
-		console.log(response);
 		var i = 0;
 		cleanSimilar();
 		for (var counter in artworks)
@@ -373,7 +373,6 @@ function relatedArtworksUpdate()
 		var response = JSON.parse(similarRequestSinglePageArtwork.responseText);
 		var artworks = response;
 		var i = 0;
-		console.log(artworks)
 		for (var counter in artworks)
 		{
 			showRelated_SinglePageArtwork(artworks, i);
@@ -382,14 +381,72 @@ function relatedArtworksUpdate()
 	}
 }
 
+function relatedAuthors_SinglePageAuthor(nationality)
+{
+	similarRequestSinglePageAuthor = new XMLHttpRequest();
+	var url="/similarAuthors?nationality="+encodeURIComponent(nationality);
+	similarRequestSinglePageAuthor.open("GET", url, true);
+	similarRequestSinglePageAuthor.onreadystatechange = relatedAuthorsUpdate;
+	similarRequestSinglePageAuthor.send(null);
+}
+
+function relatedAuthorsUpdate()
+{
+	if (similarRequestSinglePageAuthor.readyState == 4 && similarRequestSinglePageAuthor.status == 200)
+	{
+		var response = JSON.parse(similarRequestSinglePageAuthor.responseText);
+		var authors = response;
+		var i = 0;
+		for (var counter in authors)
+		{
+			showRelated_SinglePageAuthor(authors, i);
+			i++;
+		}
+	}
+}
+
+function authorArtworks(id)
+{
+	authorArtworksRequest = new XMLHttpRequest();
+	var url="/getArtworksAuthor?id="+id;
+	authorArtworksRequest.open("GET", url, true);
+	authorArtworksRequest.onreadystatechange = authorArtworksUpdate;
+	authorArtworksRequest.send(null);
+}
+
+function authorArtworksUpdate()
+{
+	if (authorArtworksRequest.readyState == 4 && authorArtworksRequest.status == 200)
+	{
+		var response = JSON.parse(authorArtworksRequest.responseText);
+		var artworks = response;
+		var i = 0;
+		for (var counter in artworks)
+		{
+			showAuthorArtworks(artworks, i);
+			i++;
+		}
+	}
+}
+
+
+
+/*********/
 function showSingleArtworkInfo()
 {
-	//var idArtwork = id;
 	readRequest = new XMLHttpRequest();
 	var url="/oneArtwork";
-	//id="+encodeURIComponent(idArtwork);
 	readRequest.open("GET", url, true);
 	readRequest.onreadystatechange = singleArtworkUpdate;
+	readRequest.send(null);
+}
+
+function showSingleAuthorInfo()
+{
+	readRequest = new XMLHttpRequest();
+	var url="/oneAuthor";
+	readRequest.open("GET", url, true);
+	readRequest.onreadystatechange = singleAuthorUpdate;
 	readRequest.send(null);
 }
 
@@ -415,11 +472,19 @@ function singleArtworkUpdate()
 {
 	if (readRequest.readyState == 4 && readRequest.status == 200)
 	{
-		console.log(readRequest.responseText);
 		var response = JSON.parse(readRequest.responseText);
 		var artwork = response;
-		
 		printArtworkDetails(artwork);
+	}
+}
+
+function singleAuthorUpdate()
+{
+	if (readRequest.readyState == 4 && readRequest.status == 200)
+	{
+		var response = JSON.parse(readRequest.responseText);
+		var author = response;
+		printAuthorDetails(author);
 	}
 }
 
@@ -447,7 +512,6 @@ function aggiornaPag()
     if(richiestaSugg.readyState == 4 && richiestaSugg.status == 200)
     {
         var risposta = JSON.parse(richiestaSugg.responseText); // readRequest arrivata dal server
-        console.log(risposta);
         var tab = document.getElementById("lstSuggerimenti");
             tab.innerHTML = "";
             tab.style.display = "none";
@@ -568,14 +632,8 @@ function readUpdateLogin()
 		var response = readRequestLogin.responseText;
 		
 		if (response == "failure")
-		{
-
-			console.log(response);
 			document.getElementById("lblLoginError").innerHTML="Username o Password non corretti."
-		}
 		else
-		{
 			postLogin();
-		}
 	}
 }

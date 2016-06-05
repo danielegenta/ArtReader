@@ -531,7 +531,8 @@ function showAuthor(response, i)
 	//immagine alla cella
 	asignImage("#tableLayoutHome-Authors-Table-img"+i, "img/immagini/autori/"+pictureUrl, 600, 400);
 	//listener ai bottoni
-	//$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
+	console.log(id);
+	$("#tableLayoutHome-Authors-Table-btnView"+i).attr("onClick", "supportViewAuthor("+id+")");
 }
 
 /*
@@ -540,6 +541,11 @@ function showAuthor(response, i)
 function supportViewArtwork(id)
 {
 	post('/artworkDetails', { codice: id });
+}
+
+function supportViewAuthor(id)
+{
+	post('/authorDetails', { codice: id });
 }
 
 function supportDeleteArtwork(id)
