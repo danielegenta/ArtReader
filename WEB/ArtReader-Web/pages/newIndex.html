@@ -29,16 +29,14 @@
 		<div class="nav-wrapper">
 		  <a href="#" id="navbar-home" class="brand-logo">Art Reader</a>
 		  <ul id="nav-mobile" class="right hide-on-med-and-down">
-			<li><a href="#" id="tmp1">Aiuto</a></li>
-			<li><a href="#" id="tmp2">Lascia un Feedback</a></li>
-			<li><a href="#" id="tmp2">Pannello di controllo</a></li>
-			<li><a href="#" id="tmp2">Logout</a></li>
+			<li><a href="#" id="navbar-help">Aiuto</a></li>
+			<li><a href="#" id="navbar-feedback">Lascia un Feedback</a></li>
+			<li><a href="#" id="navbar-logout">Logout</a></li>
 		  </ul>
 		<ul id="slide-out" class="side-nav">
-			<li><a href="#" id="tmp1">Aiuto</a></li>
-			<li><a href="#" id="tmp2">Lascia un Feedback</a></li>
-			<li><a href="#" id="tmp2">Pannello di controllo</a></li>
-			<li><a href="#" id="tmp2">Logout</a></li>
+			<li><a href="#" id="navbar-mobile-help">Aiuto</a></li>
+			<li><a href="#" id="navbar-mobile-feedback">Lascia un Feedback</a></li>
+			<li><a href="#" id="tmpnavbar-mobile-logout">Logout</a></li>
 		</ul>
 	  <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 		</div>
@@ -175,5 +173,67 @@
 			</div>
 		</div>
 	</div>
+	<!--PAGINA DI FEEDBACK-->
+	<div id="page-feedback" style="display: none">
+			<div id="feedback-header">
+				<br>
+				<h1>Feedback</h1> 
+				<h2>Facci sapere cosa ne pensi!</h2>
+			</div>
+			<div id="feedback-content">
+				<div class="row">
+				<form id="form-feedback">
+					
+						  <div class="row">
+							<div class="input-field col s6">
+							  <input id="icon_prefix1" type="text" class="validate">
+							  <label for="icon_prefix1">Nickname</label>
+							</div>
+							<div class="input-field col s6">
+							  <input id="icon_telephone" type="tel" class="validate">
+							  <label for="icon_telephone">Telefono</label>
+							</div>
+						  </div>
+					
+						<div class="row">
+						  <div class="input-field col s12">
+							  <input id="icon_prefix2" type="text" class="validate">
+							  <label for="icon_prefix2">Mail</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								 <textarea id="icon_prefix3" class="materialize-textarea"></textarea>
+								 <label for="icon_prefix3">Messaggio</label>
+							</div>
+						</div>
+					
+						<button class="btn waves-effect waves-light" type="button" name="action" id="btnAccess"  onClick="sendFeedBack()" >INVIA
+						<i class="material-icons right">send</i>
+						</button>
+				</form>
+				</div>
+				<div id = "feedback-bottom">
+					Vuoi dirci qualcos'altro? <a id="feedback-bottom-linkmail">Scrivici.</a>
+				</div>
+			</div>
+		</div>
+		<!--PAGINA DI GUIDA-->
+		<div id="page-help" style="display: none">
+			<div id="help-header">
+			<br>
+				<h1>Help</h1>
+				<h2>Ciao. Serve aiuto?</h2>
+			</div>
+			  <div id="whatis">
+					<div id="help-firstpage-content">
+						<img src="img/system/support1.jpg" id="help-firstpage-img">
+						<div id="help-firstpage-content-title">Bisogno di aiuto? Noi ci siamo.</div><br>
+						<div id="help-firstpage-content-body">ArtReader &egrave una realt&agrave diversificata ed avente un target di utenza eterogeneo.<br>Siamo felici di aiutare chiunque 
+						abbia dubbi nell'utilizzo della nostra piattaforma. Chiedete.<br>
+						<a id="help-bottom-linkmail">Scrivici.</a></div>
+					</div>
+			  </div>
+		</div>
 	</body>
 </html>

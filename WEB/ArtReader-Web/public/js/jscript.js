@@ -4,6 +4,46 @@
 
 $(document).ready(function()
 {	
+
+	//menù
+	$("#navbar-feedback, #navbar-mobile-feedback").click(function()
+	{
+		$("#page1").hide();
+		$("#page-help").hide();
+		$("#page-feedback").show();
+	});	
+
+	$("#navbar-help, #navbar-mobile-help").click(function()
+	{
+		$("#page1").hide();
+		$("#page-feedback").hide();
+		$("#page-help").show();
+	});
+	$("#navbar-home").click(function()
+	{
+		$("#page1").show();
+		$("#page-feedback").hide();
+		$("#page-help").hide();
+	});
+	$("#navbar-logout, #navbar-mobile-logout").click(function()
+	{
+		//chiamata a scriptjs
+		logout();
+	});
+
+	//feedback page
+	 //mail feedback
+ 	$("#feedback-bottom-linkmail").click(function()
+	{
+		window.open('mailto:support@artreader.com?subject=RICHIESTA FEEDBACK');
+	});
+
+	 //help page
+	 $("#help-bottom-linkmail").click(function()
+	{
+		window.open('mailto:support@artreader.com?subject=RICHIESTA SUPPORTO');
+	});
+
 //upload
 $('#uploadForm').submit(function() {
         console.log('uploading the file ...');
@@ -332,6 +372,35 @@ $('#uploadForm').submit(function() {
 		return valid;
 	}
 });
+
+
+/*****
+	FEEDBACK
+*****/
+
+function sendFeedBack(){
+	if($("#icon_prefix1").val()!="" && $("#icon_telephone").val()!="" && $("#icon_prefix2").val()!="" && $("#icon_prefix3").val()!=""){
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test($("#icon_prefix2").val()))
+			{
+				sendfeedback("web","",$("#icon_prefix3").val(),$("#icon_prefix1").val(),$("#icon_telephone").val(),$("#icon_prefix2").val());
+				$("#icon_prefix1").val("");
+				$("#icon_telephone").val("");
+				$("#icon_prefix2").val("");
+				$("#icon_prefix3").val("");
+				
+				$("#icon_prefix1").attr('class', 'validate');
+				$("#icon_telephone").attr('class', 'validate');;
+				$("#icon_prefix2").attr('class', 'validate');
+			}
+			else
+				alert("Mail non valida");		
+	}
+}
+
+/***********
+	END FEEDBACK
+************/
 
 //Creating a table row with dynamic buttons to delete or edit the artwork
 function showArtwork(response, i)

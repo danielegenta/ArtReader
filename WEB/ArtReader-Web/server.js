@@ -175,7 +175,14 @@ app.post("/successLogin", function (request, response, next)
 	});
 });
 
-
+app.post("/logout", function (request, response, next) 
+{
+	var header = { 'Content-Type' : 'text/html;Charset=utf-8' };
+	utility.aggiornaPagina("./pages/login.html", function(window){
+		//response.writeHead(200,header);
+		response.send(window.document.documentElement.innerHTML);
+	});
+});
 
 
 //LOGIN MOBILE -- PARAMETRI DIVERSI
