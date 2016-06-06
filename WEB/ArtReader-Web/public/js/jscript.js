@@ -199,14 +199,7 @@ $('#uploadForm').submit(function() {
 		  }
 	});
 
-	//INSERT NEW DIALOG button handler (open the dialog)
-	$("#btnInsertArtwork").click(function() {
-		cleanDialogFields();
-		$("#dialogInsertArtwork").dialog('open');
-		$("#btnModifica").hide();
-		$("#btnInsert").show();
-		
-	});
+
 	
 	
 	//RESERACH 
@@ -357,6 +350,8 @@ function showArtwork(response, i)
 		htmlDiv = "<a class=\"waves-effect waves-light btn\" id=\"btnInsertArtwork\">+</a>"
 		riga.append(htmlCell);
 		$("#tableLayoutHome-Artworks-Table-0").append(htmlDiv);
+		$("#tableLayoutHome-Artworks-Table-0").attr("onClick","openDialogInsert()");
+	
 	}
 	i++;
 
@@ -415,17 +410,18 @@ function showArtwork(response, i)
 			$( "#txtAnno" ).val(response[i-1].year);
 			$( "#txtAltezza" ).val(response[i-1].dimensionHeight);
 			$( "#txtLarghezza" ).val(response[i-1].dimensionWidth);
-			$("#showImg").attr('src','img/immagini/'+response[i-1].pictureUrl);		
-			$("#showImg1").attr('src','img/parallax/'+response[i-1].pictureUrl2);
-			$("#showImg2").attr('src','img/parallax/'+response[i-1].pictureUrl3);
+			//$("#showImg").attr('src','img/immagini/'+response[i-1].pictureUrl);		
+			asignImage("#showImg", "img/immagini/"+response[i-1].pictureUrl, height, width);
+			asignImage("#showImg1", "img/parallax/"+response[i-1].pictureUrl2, 400, 600);
+			asignImage("#showImg2", "img/parallax/"+response[i-1].pictureUrl3, 400, 600);
+			//$("#showImg1").attr('src','img/parallax/'+response[i-1].pictureUrl2);
+			//$("#showImg2").attr('src','img/parallax/'+response[i-1].pictureUrl3);
 			$("#cbAuthor").attr('value',response[i-1].author);
 			$("#cbAuthor").text(response[i-1].name);
 			$("#cbLocation").attr('value',response[i-1].idLocationsArtworks);
 			$("#cbLocation").text(response[i-1].city);
 			jqShowArtworks();
 	});
-
-	
 }
 
 //Creating a table row with dynamic buttons to delete or edit the artwork
@@ -548,6 +544,16 @@ function supportDeleteArtwork(id)
 {
 	deleteArtwork(id); 
 	jqShowArtworks();
+}
+
+//INSERT NEW DIALOG button handler (open the dialog)
+function openDialogInsert()
+{
+	console.log("ok");
+	cleanDialogFields();
+	$("#dialogInsertArtwork").dialog('open');
+	$("#btnModifica").hide();
+	$("#btnInsert").show();
 }
 
 

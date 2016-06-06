@@ -432,7 +432,7 @@ function mostFamousArtworksUpdate()
 function authorArtworks(id)
 {
 	authorArtworksRequest = new XMLHttpRequest();
-	var url="/getArtworksFromLocation?location="+id;
+	var url="/getArtworksAuthor?id="+id;
 	authorArtworksRequest.open("GET", url, true);
 	authorArtworksRequest.onreadystatechange = authorArtworksUpdate;
 	authorArtworksRequest.send(null);
