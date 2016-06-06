@@ -413,8 +413,9 @@ function showArtwork(response, i)
 	/*
 	*	NEW
 	*/
+	var admin = response[i].type;
 
-	if (i == 0)
+	if (i == 0 && admin)
 	{
 		var tabella=$("#tableLayoutHome-Artworks-Table");
 		var righe = "<tr id=\"tableLayoutHome-Artworks-Table-firstRow\"></tr><tr id=\"tableLayoutHome-Artworks-Table-secondRow\"></tr>";
@@ -426,6 +427,12 @@ function showArtwork(response, i)
 		$("#tableLayoutHome-Artworks-Table-0").append(htmlDiv);
 		$("#tableLayoutHome-Artworks-Table-0").attr("onClick","openDialogInsert()");
 	
+	}
+	if (i == 0 && !admin)
+	{
+		var tabella=$("#tableLayoutHome-Artworks-Table");
+		var righe = "<tr id=\"tableLayoutHome-Artworks-Table-firstRow\"></tr><tr id=\"tableLayoutHome-Artworks-Table-secondRow\"></tr>";
+		tabella.append(righe);
 	}
 	i++;
 
@@ -444,6 +451,7 @@ function showArtwork(response, i)
 	var width = response[i-1].dimensionWidth;
 	var pictureUrl = response[i-1].pictureUrl;
 
+	
 	var htmlCell; var htmlDiv;
 	htmlCell = "<td id=\"tableLayoutHome-Artworks-Table-"+i+"\"></td>";
 	
@@ -457,9 +465,13 @@ function showArtwork(response, i)
 	htmlDiv2 += "<br><br>";
 	//btn
 	htmlDiv2 += "<p><a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnView"+i+"\"><img src=\"img/ico/view.png\"></a>";
-	htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnEdit"+i+"\"><img src=\"img/ico/edit.png\"></a>";
-	htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnDelete"+i+"\"><img src=\"img/ico/delete.png\"></a></p>";
-	htmlDiv2 += "</div>";
+	if (admin)
+	{
+		htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnEdit"+i+"\"><img src=\"img/ico/edit.png\"></a>";
+		htmlDiv2 += "<a class=\"btn-floating btn-large waves-effect waves-light\" id=\"tableLayoutHome-Artworks-Table-btnDelete"+i+"\"><img src=\"img/ico/delete.png\"></a>";
+	}
+
+	htmlDiv2 += "</p></div>";
 
 	riga.append(htmlCell);
 	$("#tableLayoutHome-Artworks-Table-"+i+"").append(htmlDiv);
@@ -469,33 +481,38 @@ function showArtwork(response, i)
 	asignImage("#tableLayoutHome-Artworks-Table-img"+i, "img/immagini/"+pictureUrl, height, width);
 	//listener ai bottoni
 	$("#tableLayoutHome-Artworks-Table-btnView"+i).attr("onClick", "supportViewArtwork("+id+")");
-	$("#tableLayoutHome-Artworks-Table-btnDelete"+i).attr("onClick", "supportDeleteArtwork("+id+")");
-	var btnMod = document.getElementById("tableLayoutHome-Artworks-Table-btnEdit"+i);
-	btnMod.addEventListener('click',function()
+
+	if (admin)
 	{
-			$("#dialogInsertArtwork").dialog('open');
-			$("#btnModifica").show();
-			$("#btnInsert").hide();
-			$("#txtTitle").val(response[i-1].title);
-			$("#txtAbstract").val(response[i-1].abstract);		
-			$( "#txtTecnique" ).val(response[i-1].tecnique);
-			$( "#txtMovimento" ).val(response[i-1].artMovement);
-			$( "#txtWiki" ).val(response[i-1].wikipediaPageArtwork);
-			$( "#txtAnno" ).val(response[i-1].year);
-			$( "#txtAltezza" ).val(response[i-1].dimensionHeight);
-			$( "#txtLarghezza" ).val(response[i-1].dimensionWidth);
-			//$("#showImg").attr('src','img/immagini/'+response[i-1].pictureUrl);		
-			asignImage("#showImg", "img/immagini/"+response[i-1].pictureUrl, height, width);
-			asignImage("#showImg1", "img/parallax/"+response[i-1].pictureUrl2, 400, 600);
-			asignImage("#showImg2", "img/parallax/"+response[i-1].pictureUrl3, 400, 600);
-			//$("#showImg1").attr('src','img/parallax/'+response[i-1].pictureUrl2);
-			//$("#showImg2").attr('src','img/parallax/'+response[i-1].pictureUrl3);
-			$("#cbAuthor").attr('value',response[i-1].author);
-			$("#cbAuthor").text(response[i-1].name);
-			$("#cbLocation").attr('value',response[i-1].idLocationsArtworks);
-			$("#cbLocation").text(response[i-1].city);
-			jqShowArtworks();
-	});
+		$("#tableLayoutHome-Artworks-Table-btnDelete"+i).attr("onClick", "supportDeleteArtwork("+id+")");
+		var btnMod = document.getElementById("tableLayoutHome-Artworks-Table-btnEdit"+i);
+		btnMod.addEventListener('click',function()
+		{
+				$("#dialogInsertArtwork").dialog('open');
+				$("#btnModifica").show();
+				$("#btnInsert").hide();
+				$("#txtTitle").val(response[i-1].title);
+				$("#txtAbstract").val(response[i-1].abstract);		
+				$( "#txtTecnique" ).val(response[i-1].tecnique);
+				$( "#txtMovimento" ).val(response[i-1].artMovement);
+				$( "#txtWiki" ).val(response[i-1].wikipediaPageArtwork);
+				$( "#txtAnno" ).val(response[i-1].year);
+				$( "#txtAltezza" ).val(response[i-1].dimensionHeight);
+				$( "#txtLarghezza" ).val(response[i-1].dimensionWidth);
+				//$("#showImg").attr('src','img/immagini/'+response[i-1].pictureUrl);		
+				asignImage("#showImg", "img/immagini/"+response[i-1].pictureUrl, height, width);
+				asignImage("#showImg1", "img/parallax/"+response[i-1].pictureUrl2, 400, 600);
+				asignImage("#showImg2", "img/parallax/"+response[i-1].pictureUrl3, 400, 600);
+				//$("#showImg1").attr('src','img/parallax/'+response[i-1].pictureUrl2);
+				//$("#showImg2").attr('src','img/parallax/'+response[i-1].pictureUrl3);
+				$("#cbAuthor").attr('value',response[i-1].author);
+				$("#cbAuthor").text(response[i-1].name);
+				$("#cbLocation").attr('value',response[i-1].idLocationsArtworks);
+				$("#cbLocation").text(response[i-1].city);
+				jqShowArtworks();
+		});
+	}
+
 }
 
 //Creating a table row with dynamic buttons to delete or edit the artwork

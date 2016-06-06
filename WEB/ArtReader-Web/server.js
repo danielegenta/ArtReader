@@ -456,6 +456,11 @@ app.get("/oneArtwork", function(request, response,next){
 					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
 					artwork.nationalityAuthor = row.NationalityAuthor;
 
+					//admin
+					//artwork.admin = 
+
+
+
 					json = JSON.stringify(artwork);					
 					response.writeHead(200, header);
 					response.end(json);	
@@ -574,7 +579,7 @@ app.get("/allArtworks", function(request, response,next){
 					
 					//field table 'authors'
 					artwork.type=request.session.admin;
-					artwork.idAuthor = request.session.admin;
+					artwork.idAuthor = row.idAuthors;
 					artwork.name = row.Name;
 					artwork.wikipediaPageAuthor = row.WikipediaPageAuthor;
 					artwork.nationalityAuthor = row.NationalityAuthor;
