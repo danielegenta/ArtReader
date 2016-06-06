@@ -500,7 +500,7 @@ function sendfeedback(type,artwork,description,username,phonenumber,email){
 	var Email=email;
 	var Artwork=artwork;		
 	feedBack = new XMLHttpRequest();
-	var url="/insertFeedback?Tipo="+encodeURIComponent(Type)+"&Artwork="+encodeURIComponent(Artwork)+"&Description="+encodeURIComponent(Description)+"&Username="+encodeURIComponent(Username)+"&Phonenumber="+encodeURIComponent(Phonenumber)+"&Email="+encodeURIComponent(Email)+"";
+	var url="/insertFeedback?Type="+encodeURIComponent(Type)+"&Artwork="+encodeURIComponent(Artwork)+"&Description="+encodeURIComponent(Description)+"&Username="+encodeURIComponent(Username)+"&Phonenumber="+encodeURIComponent(Phonenumber)+"&Email="+encodeURIComponent(Email)+"";
 	feedBack.open("GET", url, true);
 	feedBack.onreadystatechange = notQueryUpdate;
 	feedBack.send(null);

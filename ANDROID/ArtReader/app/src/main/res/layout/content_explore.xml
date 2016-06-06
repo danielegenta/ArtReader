@@ -40,8 +40,8 @@
                     android:paddingLeft="10dp"
                     android:id="@+id/textView6"
                     android:textSize="25dp"
-                    android:padding="10dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:padding="10dp" />
 
             </FrameLayout>
 

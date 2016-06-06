@@ -11,6 +11,8 @@ $(document).ready(function()
 		$("#page1").hide();
 		$("#page-help").hide();
 		$("#page-feedback").show();
+		$("#after-feedback-content").hide();
+		$("#feedback-content").hide();
 	});	
 
 	$("#navbar-help, #navbar-mobile-help").click(function()
@@ -392,6 +394,9 @@ function sendFeedBack(){
 				$("#icon_prefix1").attr('class', 'validate');
 				$("#icon_telephone").attr('class', 'validate');;
 				$("#icon_prefix2").attr('class', 'validate');
+
+				$("#after-feedback-content").show();
+				$("#feedback-content").hide();
 			}
 			else
 				alert("Mail non valida");		

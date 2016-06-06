@@ -72,10 +72,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewReview" />
-        <activity
-            android:name=".NewHome2"
-            android:label="@string/title_activity_new_home2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ActivityHistory"></activity>
     </application>
 
 </manifest>

@@ -163,6 +163,12 @@ h2
 	font-size: 20px;
 }
 
+#after-feedback-content
+{
+	text-align: center;
+	top: 100px;
+}
+
 #feedback-bottom-linkmail, #help-bottom-linkmail 
 {
 	cursor: pointer;

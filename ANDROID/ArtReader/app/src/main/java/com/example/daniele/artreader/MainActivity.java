@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -27,17 +28,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,11 +65,16 @@ public class MainActivity extends AppCompatActivity {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
     boolean privateSession = false;
 
+    String retVal;
+    ArrayList<Artwork> listVerticalArtworks = new ArrayList<Artwork>();
+    ArrayList<Artwork>listHorizontalArtworks = new ArrayList<Artwork>();
+
+    String myIp = "http://192.168.1.101:8080/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -69,39 +87,47 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             // This method will be invoked when the current page is scrolled
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
-            {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0)
-                {
+                if (position == 0) {
                     loadListView("history");
                 }
-                if (position == 2)
-                {
+                if (position == 2) {
                     loadListView("favourites");
                 }
+                if (position == 1)
+                {
+                    if (myLists != null)
+                    {
+                        loadLatestViewed();
+                        loadAdvice();
+                        loadDynamicLayout();
+                    }
+                }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                scanQR();
             }
         });
         myLists = new Lists();
         loadStructures();
+
+
     }
 
     //SOLO AL LANCIO leggo i file di testo, poi lavoro sulle struttutre!!!
@@ -137,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*****************
     /*****************
      //  GESTIONE DEI FILE CRONOLOGIA E PREFERITI
      /*****************/
@@ -218,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_deleteHistory:
                 deleteHistory();
+                return true;
+            case R.id.action_history:
+                openHistory();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -318,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void scanQR(View v)
+    public void scanQR()
     {
         try
         {
@@ -349,17 +379,18 @@ public class MainActivity extends AppCompatActivity {
             {
                 loadListView("favourites");
             }
+            else if (mViewPager.getCurrentItem() == 1)
+            {
+                loadLatestViewed();
+                loadAdvice();
+                loadDynamicLayout();
+                //TextView t1 = (TextView)findViewById(R.id.lblHomeLatestViewed);
+                //t1.setText("ok");
+
+            }
         }
     }
 
-    public void openExplore(View v)
-    {
-        Intent intent = new Intent(this, ExploreActivity.class);
-        intent.putExtra("jsonHistory", myLists.historyToString());
-        intent.putExtra("jsonFavourites", myLists.favouritesToString());
-        intent.putExtra("privateSession", privateSession);
-        startActivity(intent);
-    }
 
     /*****************FINE PULSANTE SCAN*****************/
 
@@ -393,15 +424,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadListView(String lstType)
     {
         ListView lstArt;
-        if (lstType == "history")
-        {
-            RecordAdapter adapter = new RecordAdapter(this, R.layout.record_layout, myLists.listArtworksHistory);
-            lstArt = (ListView) findViewById(R.id.listViewHistory);
-            lstArt.setAdapter(null);
-            lstArt.setAdapter(adapter);
-            lstArt.setOnItemClickListener(listener);
-        }
-        else if (lstType == "favourites")
+         if (lstType == "favourites")
         {
             RecordAdapter adapter = new RecordAdapter(this, R.layout.record_layout, myLists.listArtworksFavourites);
             lstArt = (ListView) findViewById(R.id.listViewFavourite);
@@ -499,13 +522,361 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void testNewHome(View v)
+
+    public void openHistory()
     {
-        Intent intent = new Intent(this, NewHome2.class);
+        Intent intent = new Intent(this, ActivityHistory.class);
         intent.putExtra("jsonHistory", myLists.historyToString());
         intent.putExtra("jsonFavourites", myLists.favouritesToString());
         intent.putExtra("privateSession", privateSession);
         startActivity(intent);
     }
 
+    /*
+    * * NEW HOME
+    * **/
+    private void loadLatestViewed()
+    {
+        if (myLists != null) {
+            if (myLists.listArtworksHistory.size() > 0) {
+                ImageView imgLatestViewed1 = (ImageView) findViewById(R.id.imgHomeRecent1);
+                TextView txtLatestViewed1 = (TextView) findViewById(R.id.txtHomeRecent1);
+                imgLatestViewed1.setVisibility(View.VISIBLE);
+                txtLatestViewed1.setVisibility(View.VISIBLE);
+                Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + myLists.listArtworksHistory.get(0).getImg_path().toString()).into(imgLatestViewed1);
+                imgLatestViewed1.getLayoutParams().height = 300;
+                imgLatestViewed1.getLayoutParams().width = 300;
+                txtLatestViewed1.setText(myLists.listArtworksHistory.get(0).getTitle().toString());
+
+            }
+            if (myLists.listArtworksHistory.size() > 1) {
+                ImageView imgLatestViewed2 = (ImageView) findViewById(R.id.imghomeRecent2);
+                TextView txtLatestViewed2 = (TextView) findViewById(R.id.txtHomeRecent2);
+                imgLatestViewed2.setVisibility(View.VISIBLE);
+                txtLatestViewed2.setVisibility(View.VISIBLE);
+                Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + myLists.listArtworksHistory.get(1).getImg_path().toString()).into(imgLatestViewed2);
+                imgLatestViewed2.getLayoutParams().height = 300;
+                imgLatestViewed2.getLayoutParams().width = 300;
+                txtLatestViewed2.setText(myLists.listArtworksHistory.get(1).getTitle().toString());
+            }
+            if (myLists.listArtworksHistory.size() > 2) {
+                ImageView imgLatestViewed3 = (ImageView) findViewById(R.id.imgHomeRecent3);
+                TextView txtLatestViewed3 = (TextView) findViewById(R.id.txtHomeRecent3);
+                imgLatestViewed3.setVisibility(View.VISIBLE);
+                txtLatestViewed3.setVisibility(View.VISIBLE);
+                Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + myLists.listArtworksHistory.get(2).getImg_path().toString()).into(imgLatestViewed3);
+                imgLatestViewed3.getLayoutParams().height = 300;
+                imgLatestViewed3.getLayoutParams().width = 300;
+                txtLatestViewed3.setText(myLists.listArtworksHistory.get(2).getTitle().toString());
+            }
+
+            if (myLists.listArtworksHistory.size() == 0) {
+                TableLayout tlHomeLatestViewed = (TableLayout) findViewById(R.id.tableLayoutHomeLatestViewed);
+                TextView tHomeLatestViewed = (TextView) findViewById(R.id.lblHomeLatestViewed);
+
+                tlHomeLatestViewed.setVisibility(View.GONE);
+                tHomeLatestViewed.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void loadAdvice()
+    {
+        if (myLists != null)
+        {
+        //registro autore più piaciuto e ricerco opere correlate ad esso
+        if (myLists.listArtworksFavourites.size() > 0) {
+            String cAuthor = "";
+            int cntAuthor = 0;
+            int cntMax = 0;
+            String favAuth = myLists.listArtworksFavourites.get(0).getAuthor();
+            for (Artwork a : myLists.listArtworksFavourites) {
+                if (a.getAuthor() != cAuthor) {
+                    if (cntAuthor > cntMax) {
+                        favAuth = cAuthor;
+                        cntMax = cntAuthor;
+                    }
+                    cntAuthor = 0;
+                } else {
+                    cAuthor = a.getAuthor();
+                    cntAuthor++;
+                }
+            }
+
+            //chiamata http
+            homeHttpRequestAdvice(favAuth);
+        }
+        }
+        else
+        {
+            //nascondo consigli per te
+            TableLayout tlHomeAdvice = (TableLayout)findViewById(R.id.tableLayoutHomeAdvice);
+            TextView tHomeAdvice = (TextView)findViewById(R.id.lblHomeAdivce);
+
+            tlHomeAdvice.setVisibility(View.GONE);
+            tHomeAdvice.setVisibility(View.GONE);
+        }
+    }
+
+    private void homeHttpRequestAdvice(String author)
+    {
+        View v = findViewById(android.R.id.content);retVal = "nok";
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, MainActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                {
+                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //richiamo seconda intent passandogli come parametro la stringa json letta
+                    retVal = String.valueOf(result);
+                    JSONArray jsonArray = null;
+                    if (retVal.compareTo("nok") != 0)
+                    {
+                        try
+                        {
+                            jsonArray = new JSONArray(retVal);
+                            int i = 0;
+                            JSONObject obj = null;
+                            for (i = 0; i < jsonArray.length(); i++)
+                            {
+                                try
+                                {
+                                    obj = jsonArray.getJSONObject(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                switch (i)
+                                {
+                                    case 0:
+                                        loadAdviceFinal(obj, i);
+                                        break;
+                                    case 1:
+                                        loadAdviceFinal(obj, i);
+                                        break;
+                                    case 2:
+                                        loadAdviceFinal(obj, i);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        };
+        String par = "?author=" + author;
+        request.execute("get", "artworkAdvice", par);
+    }
+
+    private void loadAdviceFinal(JSONObject obj, int index)
+    {
+
+        if (index == 0)
+        {
+            //definisco oggetti che mi servono
+            TextView textAdvice1 = (TextView)findViewById(R.id.txtHomeAdvice1);
+            ImageView imageAdvice1 = (ImageView) findViewById(R.id.imgHomeAdvice1);
+
+            //setto visibilità
+            textAdvice1.setVisibility(View.VISIBLE);
+            imageAdvice1.setVisibility(View.VISIBLE);
+
+            //
+            String id = obj.optString("id");
+            imageAdvice1.setTag(id);
+
+            //setto attributi
+            textAdvice1.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageAdvice1);
+
+            //regolare dimensioni immagine da codice
+            imageAdvice1.requestLayout();
+            imageAdvice1.getLayoutParams().height = 300;
+            imageAdvice1.getLayoutParams().width = 300;
+        }
+        else if (index == 1)
+        {
+            //definisco oggetti che mi servono
+            TextView textAdvice2 = (TextView)findViewById(R.id.txtHomeAdvice2);
+            ImageView imageAdivce2 = (ImageView) findViewById(R.id.imgHomeAdvice2);
+
+            //setto visibilità
+            textAdvice2.setVisibility(View.VISIBLE);
+            imageAdivce2.setVisibility(View.VISIBLE);
+
+            //
+            String id = obj.optString("id");
+            imageAdivce2.setTag(id);
+
+            //setto attributi
+            textAdvice2.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageAdivce2);
+
+            //regolare dimensioni immagine da codice
+            imageAdivce2.requestLayout();
+            imageAdivce2.getLayoutParams().height = 300;
+            imageAdivce2.getLayoutParams().width = 300;
+        }
+        else if (index == 2)
+        {
+            //definisco oggetti che mi servono
+            TextView textAdvice3 = (TextView)findViewById(R.id.txtHomeAdvice3);
+            ImageView imageAdvice3 = (ImageView) findViewById(R.id.imgHomeAdvice3);
+
+            //setto visibilità
+            textAdvice3.setVisibility(View.VISIBLE);
+            imageAdvice3.setVisibility(View.VISIBLE);
+
+            //
+            String id = obj.optString("id");
+            imageAdvice3.setTag(id);
+
+            //setto attributi
+            textAdvice3.setText(obj.optString("title"));
+            String imgName = obj.optString("pictureUrl");
+            Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+imgName).into(imageAdvice3);
+
+            //regolare dimensioni immagine da codice
+            imageAdvice3.requestLayout();
+            imageAdvice3.getLayoutParams().height = 300;
+            imageAdvice3.getLayoutParams().width = 300;
+        }
+    }
+
+
+
+    private void loadDynamicLayout()
+    {
+        //chiamata all artworks
+        View v = findViewById(android.R.id.content);retVal = "nok";
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, MainActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                {
+                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //richiamo seconda intent passandogli come parametro la stringa json letta
+                    retVal = String.valueOf(result);
+                    JSONArray jsonArray = null;
+                    if (retVal.compareTo("nok") != 0)
+                    {
+                        try
+                        {
+                            jsonArray = new JSONArray(retVal);
+                            int i = 0;
+                            JSONObject obj = null;
+                            for (i = 0; i < jsonArray.length(); i++)
+                            {
+                                try
+                                {
+                                    obj = jsonArray.getJSONObject(i);
+                                    String height = obj.getString("dimensionHeight");
+                                    String width = obj.getString("dimensionWidth");
+                                    Artwork a = new Artwork(Integer.valueOf(obj.getString("id")),obj.getString("title"),obj.getString("author"),obj.getString("pictureUrl"));
+                                    if (Float.valueOf(height) >= Float.valueOf(width))
+                                        listVerticalArtworks.add(a);
+                                    else
+                                        listHorizontalArtworks.add(a);
+                                }
+                                catch (JSONException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                            loadDynamicLayoutFinal();
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        };
+        String par = null;
+        request.execute("get", "allArtworks", par);
+    }
+
+    private void loadDynamicLayoutFinal()
+    {
+
+        //definizione layout
+        LinearLayout myLayout=((LinearLayout) findViewById(R.id.dynamicTable));
+
+
+        int index=0;
+        int i1 = 0, i2 = 0;
+        if (listHorizontalArtworks.size() > 0 && listVerticalArtworks.size() > 0)
+        {
+            while (index < (listHorizontalArtworks.size() + listVerticalArtworks.size()))
+            {
+                LinearLayout myLayoutH = new LinearLayout(this);
+                myLayoutH.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                myLayoutH.setLayoutParams(LLParams);
+
+
+                Random rnd = new Random();
+                int n = rnd.nextInt(2+1)-1;
+
+                //orizzontali, ne metto 2 in fila
+                if (n == 0 && i1 < listHorizontalArtworks.size())
+                {
+                    myLayout.addView(myLayoutH);
+                    Artwork a = listHorizontalArtworks.get(i1);
+                    index++;
+                    i1++;
+                    ImageView imageView3 = new ImageView(this);
+                    Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView3);
+                    imageView3.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    myLayoutH.addView(imageView3);
+
+                }
+                else if (n == 1 && i2 < listVerticalArtworks.size())
+                {
+                    myLayoutH.setPadding(100, 0,0,100);
+                    myLayout.addView(myLayoutH);
+                    Artwork a = listVerticalArtworks.get(i2);
+                    i2++;
+                    index++;
+                    ImageView imageView = new ImageView(this);
+                    Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView);
+                    imageView.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
+                    myLayoutH.addView(imageView);
+                    if (i2 < listVerticalArtworks.size())
+                    {
+                        a = listVerticalArtworks.get(i2);
+                        ImageView imageView2 = new ImageView(this);
+                        Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView2);
+                        imageView2.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
+                        myLayoutH.addView(imageView2);
+                        index++;
+                        i2++;
+                    }
+                    //lavoro sul margine
+                    else
+                    {
+
+                    }
+                }
+                else if (i2 >= listVerticalArtworks.size() && i1 >= listHorizontalArtworks.size())
+                    index = listVerticalArtworks.size() + listHorizontalArtworks.size();
+            }
+        }
+    }
 }
