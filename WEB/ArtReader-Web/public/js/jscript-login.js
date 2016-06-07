@@ -38,22 +38,31 @@ $(document).ready(function()
 		$("#page-home").hide();
 		$("#page-login").show();
 		$("#page-home-2").hide();
-
+		$("#page-aboutus").hide();
 		$("#page-help").hide();
 	});
 	
+	$("#navbar-aboutus, #navbar-mobile-aboutus").click(function()
+	{
+		$("#page-home").hide();
+		$("#page-login").hide();
+		$("#page-home-2").hide();
+		$("#page-aboutus").show();
+		$("#page-help").hide();
+	});
 
 	$("#navbar-home").click(function()
 	{
 		$("#page-home").show();
 		$("#page-login").hide();
 		$("#page-home-2").hide();
-	
+		$("#page-aboutus").hide();
 		$("#page-help").hide();
 	});
 	
 	$("#navbar-help, #navbar-mobile-help").click(function()
 	{
+		$("#page-aboutus").hide();
 		$("#page-home").hide();
 		$("#page-login").hide();
 		$("#page-home-2").hide();

@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.daniele.artreader.MainActivity">
     <item
+        android:id="@+id/action_explore"
+        android:orderInCategory="100"
+        android:title="Vicino a Te"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_history"
         android:orderInCategory="100"
         android:title="Cronologia"

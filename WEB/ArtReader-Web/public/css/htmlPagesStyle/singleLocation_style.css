@@ -95,3 +95,10 @@ span, .normal
 	width: 100%;
 	height: 300px;
 }
+
+#txtNoMostFamousArtworks
+{
+	text-align: center;
+	width: 100%;
+	font-size: 20px;
+}

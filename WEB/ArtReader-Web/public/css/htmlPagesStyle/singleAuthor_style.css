@@ -84,3 +84,10 @@ span, .normal
 	color: white;
 	font: 90px Helvetica, Sans-Serif;
 }
+
+#txtAuthorArtworks, #txtNoSimilarResearch
+{
+	text-align: center;
+	width: 100%;
+	font-size: 20px;
+}

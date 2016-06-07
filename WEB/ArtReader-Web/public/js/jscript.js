@@ -12,7 +12,7 @@ $(document).ready(function()
 		$("#page-help").hide();
 		$("#page-feedback").show();
 		$("#after-feedback-content").hide();
-		$("#feedback-content").hide();
+		$("#feedback-content").show();
 	});	
 
 	$("#navbar-help, #navbar-mobile-help").click(function()

@@ -729,16 +729,18 @@ app.get("/similarArtworks", function(request, response,next)
 		
 	var author = request.query["author"];
 	var title = request.query["title"];
+	var id = request.query["id"];
 	
 	title = title.replace("'","''");
 	author =author.replace("'","''");
+
 	
 	var artMovement = request.query["artMovement"];
 	
 	var header = {"Content-Type":"text/html"};	
 	var db = new sqlite.Database("Database/myDatabase.db");
 	db.serialize(function(){
-	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.idAuthors = '" + author + "' OR ArtMovement='"+ artMovement +"') And (Title != '" + title +"') ORDER BY NViews DESC LIMIT 3 ";
+	var sql = "SELECT * FROM Artworks,Authors WHERE Artworks.Author = Authors.idAuthors AND (Authors.idAuthors = '" + author + "' OR ArtMovement='"+ artMovement +"') And (artworks.id != '" + id +"') ORDER BY NViews DESC LIMIT 3 ";
 	console.log(sql);
 		var json;
 		var listArtworks = [];

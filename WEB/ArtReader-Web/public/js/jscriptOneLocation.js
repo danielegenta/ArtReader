@@ -40,6 +40,10 @@ function showMostFamousArtworks(response, i)
 	var height = response[i].dimensionHeight;
 	var width = response[i].dimensionWidth;
 	console.log(height, width);
+	if (i==0)
+	{
+		$("#txtNoMostFamousArtworks").hide();
+	}
 	switch (i)
 	{
 		case 0:

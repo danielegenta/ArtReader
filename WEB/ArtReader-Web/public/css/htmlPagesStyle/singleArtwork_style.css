@@ -96,3 +96,10 @@ span, .normal
 	color: white;
 	font: 90px Helvetica, Sans-Serif;
 }
+
+#txtNoSimilarResearch
+{
+	text-align: center;
+	width: 100%;
+	font-size: 20px;
+}

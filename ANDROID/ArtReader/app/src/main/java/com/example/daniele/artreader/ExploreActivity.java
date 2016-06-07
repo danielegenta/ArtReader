@@ -52,7 +52,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     Boolean privateSession;
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.103:8080/";
+    String myIp = "http://172.20.10.3:8080/";
 
     /**
      * DOCUMENTAZIONE RAPIDA
@@ -117,7 +117,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
         else
         {
             positionAcquired = false;
-            myLon = 46; myLat = 7;
+            myLon = 45.04; myLat = 7.42;
             getMuseumsInfo();
 
             //non son riuscito a trovare posizione corrente, metto i musei in ordine alfabetico
@@ -230,9 +230,11 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
             String telephoneMuseum = aux[4];
             String websiteMuseum = aux[5];
 
+            double distance=0.0;
             LatLng coordinatesMuseum = getLocationFromAddress(getApplicationContext(), addressMuseum);
-            double distance = calculateDiscance(myLat, myLon, Math.round(coordinatesMuseum.latitude), Math.round(coordinatesMuseum.longitude));
-            vectNameDistanceMuseum[i] = nameMuseum + "; " + distance + ";" +addressMuseum+";" + idMuseum + ";" + imgMuseum + ";" + telephoneMuseum + ";"+websiteMuseum;
+
+                distance = calculateDiscance(myLat, myLon, Math.round(coordinatesMuseum.latitude), Math.round(coordinatesMuseum.longitude));
+                vectNameDistanceMuseum[i] = nameMuseum + "; " + distance + ";" +addressMuseum+";" + idMuseum + ";" + imgMuseum + ";" + telephoneMuseum + ";"+websiteMuseum;
         }
         sortVectDistance(vectNameDistanceMuseum);
     }

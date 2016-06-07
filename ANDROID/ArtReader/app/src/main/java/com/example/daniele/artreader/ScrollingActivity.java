@@ -48,10 +48,10 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.103:8080/";
+    String myIp = "http://172.20.10.3:8080/";
 
 
-    String auxTitle = "", auxAuthor= "", auxArtMovement = "";
+    String auxTitle = "", auxAuthor= "", auxArtMovement = ""; int auxId = 0;
     Lists myLists = null;
 
     String retVal;
@@ -250,6 +250,7 @@ public class ScrollingActivity extends AppCompatActivity {
             auxTitle = title.getText().toString();
             auxAuthor = jsonRootObject.optString("author"); //mi serve id autore
             auxArtMovement = artMovement.getText().toString();
+            auxId=idArtwork;
 
             //verifico se è gia nei preferiti, se sì, cambio colore icona
             if (listFavourites != null)
@@ -701,7 +702,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 }
             }
         };
-        String par = "?title=" + auxTitle + "&author=" + auxAuthor + "&artMovement=" + auxArtMovement;
+        String par = "?title=" + auxTitle + "&author=" + auxAuthor + "&artMovement=" + auxArtMovement +"&id="+auxId;
         request.execute("get", "similarArtworks", par);
     }
 

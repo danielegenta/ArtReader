@@ -38,7 +38,7 @@ function printArtworkDetails(artwork)
 
 	
 	//related artworks
-	relatedArtworks_SinglePageArtwork(artwork.author, artwork.title, artwork.artMovement);
+	relatedArtworks_SinglePageArtwork(artwork.author, artwork.title, artwork.artMovement, artwork.id);
 }
 
 
@@ -51,6 +51,10 @@ function showRelated_SinglePageArtwork(response, i)
 	var pic = 'img/immagini/'+response[i].pictureUrl;
 	var width = response[i].dimensionWidth;
 	var height = response[i].dimensionHeight;
+	if (i==0)
+	{
+		$("#txtNoSimilarResearch").hide();
+	}
 	switch (i)
 	{
 		case 0:

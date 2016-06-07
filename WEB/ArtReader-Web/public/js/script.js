@@ -363,13 +363,13 @@ function similarArtworksUpdate()
 /*************************************************
 ******************************************************************************Single PAGE ARTWORK calls*********************************
 ***************************************************/
-function relatedArtworks_SinglePageArtwork(auth, tit, artM)
+function relatedArtworks_SinglePageArtwork(auth, tit, artM, id)
 {
 	similarRequestSinglePageArtwork = new XMLHttpRequest();
 	var author = auth;
 	var title = tit;
 	var artMovement = artM;
-	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&artMovement="+encodeURIComponent(artMovement);
+	var url="/similarArtworks?title="+encodeURIComponent(title)+"&author="+encodeURIComponent(author)+"&artMovement="+encodeURIComponent(artMovement)+"&id="+id;
 	similarRequestSinglePageArtwork.open("GET", url, true);
 	similarRequestSinglePageArtwork.onreadystatechange = relatedArtworksUpdate;
 	similarRequestSinglePageArtwork.send(null);

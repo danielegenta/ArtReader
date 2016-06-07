@@ -20,35 +20,35 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_marginTop="40dp">
+                android:layout_height="115dp"
+                android:layout_marginTop="50dp">
 
                 <ImageButton
-                    android:layout_width="120dp"
+                    android:layout_width="115dp"
                     android:layout_height="match_parent"
                     android:id="@+id/imageButton"
                     android:layout_gravity="left|center_vertical"
-                    android:background="#EEEEEE"
+                    android:background="@color/colorAccent"
                     android:onClick="openMap"
                     android:src="@android:drawable/ic_dialog_map" />
 
                 <ImageButton
-                    android:layout_width="120dp"
+                    android:layout_width="115dp"
                     android:layout_height="match_parent"
                     android:id="@+id/imageButton2"
                     android:layout_gravity="center"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
-                    android:background="#EEEEEE"
+                    android:background="@color/colorAccent"
                     android:onClick="openFeedback"
                     android:src="@android:drawable/stat_notify_chat" />
 
                 <ImageButton
-                    android:layout_width="120dp"
+                    android:layout_width="115dp"
                     android:layout_height="match_parent"
                     android:id="@+id/imageButton3"
                     android:layout_gravity="right|center_vertical"
-                    android:background="#EEEEEE"
+                    android:background="@color/colorAccent"
                     android:onClick="openAudio"
                     android:src="@android:drawable/ic_lock_silent_mode_off" />
             </FrameLayout>
@@ -64,7 +64,7 @@
                     android:paddingTop="40dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="40dp" />
+                    android:layout_marginTop="20dp" />
             </RelativeLayout>
 
             <TextView

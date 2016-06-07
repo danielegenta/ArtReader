@@ -27,7 +27,8 @@
                     android:id="@+id/lblHomeLatestViewed"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:visibility="gone" />
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -36,7 +37,10 @@
                     android:layout_below="@+id/lblHomeLatestViewed"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:id="@+id/tableLayoutHomeLatestViewed">
+                    android:id="@+id/tableLayoutHomeLatestViewed"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -51,7 +55,8 @@
                             android:minHeight="100dp"
                             android:minWidth="100dp"
                             android:maxHeight="100dp"
-                            android:maxWidth="100dp" />
+                            android:maxWidth="100dp"
+                            android:onClick="openArtworkDetail" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -61,7 +66,8 @@
                             android:minWidth="100dp"
                             android:visibility="invisible"
                             android:maxWidth="100dp"
-                            android:maxHeight="100dp" />
+                            android:maxHeight="100dp"
+                            android:onClick="openArtworkDetail" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -69,7 +75,8 @@
                             android:id="@+id/imgHomeRecent3"
                             android:minHeight="100dp"
                             android:minWidth="100dp"
-                            android:visibility="invisible" />
+                            android:visibility="invisible"
+                            android:onClick="openArtworkDetail" />
 
                     </TableRow>
 
@@ -114,7 +121,8 @@
                 android:textSize="20dp"
                 android:layout_above="@+id/tableLayoutHomeAdvice"
                 android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -123,7 +131,10 @@
                 android:id="@+id/tableLayoutHomeAdvice"
                 android:layout_above="@+id/textView23"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -136,7 +147,8 @@
                         android:visibility="invisible"
                         android:nestedScrollingEnabled="false"
                         android:minHeight="100dp"
-                        android:minWidth="100dp" />
+                        android:minWidth="100dp"
+                        android:onClick="openArtworkDetail" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -145,7 +157,7 @@
                         android:minHeight="100dp"
                         android:minWidth="100dp"
                         android:visibility="invisible"
-                        android:onClick="relatedSearchClick" />
+                        android:onClick="openArtworkDetail" />
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -154,7 +166,7 @@
                         android:minHeight="100dp"
                         android:minWidth="100dp"
                         android:visibility="invisible"
-                        android:onClick="relatedSearchClick" />
+                        android:onClick="openArtworkDetail" />
                 </TableRow>
 
                 <TableRow
@@ -204,7 +216,8 @@
                 android:layout_below="@+id/textView23"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/dynamicTable">
+                android:id="@+id/dynamicTable"
+                android:layout_marginTop="20dp">
 
             </LinearLayout>
 

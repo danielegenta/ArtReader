@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.Console;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    boolean firstAccess = true;
 
     Lists myLists = null;
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Artwork> listVerticalArtworks = new ArrayList<Artwork>();
     ArrayList<Artwork>listHorizontalArtworks = new ArrayList<Artwork>();
 
-    String myIp = "http://192.168.1.101:8080/";
+    String myIp = "http://172.20.10.3:8080/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+
+
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -94,19 +100,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    loadListView("history");
-                }
-                if (position == 2) {
-                    loadListView("favourites");
-                }
-                if (position == 1)
-                {
-                    if (myLists != null)
-                    {
+                    if (myLists != null) {
+                        firstAccess = false;
                         loadLatestViewed();
                         loadAdvice();
                         loadDynamicLayout();
                     }
+                }
+                if (position == 1)
+                {
+                    loadListView("favourites");
                 }
             }
 
@@ -124,9 +127,14 @@ public class MainActivity extends AppCompatActivity {
                 scanQR();
             }
         });
+
         myLists = new Lists();
         loadStructures();
 
+        //firstAccess = false;
+        /*loadLatestViewed();
+        loadAdvice();
+        loadDynamicLayout();*/
 
     }
 
@@ -249,6 +257,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_history:
                 openHistory();
                 return true;
+            case R.id.action_explore:
+                openExplore();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -290,19 +301,14 @@ public class MainActivity extends AppCompatActivity {
             View rootView = null;
 
             //main
-            if (nPage == 2)
+            //history
+            if (nPage == 1)
             {
                 rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-            }
-            //history
-            else if (nPage == 1)
-            {
-                rootView = inflater.inflate(R.layout.fragment_history, container, false);
             }
 
             //favourite
-            else if (nPage == 3)
+            else if (nPage == 2)
             {
                 rootView = inflater.inflate(R.layout.fragment_favourite, container, false);
             }
@@ -330,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -341,8 +347,6 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
 
                     return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
             }
             return null;
         }
@@ -371,15 +375,11 @@ public class MainActivity extends AppCompatActivity {
         if (myLists != null)
         {
             loadStructures();
-            if (mViewPager.getCurrentItem() == 0)
-            {
-                loadListView("history");
-            }
-            else if (mViewPager.getCurrentItem() == 2)
+            if (mViewPager.getCurrentItem() == 1)
             {
                 loadListView("favourites");
             }
-            else if (mViewPager.getCurrentItem() == 1)
+            else if (mViewPager.getCurrentItem() == 0 && !firstAccess)
             {
                 loadLatestViewed();
                 loadAdvice();
@@ -532,13 +532,30 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openExplore()
+    {
+        Intent intent = new Intent(this, ExploreActivity.class);
+        intent.putExtra("jsonHistory", myLists.historyToString());
+        intent.putExtra("jsonFavourites", myLists.favouritesToString());
+        intent.putExtra("privateSession", privateSession);
+        startActivity(intent);
+    }
+
     /*
     * * NEW HOME
     * **/
     private void loadLatestViewed()
     {
-        if (myLists != null) {
-            if (myLists.listArtworksHistory.size() > 0) {
+        if (myLists != null)
+        {
+            if (myLists.listArtworksHistory.size() > 0)
+            {
+                TextView headerViewed = (TextView)findViewById(R.id.lblHomeLatestViewed);
+                headerViewed.setVisibility(View.VISIBLE);
+
+                TableLayout tl = (TableLayout)findViewById(R.id.tableLayoutHomeLatestViewed);
+                tl.setVisibility(View.VISIBLE);
+
                 ImageView imgLatestViewed1 = (ImageView) findViewById(R.id.imgHomeRecent1);
                 TextView txtLatestViewed1 = (TextView) findViewById(R.id.txtHomeRecent1);
                 imgLatestViewed1.setVisibility(View.VISIBLE);
@@ -570,13 +587,15 @@ public class MainActivity extends AppCompatActivity {
                 txtLatestViewed3.setText(myLists.listArtworksHistory.get(2).getTitle().toString());
             }
 
-            if (myLists.listArtworksHistory.size() == 0) {
-                TableLayout tlHomeLatestViewed = (TableLayout) findViewById(R.id.tableLayoutHomeLatestViewed);
-                TextView tHomeLatestViewed = (TextView) findViewById(R.id.lblHomeLatestViewed);
+                if (myLists.listArtworksHistory.size() == 0)
+                {
+                    /*TableLayout tlHomeLatestViewed = (TableLayout) findViewById(R.id.tableLayoutHomeLatestViewed);
+                    TextView tHomeLatestViewed = (TextView) findViewById(R.id.lblHomeLatestViewed);
 
-                tlHomeLatestViewed.setVisibility(View.GONE);
-                tHomeLatestViewed.setVisibility(View.GONE);
-            }
+                    tlHomeLatestViewed.setVisibility(View.GONE);
+                    tHomeLatestViewed.setVisibility(View.GONE);*/
+                }
+
         }
     }
 
@@ -682,6 +701,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (index == 0)
         {
+            TextView headerAdvice = (TextView)findViewById(R.id.lblHomeAdivce);
+            headerAdvice.setVisibility(View.VISIBLE);
+            TableLayout tl = (TableLayout)findViewById(R.id.tableLayoutHomeAdvice);
+            tl.setVisibility(View.VISIBLE);
+
             //definisco oggetti che mi servono
             TextView textAdvice1 = (TextView)findViewById(R.id.txtHomeAdvice1);
             ImageView imageAdvice1 = (ImageView) findViewById(R.id.imgHomeAdvice1);
@@ -758,6 +782,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadDynamicLayout()
     {
+        listHorizontalArtworks = new ArrayList<>();
+        listVerticalArtworks = new ArrayList<>();
         //chiamata all artworks
         View v = findViewById(android.R.id.content);retVal = "nok";
         InviaRichiestaHttp request = new InviaRichiestaHttp(v, MainActivity.this)
@@ -812,71 +838,99 @@ public class MainActivity extends AppCompatActivity {
         request.execute("get", "allArtworks", par);
     }
 
-    private void loadDynamicLayoutFinal()
-    {
+    private void loadDynamicLayoutFinal() {
 
         //definizione layout
-        LinearLayout myLayout=((LinearLayout) findViewById(R.id.dynamicTable));
+        LinearLayout myLayout = ((LinearLayout) findViewById(R.id.dynamicTable));
+        int count = myLayout.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View child = myLayout.getChildAt(i);
+            if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
+        }
 
 
-        int index=0;
+        int index = 0;
         int i1 = 0, i2 = 0;
-        if (listHorizontalArtworks.size() > 0 && listVerticalArtworks.size() > 0)
-        {
-            while (index < (listHorizontalArtworks.size() + listVerticalArtworks.size()))
-            {
-                LinearLayout myLayoutH = new LinearLayout(this);
-                myLayoutH.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                myLayoutH.setLayoutParams(LLParams);
+        if (myLayout.getChildCount() == 0) {
+            if (listHorizontalArtworks.size() > 0 && listVerticalArtworks.size() > 0) {
+                while (index < (listHorizontalArtworks.size() + listVerticalArtworks.size())) {
+                    LinearLayout myLayoutH = new LinearLayout(this);
+                    myLayoutH.setOrientation(LinearLayout.HORIZONTAL);
+                    LinearLayout.LayoutParams LLParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    myLayoutH.setLayoutParams(LLParams);
 
 
-                Random rnd = new Random();
-                int n = rnd.nextInt(2+1)-1;
+                    Random rnd = new Random();
+                    int n = rnd.nextInt(2 + 1) - 1;
 
-                //orizzontali, ne metto 2 in fila
-                if (n == 0 && i1 < listHorizontalArtworks.size())
-                {
-                    myLayout.addView(myLayoutH);
-                    Artwork a = listHorizontalArtworks.get(i1);
-                    index++;
-                    i1++;
-                    ImageView imageView3 = new ImageView(this);
-                    Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView3);
-                    imageView3.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    myLayoutH.addView(imageView3);
-
-                }
-                else if (n == 1 && i2 < listVerticalArtworks.size())
-                {
-                    myLayoutH.setPadding(100, 0,0,100);
-                    myLayout.addView(myLayoutH);
-                    Artwork a = listVerticalArtworks.get(i2);
-                    i2++;
-                    index++;
-                    ImageView imageView = new ImageView(this);
-                    Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView);
-                    imageView.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
-                    myLayoutH.addView(imageView);
-                    if (i2 < listVerticalArtworks.size())
-                    {
-                        a = listVerticalArtworks.get(i2);
-                        ImageView imageView2 = new ImageView(this);
-                        Picasso.with(getApplicationContext()).load(myIp +"img/immagini/"+a.getImg_path()).into(imageView2);
-                        imageView2.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
-                        myLayoutH.addView(imageView2);
+                    //orizzontali, ne metto 2 in fila
+                    if (n == 0 && i1 < listHorizontalArtworks.size()) {
+                        myLayout.addView(myLayoutH);
+                        Artwork a = listHorizontalArtworks.get(i1);
                         index++;
-                        i2++;
-                    }
-                    //lavoro sul margine
-                    else
-                    {
+                        i1++;
+                        ImageView imageView3 = new ImageView(this);
+                        Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + a.getImg_path()).into(imageView3);
+                        imageView3.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        myLayoutH.addView(imageView3);
 
                     }
+                    else if (n == 1 && i2 < listVerticalArtworks.size()) {
+                        myLayoutH.setPadding(0, 0, 0, 0);
+                        myLayout.addView(myLayoutH);
+                        Artwork a = listVerticalArtworks.get(i2);
+                        i2++;
+                        index++;
+                        ImageView imageView = new ImageView(this);
+                        Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + a.getImg_path()).into(imageView);
+                        imageView.setLayoutParams(new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(550, 500)));
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        myLayoutH.addView(imageView);
+                        if (i2 < listVerticalArtworks.size()) {
+                            a = listVerticalArtworks.get(i2);
+                            ImageView imageView2 = new ImageView(this);
+                            Picasso.with(getApplicationContext()).load(myIp + "img/immagini/" + a.getImg_path()).into(imageView2);
+                            imageView2.setLayoutParams(new LinearLayout.LayoutParams(new LinearLayout.LayoutParams(550, 500)));
+                            imageView2.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            myLayoutH.addView(imageView2);
+                            index++;
+                            i2++;
+                        }
+                        //lavoro sul margine
+                        else {
+
+                        }
+                    } else if (i2 >= listVerticalArtworks.size() && i1 >= listHorizontalArtworks.size())
+                        index = listVerticalArtworks.size() + listHorizontalArtworks.size();
                 }
-                else if (i2 >= listVerticalArtworks.size() && i1 >= listHorizontalArtworks.size())
-                    index = listVerticalArtworks.size() + listHorizontalArtworks.size();
             }
         }
+    }
+
+    //
+    public void openArtworkDetail(View v)
+    {
+        v.getTag();
+        String idArtwork = v.getTag().toString();
+
+        InviaRichiestaHttp request = new InviaRichiestaHttp(v, MainActivity.this)
+        {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.contains("Exception"))
+                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+                else
+                {
+
+                    Intent intent1 = new Intent(getApplicationContext(), ScrollingActivity.class);
+                    intent1.putExtra("jsonArtwork", result);
+                    intent1.putExtra("jsonHistory", myLists.historyToString());
+                    intent1.putExtra("jsonFavourites", myLists.favouritesToString());
+                    intent1.putExtra("privateSession", privateSession);
+                    startActivity(intent1);
+                }
+            }
+        };
+        request.execute("get", "oneArtworkMobile", idArtwork);
     }
 }

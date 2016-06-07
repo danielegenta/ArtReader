@@ -31,6 +31,10 @@ function showRelated_SinglePageAuthor(response, i)
 	var id = response[i].id;
 	var name = response[i].name;
 	var pic = 'img/immagini/autori/'+response[i].pictureUrlAuthor;
+	if (i==0)
+	{
+		$("#txtNoSimilarResearch").hide();
+	}
 	switch (i)
 	{
 		case 0:
@@ -59,6 +63,10 @@ function showAuthorArtworks(response, i)
 	var height = response[i].dimensionHeight;
 	var width = response[i].dimensionWidth;
 	console.log(height, width);
+	if (i==0)
+	{
+		$("#txtNoAuthorArtworks").hide();
+	}
 	switch (i)
 	{
 		case 0:
