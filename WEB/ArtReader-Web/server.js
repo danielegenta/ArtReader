@@ -854,7 +854,7 @@ app.get("/completion", function(req, res,next) {
             db.each(sql,function(err,row)
             {
                 var parola = {};
-				parola.voce = row.Title + " - " + row.Name + " - " + row.ArtMovement + " - "+row.Year;
+				parola.voce = row.Id +" - "+row.Title + " - " + row.Name + " - " + row.ArtMovement + " - "+row.Year;
                 vectTrovate.push(parola);
             },function(err,nRighe)
             {

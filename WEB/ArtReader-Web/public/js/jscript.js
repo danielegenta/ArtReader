@@ -277,11 +277,11 @@ $('#uploadForm').submit(function() {
 		selVal = $( "#lstSuggerimenti option:selected" ).text();
 		//aux: title - author - artMovement
 		var aux = selVal.split(" - ");
-		$("#txtSearch").val(aux[0]);
+		$("#txtSearch").val(aux[1]);
 		$(".riga").hide();
-		refreshTable(aux[0]);
+		refreshTable(aux[1]);
 		$("#searchTips").show();
-		similarArtworks(aux[1], aux[0], aux[2]); 
+		similarArtworks(aux[2], aux[1], aux[3], aux[0]); 
 	});
 	
 	//******************************SIMILAR SEARCH FIELD (max tips: 3)*********************
