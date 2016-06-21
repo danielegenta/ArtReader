@@ -21,7 +21,7 @@ public class RecordAdapterReview extends ArrayAdapter<Review> {
     private List<Review> list;
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://172.20.10.3:8080/";
+    String myIp = "http://192.168.1.101:8080/";
 
     public RecordAdapterReview(Context context, int layout_ID, List<Review> objects)
     {

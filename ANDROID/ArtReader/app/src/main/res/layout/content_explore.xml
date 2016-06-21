@@ -60,6 +60,11 @@
                         android:layout_height="250dp"
                         android:id="@+id/imgFirstAdvice" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@drawable/bkg_home_gradient"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -155,6 +160,8 @@
                                 android:visibility="invisible"
                                 android:layout_marginLeft="20dp"
                                 android:onClick="exploreShowArtwork" />
+
+
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -264,6 +271,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="250dp"
                         android:id="@+id/imgSecondAdvice" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@drawable/bkg_home_gradient"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -464,6 +476,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="250dp"
                         android:id="@+id/imgThirdAdvice" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@drawable/bkg_home_gradient"/>
 
                     <TextView
                         android:layout_width="wrap_content"

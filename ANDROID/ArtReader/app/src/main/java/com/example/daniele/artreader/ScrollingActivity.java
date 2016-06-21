@@ -48,7 +48,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://172.20.10.3:8080/";
+    String myIp = "http://192.168.1.101:8080/";
 
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = ""; int auxId = 0;

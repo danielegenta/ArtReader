@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Artwork> listVerticalArtworks = new ArrayList<Artwork>();
     ArrayList<Artwork>listHorizontalArtworks = new ArrayList<Artwork>();
 
-    String myIp = "http://172.20.10.3:8080/";
+    String myIp = "http://192.168.1.101:8080/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
