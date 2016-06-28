@@ -52,7 +52,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
     Boolean privateSession;
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.101:8080/";
+    String myIp;
 
     /**
      * DOCUMENTAZIONE RAPIDA
@@ -88,6 +88,7 @@ public class ExploreActivity extends AppCompatActivity implements GoogleApiClien
             }
         });
 
+        myIp=((MyApplication)getApplicationContext()).myUrl;
         Bundle b = getIntent().getExtras();
         auxHistory=  b.getString("jsonHistory");
         auxFavourites  =  b.getString("jsonFavourites");

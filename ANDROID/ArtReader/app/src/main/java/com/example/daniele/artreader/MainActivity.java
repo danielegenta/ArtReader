@@ -7,6 +7,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Artwork> listVerticalArtworks = new ArrayList<Artwork>();
     ArrayList<Artwork>listHorizontalArtworks = new ArrayList<Artwork>();
 
-    String myIp = "http://192.168.1.101:8080/";
+    String myIp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 
+        myIp = myIp=((MyApplication)getApplicationContext()).myUrl;
 
 
         // Set up the ViewPager with the sections adapter.
@@ -135,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         /*loadLatestViewed();
         loadAdvice();
         loadDynamicLayout();*/
+
+
 
     }
 

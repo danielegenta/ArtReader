@@ -1,5 +1,6 @@
 package com.example.daniele.artreader;
 
+import android.app.Application;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class RecordAdapter extends ArrayAdapter<Artwork> {
     private List<Artwork> list;
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.101:8080/";
+    String myIp;
 
     public RecordAdapter(Context context, int layout_ID, List<Artwork> objects)
     {
@@ -35,6 +36,7 @@ public class RecordAdapter extends ArrayAdapter<Artwork> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        myIp="http://192.168.1.102:8080/";
         //Riferimento all'object RecordLayout
         View v = null;
         if(convertView == null)

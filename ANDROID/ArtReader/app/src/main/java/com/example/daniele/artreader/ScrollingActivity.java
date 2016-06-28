@@ -48,7 +48,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
 
     //da cambiare ogni volta (come invia richiesta http)
-    String myIp = "http://192.168.1.101:8080/";
+    String myIp;
 
 
     String auxTitle = "", auxAuthor= "", auxArtMovement = ""; int auxId = 0;
@@ -63,7 +63,7 @@ public class ScrollingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        myIp = ((MyApplication)getApplicationContext()).myUrl;
 
         Bundle b = getIntent().getExtras();
         String strHistory  =  b.getString("jsonHistory");
