@@ -70,8 +70,7 @@ $(document).ready(function()
 		$('.scrollspy').scrollSpy();
 	});
 	
-	//menu mobile
-	$(".button-collapse").sideNav();
+
 	
 	$("#viewPage1").click(function()
 	{
@@ -109,6 +108,9 @@ $(document).ready(function()
 		var pw  = $("#password").val();
 		requestLogin(user, pw);
 	});
+
+		//menu mobile
+	$(".button-collapse").sideNav();
 });
 
 

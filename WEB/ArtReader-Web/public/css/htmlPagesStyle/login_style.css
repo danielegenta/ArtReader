@@ -312,8 +312,8 @@ input
 	position: absolute; 
 	font-size: 20px;
 	width: 100%;
-	top:450;
-		color:white;
+	top:500;
+	color:white;
 }
 
 #aboutus-firstpage-content-title
@@ -322,8 +322,8 @@ input
 	text-align: center;
 	font-size: 50px;
 	width: 100%;
-	top: 380;
-	color:black;
+	top: 430;
+	color:white;
 }
 
 #aboutus-firstpage-content-body2
@@ -332,7 +332,7 @@ input
 	font-size: 20px;
 	width: 100%;
 	top:1400;
-		color:white;
+	color:white;
 }
 
 #aboutus-firstpage-content-title2
@@ -350,7 +350,7 @@ input
 	position: absolute; 
 	font-size: 20px;
 	width: 100%;
-	top:2100;
+	top:2150;
 	color:white;
 }
 
@@ -360,8 +360,8 @@ input
 	text-align: center;
 	font-size: 50px;
 	width: 100%;
-	top:2000;
-	color:black;
+	top:2050;
+	color:white;
 }
 
 #help-firstpage-img
